@@ -1,10 +1,9 @@
-from flask import Blueprint, session, redirect, url_for
+from flask import Blueprint, session, redirect, url_for, render_template
 
-user_bp = Blueprint("user", __name__)
+user_bp = Blueprint("user", __name__, url_prefix="/user")
 
-@user_bp.route("/user/dashboard")
+@user_bp.route("/dashboard")
 def dashboard():
     if session.get("role") == "user":
-        return "User Dashboard"
+        return render_template("user.html")
     return redirect(url_for("auth.login"))
-
