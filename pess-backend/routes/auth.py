@@ -40,6 +40,14 @@ def login():
         flash("Invalid credentials", "danger")
 
     return render_template("login.html")
+    
+@auth_bp.route("/session")
+def session_info():
+    role = session.get("role")
+    if role:
+        return {"role": role}
+        return {"role": None}
+
 
 # 🔹 Logout
 @auth_bp.route("/logout")
