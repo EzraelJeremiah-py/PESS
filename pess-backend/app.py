@@ -3,7 +3,7 @@ from routes import blueprints
 import sqlite3, os
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = "supersecretkey" 
 
 DB_PATH = "pess.db"
 
