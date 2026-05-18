@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-import sqlite3
-import os
+import sqlite3, os
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-
 DB_PATH = "pess.db"
 
-# Helper function
 def query_db(query, args=(), one=False):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -16,21 +13,18 @@ def query_db(query, args=(), one=False):
     conn.close()
     return (rv[0] if rv else None) if one else rv
 
-# 🔹 Login
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
-        # Admin check
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
                          (username, password), one=True)
         if admin:
             session["role"] = "admin"
             return redirect(url_for("admin.dashboard"))
 
-        # User check
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
                         (username, password), one=True)
         if user:
@@ -40,23 +34,20 @@ def login():
         flash("Invalid credentials", "danger")
 
     return render_template("login.html")
-    
+
 @auth_bp.route("/session")
 def session_info():
     role = session.get("role")
     if role:
         return {"role": role}
-        return {"role": None}
+    return {"role": None}
 
-
-# 🔹 Logout
 @auth_bp.route("/logout")
 def logout():
     session.clear()
     flash("Logged out successfully", "info")
     return redirect(url_for("auth.login"))
 
-# 🔹 Register new user
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -76,7 +67,6 @@ def register():
 
     return render_template("register.html")
 
-# 🔹 Admin: list all users
 @auth_bp.route("/users")
 def list_users():
     if session.get("role") != "admin":
@@ -86,7 +76,6 @@ def list_users():
     users = query_db("SELECT * FROM users")
     return render_template("users.html", users=users)
 
-# 🔹 Admin: delete user
 @auth_bp.route("/delete/<int:user_id>")
 def delete_user(user_id):
     if session.get("role") != "admin":
@@ -101,7 +90,6 @@ def delete_user(user_id):
     flash("User deleted successfully!", "info")
     return redirect(url_for("auth.list_users"))
 
-# 🔹 Admin: edit user
 @auth_bp.route("/edit/<int:user_id>", methods=["GET", "POST"])
 def edit_user(user_id):
     if session.get("role") != "admin":
