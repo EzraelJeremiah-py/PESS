@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Flashcards from {{ filename }}</h2>
+  <div class="row">
+    {% for card in cards %}
+    <div class="col-md-4 mb-3">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Q:</h5>
+          <p>{{ card.front }}</p>
+          <hr>
+          <h6 class="card-subtitle text-muted">A:</h6>
+          <p>{{ card.back }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <a href="{{ url_for('library.library_home') }}" class="btn btn-secondary mt-3">Back to Library</a>
+</div>
+{% endblock %}
