@@ -9,12 +9,13 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <span class="navbar-brand">Admin Dashboard</span>
-      <a href="/logout" class="btn btn-outline-light">Logout</a>
+      <!-- ✅ Use url_for instead of hardcoding /logout -->
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
     </div>
   </nav>
   <div class="container mt-4">
     <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="/users" class="btn btn-primary mt-3">Manage Users</a>
+    <a href="{{ url_for('auth.list_users') }}" class="btn btn-primary mt-3">Manage Users</a>
   </div>
 </body>
 </html>
