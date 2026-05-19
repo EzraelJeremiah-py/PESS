@@ -4,13 +4,33 @@
   <h2 class="mb-3">User Dashboard</h2>
   <p class="lead">Welcome, {{ session.get('serial') }} 👋</p>
 
+  <!-- Stats widgets -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card text-center shadow">
+        <div class="card-body">
+          <h5 class="card-title">📚 Files Available</h5>
+          <p class="display-6">{{ file_count }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card text-center shadow">
+        <div class="card-body">
+          <h5 class="card-title">🔗 Safe Links</h5>
+          <p class="display-6">{{ link_count }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Quick links -->
-  <div class="list-group">
+  <div class="list-group mt-4">
     <a href="{{ url_for('library.library_home') }}" class="list-group-item list-group-item-action">
-      📚 Access Virtual Library
+      Access Virtual Library
     </a>
     <a href="{{ url_for('auth.logout') }}" class="list-group-item list-group-item-action text-danger">
-      🚪 Logout
+      Logout
     </a>
   </div>
 </div>
