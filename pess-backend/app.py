@@ -18,12 +18,24 @@ def init_db():
         conn.close()
         print("✅ Database initialized")
 
-init_db()
+def run_migrations():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    base_dir = os.path.dirname(__file__)
+    with open(os.path.join(base_dir, "fix_unique_serial.sql"), "r") as f:
+        cur.executescript(f.read())
+    conn.commit()
+    conn.close()
+    print("🔒 Migrations applied (unique constraints enforced)")
 
+# ✅ Run DB setup and migrations at startup
+init_db()
+run_migrations()
+
+# Register blueprints
 for bp in blueprints:
     app.register_blueprint(bp)
 
-# 🔹 Add this route
 @app.route("/")
 def index():
     return redirect(url_for("auth.login"))  # or return "Welcome to PESS Backend!"
