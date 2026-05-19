@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from routes import blueprints
 import sqlite3, os
 
@@ -22,6 +22,11 @@ init_db()
 
 for bp in blueprints:
     app.register_blueprint(bp)
+
+# 🔹 Add this route
+@app.route("/")
+def index():
+    return redirect(url_for("auth.login"))  # or return "Welcome to PESS Backend!"
 
 if __name__ == "__main__":
     app.run(debug=True)
