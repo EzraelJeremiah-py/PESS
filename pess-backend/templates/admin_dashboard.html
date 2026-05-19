@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand">Admin Dashboard</span>
-      <!-- ✅ Use url_for instead of hardcoding /logout -->
-      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
-    </div>
-  </nav>
-  <div class="container mt-4">
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="{{ url_for('auth.list_users') }}" class="btn btn-primary mt-3">Manage Users</a>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">Admin Dashboard</h2>
+  <p class="lead">Welcome, {{ session.get('username') }} 👑</p>
+
+  <!-- Admin tools -->
+  <div class="list-group">
+    <a href="{{ url_for('auth.list_users') }}" class="list-group-item list-group-item-action">
+      👥 Manage Users
+    </a>
+    <a href="{{ url_for('library.library_home') }}" class="list-group-item list-group-item-action">
+      📚 Manage Virtual Library
+    </a>
+    <a href="{{ url_for('auth.logout') }}" class="list-group-item list-group-item-action text-danger">
+      🚪 Logout
+    </a>
   </div>
-</body>
-</html>
+</div>
+{% endblock %}
