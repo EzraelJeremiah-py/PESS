@@ -42,11 +42,10 @@ def session_info():
         return {"role": role}
     return {"role": None}
 
-@auth_bp.route("/logout")
-def logout():
-    session.clear()
-    flash("Logged out successfully", "info")
-    return redirect(url_for("auth.login"))
+@app.route("/logout")
+def global_logout():
+    return redirect(url_for("auth.logout"))
+
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
