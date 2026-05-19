@@ -19,16 +19,20 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
+        # Check admin
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
                          (username, password), one=True)
         if admin:
             session["role"] = "admin"
+            session["username"] = admin["username"]   # ✅ store admin username
             return redirect(url_for("admin.dashboard"))
 
+        # Check user
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
                         (username, password), one=True)
         if user:
             session["role"] = "user"
+            session["serial"] = user["serial"]       # ✅ store user serial
             return redirect(url_for("user.dashboard"))
 
         flash("Invalid credentials", "danger")
@@ -47,8 +51,6 @@ def logout():
     session.clear()
     flash("Logged out successfully", "info")
     return redirect(url_for("auth.login"))
-
-
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
