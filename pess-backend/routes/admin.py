@@ -25,7 +25,7 @@ def list_users():
     users = cur.fetchall()
     conn.close()
 
-    return render_template("users_list.html", users=users)
+    return render_template("users.html", users=users)
 
 # ✅ Edit user
 @admin_bp.route("/users/edit/<int:id>", methods=["GET", "POST"])
