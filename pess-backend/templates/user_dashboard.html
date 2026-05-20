@@ -8,13 +8,20 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <span class="navbar-brand">User Dashboard</span>
-      <!-- ✅ Use url_for instead of hardcoding /logout -->
       <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
     </div>
   </nav>
+
   <div class="container mt-4">
     <h2>Welcome, {{ session['serial'] }}</h2>
     <p class="lead">This is your user dashboard.</p>
+
+    <!-- ✅ Just a link to fee records -->
+    <div class="mt-3">
+      <a href="{{ url_for('user.view_fees') }}" class="btn btn-primary">
+        View Fee Payment Records
+      </a>
+    </div>
   </div>
 </body>
 </html>
