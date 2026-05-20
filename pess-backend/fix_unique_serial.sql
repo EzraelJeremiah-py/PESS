@@ -3,3 +3,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_users_serial ON users(serial);
 
 -- Enforce uniqueness on admins.username
 CREATE UNIQUE INDEX IF NOT EXISTS idx_admins_username ON admins(username);
+
+ALTER TABLE library ADD COLUMN uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
