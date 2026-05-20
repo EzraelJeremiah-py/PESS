@@ -9,3 +9,18 @@ CREATE TABLE users (
     serial TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
+CREATE TABLE library (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    filepath TEXT NOT NULL,
+    extension TEXT,
+    uploaded_by TEXT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE safe_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    url TEXT NOT NULL
+);
+
