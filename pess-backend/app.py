@@ -23,10 +23,14 @@ def run_migrations():
     cur = conn.cursor()
     base_dir = os.path.dirname(__file__)
     with open(os.path.join(base_dir, "fix_unique_serial.sql"), "r") as f:
-        cur.executescript(f.read())
+        try:
+            cur.executescript(f.read())
+            print("🔒 Migrations applied (unique constraints enforced)")
+        except sqlite3.OperationalError as e:
+            # Skip duplicate column errors or other conflicts
+            print(f"⚠️ Migration skipped: {e}")
     conn.commit()
     conn.close()
-    print("🔒 Migrations applied (unique constraints enforced)")
 
 # ✅ Run DB setup and migrations at startup
 init_db()
@@ -45,11 +49,17 @@ def index():
         cur = conn.cursor()
 
         # Recent activity: last 5 files and safe links
-        cur.execute("SELECT * FROM library ORDER BY uploaded_at DESC LIMIT 5")
-        recent_files = cur.fetchall()
+        try:
+            cur.execute("SELECT * FROM library ORDER BY uploaded_at DESC LIMIT 5")
+            recent_files = cur.fetchall()
+        except sqlite3.Error:
+            recent_files = []
 
-        cur.execute("SELECT * FROM safe_links ORDER BY id DESC LIMIT 5")
-        recent_links = cur.fetchall()
+        try:
+            cur.execute("SELECT * FROM safe_links ORDER BY id DESC LIMIT 5")
+            recent_links = cur.fetchall()
+        except sqlite3.Error:
+            recent_links = []
 
         conn.close()
 
@@ -71,12 +81,15 @@ def index():
     return redirect(url_for("auth.login"))
 
 def query_count(table):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute(f"SELECT COUNT(*) FROM {table}")
-    count = cur.fetchone()[0]
-    conn.close()
-    return count
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute(f"SELECT COUNT(*) FROM {table}")
+        count = cur.fetchone()[0]
+        conn.close()
+        return count
+    except sqlite3.Error:
+        return 0
 
 if __name__ == "__main__":
     app.run(debug=True)
