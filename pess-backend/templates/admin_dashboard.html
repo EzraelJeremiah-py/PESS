@@ -9,13 +9,19 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <span class="navbar-brand">Admin Dashboard</span>
-      <!-- ✅ Use url_for instead of hardcoding /logout -->
       <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
     </div>
   </nav>
+
   <div class="container mt-4">
     <h2>Welcome, {{ session['username'] }}</h2>
+
+    <!-- Manage Users -->
     <a href="{{ url_for('auth.list_users') }}" class="btn btn-primary mt-3">Manage Users</a>
+
+    <!-- Fee Management -->
+    <a href="{{ url_for('fees.upload_fee_file') }}" class="btn btn-success mt-3">Upload Fee Records</a>
+    <a href="{{ url_for('fees.view_fee_files') }}" class="btn btn-info mt-3">View Fee Records</a>
   </div>
 </body>
 </html>
