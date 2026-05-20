@@ -1,0 +1,13 @@
+<h3>Fee Payment Records</h3>
+<table>
+  <tr><th>Class</th><th>Stream</th><th>Date</th><th>File</th><th>Uploaded</th></tr>
+  {% for f in fee_files %}
+    <tr>
+      <td>{{ f.class }}</td>
+      <td>{{ f.stream }}</td>
+      <td>{{ f.fee_date }}</td>
+      <td><a href="{{ f.filepath }}">{{ f.filename }}</a></td>
+      <td>{{ f.uploaded_at }}</td>
+    </tr>
+  {% endfor %}
+</table>
