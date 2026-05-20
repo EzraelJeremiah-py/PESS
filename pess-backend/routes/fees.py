@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, flash, redirect, url_for
+from flask import Blueprint, render_template, request, session, flash, redirect, url_for, send_from_directory
 import sqlite3, os
 from werkzeug.utils import secure_filename
 
@@ -7,7 +7,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads", "fees")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# ------------------ Upload Fee File ------------------
+# ------------------ Upload Fee File (Admin) ------------------
 @fees_bp.route("/upload", methods=["GET", "POST"])
 def upload_fee_file():
     if session.get("role") != "admin":
@@ -58,7 +58,7 @@ def view_fee_files():
 
     return render_template("fees/manage_fees.html", fee_files=fee_files)
 
-# ------------------ Delete Fee File ------------------
+# ------------------ Delete Fee File (Admin) ------------------
 @fees_bp.route("/delete/<int:id>")
 def delete_fee_file(id):
     if session.get("role") != "admin":
@@ -73,3 +73,29 @@ def delete_fee_file(id):
 
     flash("Fee file deleted successfully!", "success")
     return redirect(url_for("fees.view_fee_files"))
+
+# ------------------ Serve Files (View/Download) ------------------
+@fees_bp.route("/files/<filename>")
+def serve_fee_file(filename):
+    download = request.args.get("download")
+    return send_from_directory(
+        UPLOAD_FOLDER,
+        filename,
+        as_attachment=True if download else False
+    )
+
+# ------------------ User View (Students) ------------------
+@fees_bp.route("/user")
+def user_fee_files():
+    if session.get("role") != "user":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM fee_uploads ORDER BY uploaded_at DESC")
+    fee_files = cur.fetchall()
+    conn.close()
+
+    return render_template("fees/user_fees.html", fee_files=fee_files)
