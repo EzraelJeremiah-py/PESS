@@ -7,6 +7,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads", "fees")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# ------------------ Upload Fee File ------------------
 @fees_bp.route("/upload", methods=["GET", "POST"])
 def upload_fee_file():
     if session.get("role") != "admin":
@@ -29,7 +30,10 @@ def upload_fee_file():
             cur.execute("""
                 INSERT INTO fee_uploads (class, stream, filename, filepath, extension, uploaded_by, fee_date)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (class_name, stream, filename, filepath, os.path.splitext(filename)[1], session.get("username", "admin"), fee_date))
+            """, (class_name, stream, filename, filepath,
+                  os.path.splitext(filename)[1],
+                  session.get("username", "admin"),
+                  fee_date))
             conn.commit()
             conn.close()
 
@@ -38,6 +42,23 @@ def upload_fee_file():
 
     return render_template("fees/upload_fee.html")
 
+# ------------------ Manage Fee Files (Admin View) ------------------
+@fees_bp.route("/view")
+def view_fee_files():
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM fee_uploads ORDER BY uploaded_at DESC")
+    fee_files = cur.fetchall()
+    conn.close()
+
+    return render_template("fees/manage_fees.html", fee_files=fee_files)
+
+# ------------------ Delete Fee File ------------------
 @fees_bp.route("/delete/<int:id>")
 def delete_fee_file(id):
     if session.get("role") != "admin":
@@ -51,4 +72,4 @@ def delete_fee_file(id):
     conn.close()
 
     flash("Fee file deleted successfully!", "success")
-    return redirect(url_for("fees.upload_fee_file"))
+    return redirect(url_for("fees.view_fee_files"))
