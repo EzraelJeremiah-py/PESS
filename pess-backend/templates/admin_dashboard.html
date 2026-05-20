@@ -17,7 +17,7 @@
     <h2>Welcome, {{ session.get('username', 'Admin') }}</h2>
 
     <!-- Manage Users -->
-    <a href="{{ url_for('admin.list_users') }}" class="btn btn-primary mt-3">Manage Users</a>
+    <a href="{{ url_for('admin.list_users') }}" class="btn btn-primary">Manage Users</a>
 
     <!-- Fee Management -->
     <a href="{{ url_for('fees.upload_fee_file') }}" class="btn btn-primary">Upload Fee Records</a>
