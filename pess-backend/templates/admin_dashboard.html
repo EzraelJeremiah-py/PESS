@@ -1,48 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container mt-4">
-  <h2 class="mb-3">Admin Dashboard</h2>
-  <p class="lead">Welcome, {{ session.get('username') }} 👑</p>
-
-  <!-- Stats widgets -->
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card text-center shadow">
-        <div class="card-body">
-          <h5 class="card-title">👥 Users</h5>
-          <p class="display-6">{{ user_count }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center shadow">
-        <div class="card-body">
-          <h5 class="card-title">📚 Files in Library</h5>
-          <p class="display-6">{{ file_count }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center shadow">
-        <div class="card-body">
-          <h5 class="card-title">🔗 Safe Links</h5>
-          <p class="display-6">{{ link_count }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Admin tools -->
-  <div class="list-group mt-4">
-    <a href="{{ url_for('auth.list_users') }}" class="list-group-item list-group-item-action">
-      Manage Users
-    </a>
-    <a href="{{ url_for('library.library_home') }}" class="list-group-item list-group-item-action">
-      Manage Virtual Library
-    </a>
-    <a href="{{ url_for('auth.logout') }}" class="list-group-item list-group-item-action text-danger">
-      Logout
-    </a>
-  </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h2>Welcome Admin!</h2>
+    <p>You are logged in as {{ session['username'] }}</p>
+    <a href="/users">Manage Users</a> | <a href="/logout">Logout</a>
+</body>
+</html>
