@@ -27,7 +27,7 @@ for bp in blueprints:
 # 🔹 Root route → login page
 @app.route("/")
 def index():
-    return render_template("login.html")
+    return redirect(url_for("auth.login"))
 
 if __name__ == "__main__":
     app.run(debug=True)
