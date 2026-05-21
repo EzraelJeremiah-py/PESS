@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, redirect, url_for
 from routes import blueprints
 import sqlite3, os
 
@@ -20,8 +20,14 @@ def init_db():
 
 init_db()
 
+# Register blueprints
 for bp in blueprints:
     app.register_blueprint(bp)
+
+# 🔹 Root route → login page
+@app.route("/")
+def index():
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
