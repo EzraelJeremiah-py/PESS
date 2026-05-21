@@ -5,26 +5,28 @@ import sqlite3, os
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "pess.db")
+# ✅ Absolute path to pess.db
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, "pess.db")
 
 def init_db():
     if not os.path.exists(DB_PATH):
         conn = sqlite3.connect(DB_PATH)
-        base_dir = os.path.dirname(__file__)
-        with open(os.path.join(base_dir, "schema.sql"), "r") as f:
+        with open(os.path.join(BASE_DIR, "schema.sql"), "r") as f:
             conn.executescript(f.read())
-        with open(os.path.join(base_dir, "seed.sql"), "r") as f:
+        with open(os.path.join(BASE_DIR, "seed.sql"), "r") as f:
             conn.executescript(f.read())
         conn.close()
         print("✅ Database initialized")
 
+# Initialize DB if missing
 init_db()
 
-# Register blueprints
+# Register all blueprints (auth, user, admin, etc.)
 for bp in blueprints:
     app.register_blueprint(bp)
 
-# 🔹 Root route → login page
+# 🔹 Root route → redirect to login blueprint
 @app.route("/")
 def index():
     return redirect(url_for("auth.login"))
