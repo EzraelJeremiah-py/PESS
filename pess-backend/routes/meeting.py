@@ -4,7 +4,7 @@ import sqlite3, os
 meeting_bp = Blueprint("meeting", __name__, url_prefix="/meeting")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
-# List all meetings
+# List meetings
 @meeting_bp.route("/")
 def list_meetings():
     if session.get("role") != "admin":
@@ -17,7 +17,7 @@ def list_meetings():
     cur.execute("SELECT * FROM meetings ORDER BY date, time")
     meetings = cur.fetchall()
     conn.close()
-    return render_template("meetings.html", meetings=meetings)
+    return render_template("meetings/meetings.html", meetings=meetings)
 
 # Create meeting
 @meeting_bp.route("/create", methods=["GET", "POST"])
@@ -42,11 +42,11 @@ def create_meeting():
         flash("Meeting created successfully!", "success")
         return redirect(url_for("meeting.list_meetings"))
 
-    return render_template("create_meeting.html")
+    return render_template("meetings/create_meeting.html")
 
-# Edit meeting
-@meeting_bp.route("/edit/<int:id>", methods=["GET", "POST"])
-def edit_meeting(id):
+# Manage meeting
+@meeting_bp.route("/manage/<int:id>", methods=["GET", "POST"])
+def manage_meeting(id):
     if session.get("role") != "admin":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
@@ -72,7 +72,7 @@ def edit_meeting(id):
     cur.execute("SELECT * FROM meetings WHERE id=?", (id,))
     meeting = cur.fetchone()
     conn.close()
-    return render_template("edit_meeting.html", meeting=meeting)
+    return render_template("meetings/manage_meeting.html", meeting=meeting)
 
 # Delete meeting
 @meeting_bp.route("/delete/<int:id>")
