@@ -38,7 +38,8 @@
           <div class="card-body text-center">
             <h5 class="card-title">Meeting Connect Zone</h5>
             <p class="card-text text-muted">Join scheduled virtual school meetings.</p>
-            <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-success w-100">Join Meetings</a>
+            <!-- ✅ FIXED: point to user route -->
+            <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">Join Meetings</a>
           </div>
         </div>
       </div>
