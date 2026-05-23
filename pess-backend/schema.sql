@@ -31,3 +31,12 @@ CREATE TABLE meetings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE latecomers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_name TEXT NOT NULL,
+    expected_opening DATE NOT NULL,
+    arrival_date DATE NOT NULL,
+    punishment TEXT,
+    reason TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
