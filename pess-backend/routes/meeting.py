@@ -4,7 +4,7 @@ import sqlite3, os
 meeting_bp = Blueprint("meeting", __name__, url_prefix="/meeting")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
-# List meetings
+# ------------------ Admin: List Meetings ------------------
 @meeting_bp.route("/")
 def list_meetings():
     if session.get("role") != "admin":
@@ -19,7 +19,7 @@ def list_meetings():
     conn.close()
     return render_template("meetings/meetings.html", meetings=meetings)
 
-# Create meeting
+# ------------------ Admin: Create Meeting ------------------
 @meeting_bp.route("/create", methods=["GET", "POST"])
 def create_meeting():
     if session.get("role") != "admin":
@@ -44,7 +44,7 @@ def create_meeting():
 
     return render_template("meetings/create_meeting.html")
 
-# Manage meeting
+# ------------------ Admin: Manage Meeting ------------------
 @meeting_bp.route("/manage/<int:id>", methods=["GET", "POST"])
 def manage_meeting(id):
     if session.get("role") != "admin":
@@ -74,7 +74,7 @@ def manage_meeting(id):
     conn.close()
     return render_template("meetings/manage_meeting.html", meeting=meeting)
 
-# Delete meeting
+# ------------------ Admin: Delete Meeting ------------------
 @meeting_bp.route("/delete/<int:id>")
 def delete_meeting(id):
     if session.get("role") != "admin":
@@ -88,3 +88,19 @@ def delete_meeting(id):
     conn.close()
     flash("Meeting deleted successfully!", "success")
     return redirect(url_for("meeting.list_meetings"))
+
+# ------------------ User: View & Join Meetings ------------------
+@meeting_bp.route("/user")
+def user_meetings():
+    if session.get("role") != "user":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM meetings ORDER BY date, time")
+    meetings = cur.fetchall()
+    conn.close()
+
+    return render_template("meetings/user_meetings.html", meetings=meetings)
