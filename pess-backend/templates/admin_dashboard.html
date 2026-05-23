@@ -17,12 +17,12 @@
   <!-- Main Content -->
   <div class="container mt-4">
     <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
-    <p class="lead">Use the options below to manage users and fee records.</p>
+    <p class="lead">Use the options below to manage users, fee records, and meetings.</p>
 
     <!-- Dashboard Grid -->
     <div class="row">
       <!-- Manage Users -->
-      <div class="col-md-4 mb-4">
+      <div class="col-md-3 mb-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
             <h5 class="card-title">Manage Users</h5>
@@ -33,7 +33,7 @@
       </div>
 
       <!-- Upload Fee Records -->
-      <div class="col-md-4 mb-4">
+      <div class="col-md-3 mb-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
             <h5 class="card-title">Upload Fee Records</h5>
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Manage Fee Records -->
-      <div class="col-md-4 mb-4">
+      <div class="col-md-3 mb-4">
         <div class="card shadow-sm h-100">
           <div class="card-body text-center">
             <h5 class="card-title">Manage Fee Records</h5>
@@ -53,9 +53,20 @@
           </div>
         </div>
       </div>
+
+      <!-- Meeting Connect Zone -->
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Meeting Connect Zone</h5>
+            <p class="card-text text-muted">Create, manage, or join virtual meetings.</p>
+            <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-primary w-100">Go</a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Optional: Link to User Fee Records (for testing/admin preview) -->
+    <!-- Optional: User Fee Records Preview -->
     <div class="row">
       <div class="col-md-12">
         <div class="card shadow-sm">
