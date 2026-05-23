@@ -20,3 +20,14 @@ CREATE TABLE fee_uploads (
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fee_date DATE NOT NULL       -- date entered by admin
 );
+
+CREATE TABLE meetings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,          -- Meeting title
+    platform TEXT NOT NULL,       -- 'google' or 'zoom'
+    link TEXT NOT NULL,           -- Meeting URL
+    date TEXT NOT NULL,           -- YYYY-MM-DD
+    time TEXT NOT NULL,           -- HH:MM
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
