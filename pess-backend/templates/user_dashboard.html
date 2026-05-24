@@ -31,17 +31,17 @@
           </div>
         </div>
       </div>
+
       <!-- Latecomers Zone -->
       <div class="col-md-6 mb-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body text-center">
-        <h5 class="card-title">Latecomers Zone</h5>
-        <p class="card-text text-muted">View your late arrival record if applicable.</p>
-        <a href="{{ url_for('late.user_latecomer') }}" class="btn btn-warning w-100">View Latecomer Record</a>
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Latecomers Zone</h5>
+            <p class="card-text text-muted">View your late arrival record if applicable.</p>
+            <a href="{{ url_for('late.user_latecomer') }}" class="btn btn-warning w-100">View Latecomer Record</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
 
       <!-- Meeting Connect Zone -->
       <div class="col-md-6 mb-4">
@@ -49,8 +49,18 @@
           <div class="card-body text-center">
             <h5 class="card-title">Meeting Connect Zone</h5>
             <p class="card-text text-muted">Join scheduled virtual school meetings.</p>
-            <!-- ✅ FIXED: point to user route -->
             <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">View Meetings</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suspensions Zone -->
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Suspensions Zone</h5>
+            <p class="card-text text-muted">View your suspension record if applicable.</p>
+            <a href="{{ url_for('suspensions.public_suspensions') }}" class="btn btn-danger w-100">View Suspension Record</a>
           </div>
         </div>
       </div>
