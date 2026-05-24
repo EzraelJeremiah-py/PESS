@@ -17,7 +17,7 @@
   <!-- Main Content -->
   <div class="container mt-4">
     <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
-    <p class="lead">Use the options below to manage users, fee records, and meetings.</p>
+    <p class="lead">Use the options below to manage users, fee records, meetings, latecomers, and suspensions.</p>
 
     <!-- Dashboard Grid -->
     <div class="row">
@@ -53,17 +53,6 @@
           </div>
         </div>
       </div>
-      <!-- Latecomers Zone -->
-      <div class="col-md-3 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">School Opening Latecomers</h5>
-            <p class="card-text text-muted">Manage records of students who arrived late after school opening.</p>
-            <a href="{{ url_for('late.list_latecomers') }}" class="btn btn-warning w-100">Manage Latecomers</a>
-          </div>
-        </div>
-      </div>
-
 
       <!-- Meeting Connect Zone -->
       <div class="col-md-3 mb-4">
@@ -72,6 +61,28 @@
             <h5 class="card-title">Meeting Connect Zone</h5>
             <p class="card-text text-muted">Create, manage, or join virtual meetings.</p>
             <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-primary w-100">Go</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latecomers Zone -->
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">School Opening Latecomers</h5>
+            <p class="card-text text-muted">Manage records of students who arrived late.</p>
+            <a href="{{ url_for('late.list_latecomers') }}" class="btn btn-warning w-100">Manage Latecomers</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suspensions Zone -->
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Suspensions</h5>
+            <p class="card-text text-muted">Manage students suspended from studies.</p>
+            <a href="{{ url_for('suspensions.list_suspensions') }}" class="btn btn-danger w-100">Manage Suspensions</a>
           </div>
         </div>
       </div>
