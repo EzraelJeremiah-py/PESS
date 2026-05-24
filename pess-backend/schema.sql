@@ -41,7 +41,7 @@ CREATE TABLE latecomers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE suspensions (
+CREATE TABLE IF NOT EXISTS suspensions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_name TEXT NOT NULL,
     reason TEXT NOT NULL,
