@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h3 class="mb-4">Suspensions (Public View)</h3>
+  <table class="table table-striped table-hover shadow-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Student</th>
+        <th>Reason</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in suspensions %}
+      <tr>
+        <td>{{ s.student_name }}</td>
+        <td>{{ s.reason }}</td>
+        <td>{{ s.start_date }}</td>
+        <td>{{ s.end_date }}</td>
+        <td>
+          {% if s.status == 'completed' %}
+            <span class="badge bg-success">Completed</span>
+          {% elif s.status == 'active' %}
+            <span class="badge bg-info">Active</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted">No suspensions recorded.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
