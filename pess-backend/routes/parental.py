@@ -6,7 +6,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
 # ------------------ Parent: Submit Suggestion ------------------
 @parental_bp.route("/", methods=["GET", "POST"])
-def parental():
+def parental_form():
     if request.method == "POST":
         parent_name = request.form["parent_name"]
         email = request.form["email"]
@@ -22,7 +22,7 @@ def parental():
         conn.commit()
         conn.close()
         flash("Suggestion submitted! Awaiting admin approval.", "info")
-        return redirect(url_for("parental.parental"))
+        return redirect(url_for("parental.parental_form"))
 
     return render_template("parental/parental_form.html")
 
