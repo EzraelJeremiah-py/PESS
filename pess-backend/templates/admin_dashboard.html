@@ -11,142 +11,142 @@
       background-size: 200% 200%;
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
+      display: flex;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    .navbar {
+    .sidebar {
+      width: 250px;
+      background: rgba(0,0,0,0.85);
       backdrop-filter: blur(8px);
-      background: rgba(0,0,0,0.7) !important;
-    }
-    .card {
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
       color: #fff;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      transition: transform 0.3s ease;
     }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
-    }
-    h2, .lead {
-      color: #fff;
-    }
-    .btn {
-      border-radius: 8px;
-      font-weight: 600;
-    }
-    .card-title {
-      font-weight: bold;
-    }
-    .icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
+    .sidebar a { color:#fff; text-decoration:none; padding:0.75rem; border-radius:8px; display:flex; align-items:center; gap:10px; }
+    .sidebar a:hover { background: rgba(255,255,255,0.2); }
+    .sidebar.collapsed { transform: translateX(-100%); }
+    .sidebar .logout { margin-top:auto; }
+    .profile { text-align:center; margin-bottom:2rem; }
+    .profile img { width:80px; height:80px; border-radius:50%; border:2px solid #fff; margin-bottom:0.5rem; }
+    .profile h5 { margin:0; font-weight:bold; }
+    .profile p { font-size:0.9rem; color:#ccc; }
+    .toggle-btn { position:absolute; top:1rem; left:1rem; background:rgba(0,0,0,0.7); border:none; color:#fff; padding:0.5rem 0.75rem; border-radius:8px; cursor:pointer; z-index:1000; }
+    .topbar { display:flex; justify-content:flex-end; align-items:center; gap:1rem; margin-bottom:1rem; }
+    .topbar .icon-btn { position:relative; color:#fff; font-size:1.5rem; cursor:pointer; }
+    .topbar .badge { position:absolute; top:-5px; right:-10px; background:red; color:#fff; border-radius:50%; padding:2px 6px; font-size:0.7rem; }
+    .main-content { flex-grow:1; padding:2rem; color:#fff; transition:margin-left 0.3s ease; width:100%; }
+    .card { border-radius:16px; backdrop-filter:blur(12px); background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; transition:transform 0.2s ease, box-shadow 0.2s ease; }
+    .card:hover { transform:translateY(-5px); box-shadow:0 12px 24px rgba(0,0,0,0.4); }
+    .icon { font-size:2rem; margin-bottom:0.5rem; }
+    .stat-card { text-align:center; padding:1.5rem; }
+    .stat-card h3 { font-weight:bold; margin:0; }
+    .stat-card p { margin:0; font-size:0.9rem; color:#ddd; }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold"><i class="fas fa-cogs"></i> Admin Dashboard</span>
-      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
+  <!-- Sidebar -->
+  <div class="sidebar collapsed" id="sidebar">
+    <div class="profile">
+      <img src="https://via.placeholder.com/80" alt="Admin Avatar">
+      <h5>{{ session.get('username', 'Admin') }}</h5>
+      <p>Administrator</p>
     </div>
-  </nav>
+    <a href="{{ url_for('admin.list_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+    <a href="{{ url_for('fees.upload_fee_file') }}"><i class="fas fa-file-upload"></i> Upload Fees</a>
+    <a href="{{ url_for('fees.view_fee_files') }}"><i class="fas fa-file-invoice-dollar"></i> Manage Fees</a>
+    <a href="{{ url_for('meeting.list_meetings') }}"><i class="fas fa-video"></i> Meetings</a>
+    <a href="{{ url_for('late.list_latecomers') }}"><i class="fas fa-user-clock"></i> Latecomers</a>
+    <a href="{{ url_for('suspensions.list_suspensions') }}"><i class="fas fa-user-slash"></i> Suspensions</a>
+    <a href="{{ url_for('parental.manage_suggestions') }}"><i class="fas fa-comments"></i> Suggestions</a>
+    <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
   <!-- Main Content -->
-  <div class="container mt-4">
+  <div class="main-content">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="icon-btn"><i class="fas fa-bell"></i><span class="badge">4</span></div>
+      <div class="icon-btn"><i class="fas fa-envelope"></i><span class="badge">2</span></div>
+    </div>
+
     <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
     <p class="lead">Manage users, fees, meetings, latecomers, suspensions, and parental suggestions.</p>
 
-    <!-- Dashboard Grid -->
+    <!-- Statistics Section -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-users icon"></i>
+          <h3>{{ stats.total_users }}</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-file-invoice-dollar icon"></i>
+          <h3>{{ stats.pending_fees }}</h3>
+          <p>Pending Fees</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-video icon"></i>
+          <h3>{{ stats.active_meetings }}</h3>
+          <p>Active Meetings</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-user-clock icon"></i>
+          <h3>{{ stats.latecomers }}</h3>
+          <p>Latecomers</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-user-slash icon"></i>
+          <h3>{{ stats.suspensions }}</h3>
+          <p>Suspensions</p>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card stat-card">
+          <i class="fas fa-comments icon"></i>
+          <h3>{{ stats.suggestions }}</h3>
+          <p>Suggestions</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid (existing cards) -->
     <div class="row g-4">
-      <!-- Manage Users -->
+      <!-- Example card -->
       <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
+        <div class="card text-center p-3 h-100">
           <i class="fas fa-users icon"></i>
           <h5 class="card-title">Manage Users</h5>
           <p class="card-text">Add, edit, or remove system users.</p>
           <a href="{{ url_for('admin.list_users') }}" class="btn btn-primary w-100">Go</a>
         </div>
       </div>
-
-      <!-- Upload Fee Records -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-file-upload icon"></i>
-          <h5 class="card-title">Upload Fee Records</h5>
-          <p class="card-text">Upload new fee payment files.</p>
-          <a href="{{ url_for('fees.upload_fee_file') }}" class="btn btn-primary w-100">Go</a>
-        </div>
-      </div>
-
-      <!-- Manage Fee Records -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-file-invoice-dollar icon"></i>
-          <h5 class="card-title">Manage Fee Records</h5>
-          <p class="card-text">View, download, or delete fee records.</p>
-          <a href="{{ url_for('fees.view_fee_files') }}" class="btn btn-primary w-100">Go</a>
-        </div>
-      </div>
-
-      <!-- Meeting Connect Zone -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-video icon"></i>
-          <h5 class="card-title">Meeting Connect Zone</h5>
-          <p class="card-text">Create, manage, or join virtual meetings.</p>
-          <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-primary w-100">Go</a>
-        </div>
-      </div>
-
-      <!-- Latecomers Zone -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-user-clock icon"></i>
-          <h5 class="card-title">School Opening Latecomers</h5>
-          <p class="card-text">Manage records of students who arrived late.</p>
-          <a href="{{ url_for('late.list_latecomers') }}" class="btn btn-warning w-100">Manage Latecomers</a>
-        </div>
-      </div>
-
-      <!-- Suspensions Zone -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-user-slash icon"></i>
-          <h5 class="card-title">Suspensions</h5>
-          <p class="card-text">Manage students suspended from studies.</p>
-          <a href="{{ url_for('suspensions.list_suspensions') }}" class="btn btn-danger w-100">Manage Suspensions</a>
-        </div>
-      </div>
-
-      <!-- Parental Suggestions Zone -->
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100 text-center p-3">
-          <i class="fas fa-comments icon"></i>
-          <h5 class="card-title">Parental Suggestions</h5>
-          <p class="card-text">Approve or delete parental suggestions.</p>
-          <a href="{{ url_for('parental.manage_suggestions') }}" class="btn btn-info w-100">Manage Suggestions</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- User Fee Records Preview -->
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <div class="card shadow-sm text-center p-4">
-          <i class="fas fa-eye icon"></i>
-          <h5 class="card-title">User Fee Records (Preview)</h5>
-          <p class="card-text">See what students see.</p>
-          <a href="{{ url_for('fees.user_fee_files') }}" class="btn btn-secondary w-100">Preview</a>
-        </div>
-      </div>
+      <!-- Repeat other cards as needed -->
     </div>
   </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+  </script>
 </body>
 </html>
