@@ -2,91 +2,221 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Dashboard</title>
+  <title>User Dashboard - PESS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
+      background-size: 200% 200%;
+      animation: gradientMove 12s ease infinite;
+      min-height: 100vh;
+      display: flex;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s ease;
+    }
+    .sidebar a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .sidebar .logout {
+      margin-top: auto;
+    }
+    .sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+    /* Profile section */
+    .profile {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-bottom: 0.5rem;
+    }
+    .profile h5 {
+      margin: 0;
+      font-weight: bold;
+    }
+    .profile p {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    /* Toggle button */
+    .toggle-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    /* Top bar */
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .topbar .icon-btn {
+      position: relative;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .topbar .badge {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background: red;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+    }
+    /* Main content */
+    .main-content {
+      flex-grow: 1;
+      padding: 2rem;
+      color: #fff;
+      transition: margin-left 0.3s ease;
+      width: 100%;
+    }
+    .card {
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    }
+    .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand">User Dashboard</span>
-      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
+  <!-- Sidebar -->
+  <div class="sidebar collapsed" id="sidebar">
+    <!-- Profile section -->
+    <div class="profile">
+      <img src="https://via.placeholder.com/80" alt="User Avatar">
+      <h5>{{ session.get('serial', 'User') }}</h5>
+      <p>Student Portal</p>
     </div>
-  </nav>
+    <a href="{{ url_for('fees.user_fee_files') }}"><i class="fas fa-file-invoice-dollar"></i> Fee Records</a>
+    <a href="{{ url_for('late.user_latecomer') }}"><i class="fas fa-user-clock"></i> Latecomers</a>
+    <a href="{{ url_for('meeting.user_meetings') }}"><i class="fas fa-video"></i> Meetings</a>
+    <a href="{{ url_for('suspensions.public_suspensions') }}"><i class="fas fa-user-slash"></i> Suspensions</a>
+    <a href="{{ url_for('parental.parental_form') }}"><i class="fas fa-comment-dots"></i> Suggestion Box</a>
+    <a href="{{ url_for('parental.recent_suggestions') }}"><i class="fas fa-comments"></i> Suggestions</a>
+    <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
   <!-- Main Content -->
-  <div class="container mt-4">
-    <h2 class="mb-3">Welcome, {{ session['serial'] }}</h2>
-    <p class="lead">This is your dashboard. Use the buttons below to access your records and meetings.</p>
+  <div class="main-content">
+    <!-- Topbar with notifications -->
+    <div class="topbar">
+      <div class="icon-btn">
+        <i class="fas fa-bell"></i>
+        <span class="badge">3</span>
+      </div>
+      <div class="icon-btn">
+        <i class="fas fa-envelope"></i>
+        <span class="badge">5</span>
+      </div>
+    </div>
 
-    <!-- Dashboard Grid -->
-    <div class="row">
+    <h2 class="mb-3">Welcome, {{ session.get('serial', 'User') }}</h2>
+    <p class="lead">Access your records, meetings, and suggestions below.</p>
+
+    <div class="row g-4">
       <!-- Fee Records -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Fee Payment Records</h5>
-            <p class="card-text text-muted">View your uploaded fee payment files.</p>
-            <a href="{{ url_for('fees.user_fee_files') }}" class="btn btn-primary w-100">View Records</a>
-          </div>
+      <div class="col-md-6">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-file-invoice-dollar icon"></i>
+          <h5 class="card-title">Fee Payment Records</h5>
+          <p class="card-text">View your uploaded fee payment files.</p>
+          <a href="{{ url_for('fees.user_fee_files') }}" class="btn btn-primary w-100">View Records</a>
         </div>
       </div>
 
       <!-- Latecomers Zone -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Latecomers Zone</h5>
-            <p class="card-text text-muted">View your late arrival record if applicable.</p>
-            <a href="{{ url_for('late.user_latecomer') }}" class="btn btn-warning w-100">View Latecomer Record</a>
-          </div>
+      <div class="col-md-6">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-user-clock icon"></i>
+          <h5 class="card-title">Latecomers Zone</h5>
+          <p class="card-text">View your late arrival record if applicable.</p>
+          <a href="{{ url_for('late.user_latecomer') }}" class="btn btn-warning w-100">View Latecomer Record</a>
         </div>
       </div>
 
-      <!-- Meeting Connect Zone -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Meeting Connect Zone</h5>
-            <p class="card-text text-muted">Join scheduled virtual school meetings.</p>
-            <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">View Meetings</a>
-          </div>
+      <!-- Meetings -->
+      <div class="col-md-6">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-video icon"></i>
+          <h5 class="card-title">Meeting Connect Zone</h5>
+          <p class="card-text">Join scheduled virtual school meetings.</p>
+          <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">View Meetings</a>
         </div>
       </div>
 
-      <!-- Suspensions Zone -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Suspensions Zone</h5>
-            <p class="card-text text-muted">View your suspension record if applicable.</p>
-            <a href="{{ url_for('suspensions.public_suspensions') }}" class="btn btn-danger w-100">View Suspension Record</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Parental Suggestion Box (Submit) -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Parental Suggestion Box</h5>
-            <p class="card-text text-muted">Submit your suggestions to the school.</p>
-            <a href="{{ url_for('parental.parental_form') }}" class="btn btn-info w-100">Submit Suggestion</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Parental Suggestions (View Approved) -->
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title">Parental Suggestions</h5>
-            <p class="card-text text-muted">View approved parental suggestions.</p>
-            <a href="{{ url_for('parental.recent_suggestions') }}" class="btn btn-secondary w-100">View Suggestions</a>
-          </div>
+      <!-- Suspensions -->
+      <div class="col-md-6">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-user-slash icon"></i>
+          <h5 class="card-title">Suspensions Zone</h5>
+          <p class="card-text">View your suspension record if applicable.</p>
+          <a href="{{ url_for('suspensions.public_suspensions') }}" class="btn btn-danger w-100">View Suspension Record</a>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+  </script>
 </body>
 </html>
