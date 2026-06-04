@@ -17,7 +17,7 @@
   <!-- Main Content -->
   <div class="container mt-4">
     <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
-    <p class="lead">Use the options below to manage users, fee records, meetings, latecomers, and suspensions.</p>
+    <p class="lead">Use the options below to manage users, fee records, meetings, latecomers, suspensions, and parental suggestions.</p>
 
     <!-- Dashboard Grid -->
     <div class="row">
@@ -83,6 +83,17 @@
             <h5 class="card-title">Suspensions</h5>
             <p class="card-text text-muted">Manage students suspended from studies.</p>
             <a href="{{ url_for('suspensions.list_suspensions') }}" class="btn btn-danger w-100">Manage Suspensions</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parental Suggestions Zone -->
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title">Parental Suggestions</h5>
+            <p class="card-text text-muted">Approve or delete parental suggestions.</p>
+            <a href="{{ url_for('parental.manage_suggestions') }}" class="btn btn-info w-100">Manage Suggestions</a>
           </div>
         </div>
       </div>
