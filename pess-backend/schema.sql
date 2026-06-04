@@ -47,9 +47,10 @@ CREATE TABLE IF NOT EXISTS suspensions (
     reason TEXT NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    status TEXT CHECK(status IN ('active','completed','pending')) DEFAULT 'active',
+    status TEXT DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE IF NOT EXISTS parental_suggestions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
