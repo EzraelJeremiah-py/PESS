@@ -51,4 +51,15 @@ CREATE TABLE IF NOT EXISTS suspensions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS parental_suggestions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    parent_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    contact_number TEXT,
+    suggestion TEXT NOT NULL,
+    approved BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 
