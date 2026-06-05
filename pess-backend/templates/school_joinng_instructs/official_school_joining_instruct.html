@@ -7,36 +7,24 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold"><i class="fas fa-user-graduate"></i> Student Portal</span>
-      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light">Logout</a>
-    </div>
-  </nav>
-
   <div class="container mt-4">
-    <h2 class="mb-3">Official School Joining Instructions</h2>
+    <h2>Official School Joining Instructions</h2>
     <p class="lead">Download your joining instructions below:</p>
-
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <ul class="list-group">
-          {% for f in files %}
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <i class="fas fa-file-alt"></i> {{ f["original_name"] }}
-              <small class="text-muted">({{ f["file_type"].upper() }}, {{ (f["size"]/1024)|round(1) }} KB)</small>
-            </div>
-            <a href="{{ url_for('joining.download_file', file_id=f['id']) }}" class="btn btn-primary btn-sm">
-              <i class="fas fa-download"></i> Download
-            </a>
-          </li>
-          {% else %}
-          <li class="list-group-item text-muted text-center">No instructions available.</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
+    <ul class="list-group">
+      {% for f in files %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <i class="fas fa-file-alt"></i> {{ f["original_name"] }}
+          <small class="text-muted">({{ f["file_type"].upper() }}, {{ (f["size"]/1024)|round(1) }} KB)</small>
+        </div>
+        <a href="{{ url_for('joining.download_file', file_id=f['id']) }}" class="btn btn-primary btn-sm">
+          <i class="fas fa-download"></i> Download
+        </a>
+      </li>
+      {% else %}
+      <li class="list-group-item text-muted text-center">No instructions available.</li>
+      {% endfor %}
+    </ul>
   </div>
 </body>
 </html>
