@@ -68,6 +68,9 @@
       background-color: #2a5298;
       border: none;
     }
+    .text-white {
+      color: #fff !important;
+    }
   </style>
 </head>
 <body>
@@ -111,7 +114,7 @@
       </div>
     </div>
     {% else %}
-      <p class="text-center text-muted">No meetings scheduled.</p>
+      <p class="text-center text-white">No meetings scheduled.</p>
     {% endif %}
 
     <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3">
