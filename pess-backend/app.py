@@ -8,6 +8,8 @@ app.secret_key = "supersecretkey"
 # ✅ Absolute path to pess.db
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DB_PATH = os.path.join(BASE_DIR, "pess.db")
+app.config["JOINING_FOLDER"] = os.path.join(BASE_DIR, "uploads/joining")
+os.makedirs(app.config["JOINING_FOLDER"], exist_ok=True)
 
 def init_db():
     if not os.path.exists(DB_PATH):
