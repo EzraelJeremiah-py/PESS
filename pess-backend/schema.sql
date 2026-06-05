@@ -62,5 +62,15 @@ CREATE TABLE IF NOT EXISTS parental_suggestions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE joining_instructions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_name TEXT NOT NULL,
+    uploader TEXT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    file_type TEXT,
+    size INTEGER
+);
+
 
 
