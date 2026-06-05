@@ -18,6 +18,9 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+    h3, th, td, p {
+      color: #fff !important; /* force all text white */
+    }
     .card {
       border-radius: 16px;
       backdrop-filter: blur(12px);
@@ -42,13 +45,19 @@
     .btn-success {
       background-color: #00c6ff;
       border: none;
+      color: #000;
     }
     .btn-success:hover {
       background-color: #00a3cc;
+      color: #fff;
     }
     .btn-secondary {
       background-color: #2a5298;
       border: none;
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background-color: #1e3c72;
     }
   </style>
 </head>
@@ -88,7 +97,7 @@
       </div>
     </div>
     {% else %}
-      <p class="text-center text-muted">No meetings scheduled.</p>
+      <p class="text-center text-white">No meetings scheduled.</p>
     {% endif %}
 
     <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3">
