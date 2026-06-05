@@ -1,7 +1,6 @@
 import os, sqlite3
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app, send_from_directory
 from werkzeug.utils import secure_filename
-from datetime import datetime
 
 joining_bp = Blueprint("joining", __name__, url_prefix="/joining")
 
@@ -54,7 +53,31 @@ def manage_files():
     conn = get_db()
     files = conn.execute("SELECT * FROM joining_instructions ORDER BY uploaded_at DESC").fetchall()
     conn.close()
-    return render_template("admin/joining.html", files=files)
+    return render_template("school_joining_instructs/manage_school_joining_instruct.html", files=files)
+
+# Admin: Upload page
+@joining_bp.route("/admin/upload", methods=["GET","POST"])
+def upload_file():
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    if request.method == "POST":
+        file = request.files.get("file")
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(current_app.config["JOINING_FOLDER"], filename)
+            file.save(filepath)
+            conn = get_db()
+            conn.execute("""
+                INSERT INTO joining_instructions (filename, original_name, uploader, file_type, size)
+                VALUES (?, ?, ?, ?, ?)
+            """, (filename, file.filename, session.get("username"), filename.split(".")[-1], os.path.getsize(filepath)))
+            conn.commit()
+            conn.close()
+            flash("File uploaded successfully!", "success")
+            return redirect(url_for("joining.manage_files"))
+    return render_template("school_joining_instructs/upload.html")
 
 # Admin: Delete
 @joining_bp.route("/admin/delete/<int:file_id>")
@@ -95,7 +118,7 @@ def user_view():
     conn = get_db()
     files = conn.execute("SELECT * FROM joining_instructions ORDER BY uploaded_at DESC").fetchall()
     conn.close()
-    return render_template("user/joining.html", files=files)
+    return render_template("school_joining_instructs/official_school_joining_instruct.html", files=files)
 
 @joining_bp.route("/download/<int:file_id>")
 def download_file(file_id):
