@@ -6,6 +6,7 @@ from routes.meeting import meeting_bp
 from routes.late import late_bp
 from routes.suspensions import suspensions_bp
 from routes.parental import parental_bp
+from routes.joining_instructions import joining_bp
 
 
 
@@ -18,5 +19,6 @@ blueprints = [
   meeting_bp, 
   late_bp, 
   suspensions_bp,
-  parental_bp
+  parental_bp,
+  joining_bp
 ]
