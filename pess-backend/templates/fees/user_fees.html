@@ -7,7 +7,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(135deg, #2e003e, #3d0066, #6a0dad);
+      background: linear-gradient(135deg, #001f3f, #003366, #00c6ff);
       background-size: 200% 200%;
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
@@ -20,22 +20,22 @@
     }
     .navbar {
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,215,0,0.3); /* gold accent */
+      border-bottom: 1px solid rgba(0,198,255,0.4); /* cyan accent */
     }
     h3 {
-      color: #ffd700; /* gold */
+      color: #00c6ff; /* cyan glow */
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(255,215,0,0.6);
+      text-shadow: 0 0 8px rgba(0,198,255,0.6);
     }
     .card, .table {
       border-radius: 14px;
       backdrop-filter: blur(12px);
       background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,215,0,0.3);
+      border: 1px solid rgba(0,198,255,0.3);
       color: #fff;
     }
     .table thead {
-      background: rgba(255,215,0,0.2);
+      background: rgba(0,198,255,0.2);
       color: #fff;
     }
     .btn {
@@ -43,30 +43,33 @@
       font-weight: 600;
     }
     .btn-info {
-      background-color: #9370db; /* medium purple */
+      background-color: #0074d9; /* blue */
       border: none;
       color: #fff;
     }
     .btn-info:hover {
-      background-color: #7a5dc7;
+      background-color: #005fa3;
     }
     .btn-success {
-      background-color: #ffd700; /* gold */
+      background-color: #00c6ff; /* cyan */
       border: none;
       color: #000;
-      box-shadow: 0 0 8px rgba(255,215,0,0.6);
+      box-shadow: 0 0 8px rgba(0,198,255,0.6);
     }
     .btn-success:hover {
-      background-color: #e6c200;
+      background-color: #0099cc;
       color: #fff;
     }
     .btn-secondary {
-      background-color: #3d0066;
+      background-color: #003366;
       border: none;
       color: #fff;
     }
     .btn-secondary:hover {
-      background-color: #2e003e;
+      background-color: #001f3f;
+    }
+    .text-white {
+      color: #fff !important;
     }
   </style>
 </head>
@@ -118,7 +121,7 @@
         </table>
       </div>
     {% else %}
-      <p class="text-center text-muted">No fee records available.</p>
+      <p class="text-center text-white">No fee records available.</p>
     {% endif %}
     <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3">
       <i class="fas fa-arrow-left"></i> Back to Dashboard
