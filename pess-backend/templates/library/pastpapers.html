@@ -98,9 +98,11 @@
             <a href="{{ url_for('library.serve_file', filename=paper.filename) }}" target="_blank" class="btn btn-primary btn-sm rounded-pill">
               <i class="fas fa-eye"></i> View
             </a>
-            <a href="{{ url_for('library.download_file', folder='pastpapers', paper_id=paper.id, filename=paper.filename) }}" class="btn btn-success btn-sm rounded-pill">
+            <a href="{{ url_for('library.download_file', file_type='pastpapers', file_id=paper.id, filename=paper.filename) }}" 
+              class="btn btn-success btn-sm rounded-pill">
               <i class="fas fa-download"></i> Download
             </a>
+
             {% if session.get('role') == 'admin' %}
             <a href="{{ url_for('admin.delete_paper', paper_id=paper.id) }}" class="btn btn-danger btn-sm rounded-pill">
               <i class="fas fa-trash"></i> Delete
