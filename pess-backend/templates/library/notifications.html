@@ -89,6 +89,15 @@
       </div>
       {% endfor %}
     </div>
+    {% if session.get('role') == 'admin' %}
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3 rounded-pill fw-bold">
+      <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+    </a>
+    {% elif session.get('role') == 'user' %}
+    <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3 rounded-pill fw-bold">
+      <i class="fas fa-arrow-left"></i> Back to User Dashboard
+    </a>
+    {% endif %}
   </div>
 </body>
 </html>
