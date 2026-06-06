@@ -1,42 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Past Papers - Virtual Library</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-</head>
-<body class="bg-dark text-white">
-  <div class="container mt-4">
-    <h2 class="mb-3">📄 Past Papers</h2>
-    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+{% extends "library/library_base.html" %}
+{% block title %}Past Papers - Virtual Library{% endblock %}
+{% block content %}
+  <h2>📄 Past Papers</h2>
 
-    <form method="POST" action="{{ url_for('library.upload_paper') }}" enctype="multipart/form-data" class="card p-3 shadow-lg bg-transparent border-info">
-      <input type="file" name="file" class="form-control mb-2" required>
-      <input type="text" name="category" placeholder="Category" class="form-control mb-2">
-      <input type="text" name="class_name" placeholder="Class" class="form-control mb-2">
-      <input type="number" name="year" placeholder="Year" class="form-control mb-2">
-      <button type="submit" class="btn btn-info">Upload Paper</button>
-    </form>
+  {% if session.get('role') == 'admin' %}
+  <!-- Admin Upload -->
+  <form method="POST" action="{{ url_for('library.upload_paper') }}" enctype="multipart/form-data" class="card p-3 shadow-lg bg-transparent">
+    <input type="file" name="file" class="form-control mb-2" required>
+    <input type="text" name="category" placeholder="Category" class="form-control mb-2">
+    <input type="text" name="class_name" placeholder="Class" class="form-control mb-2">
+    <input type="number" name="year" placeholder="Year" class="form-control mb-2">
+    <button type="submit" class="btn btn-info">Upload Paper</button>
+  </form>
+  {% endif %}
 
-    <table class="table table-striped mt-3 text-white">
-      <thead>
-        <tr><th>File</th><th>Category</th><th>Class</th><th>Year</th><th>Actions</th></tr>
-      </thead>
-      <tbody>
-        {% for paper in papers %}
-        <tr>
-          <td>{{ paper.filename }}</td>
-          <td>{{ paper.category }}</td>
-          <td>{{ paper.class_name }}</td>
-          <td>{{ paper.year }}</td>
-          <td>
-            <a href="{{ url_for('library.download_file','pastpapers',paper.id,paper.filename) }}" class="btn btn-success btn-sm">Download</a>
-            <a href="{{ url_for('library.serve_file', filename=paper.filename) }}" target="_blank" class="btn btn-primary btn-sm">View</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</body>
-</html>
+  <table class="table table-striped mt-3 text-white">
+    <thead>
+      <tr><th>File</th><th>Category</th><th>Class</th><th>Year</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for paper in papers %}
+      <tr>
+        <td>{{ paper.filename }}</td>
+        <td>{{ paper.category }}</td>
+        <td>{{ paper.class_name }}</td>
+        <td>{{ paper.year }}</td>
+        <td>
+          <a href="{{ url_for('library.serve_file', filename=paper.filename) }}" target="_blank" class="btn btn-primary btn-sm">View</a>
+          <a href="{{ url_for('library.download_file','pastpapers',paper.id,paper.filename) }}" class="btn btn-success btn-sm">Download</a>
+          {% if session.get('role') == 'admin' %}
+          <a href="{{ url_for('admin.delete_paper', paper_id=paper.id) }}" class="btn btn-danger btn-sm">Delete</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
