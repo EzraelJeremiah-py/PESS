@@ -2,6 +2,7 @@
 import os, sqlite3
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_from_directory, session
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 library_bp = Blueprint("library", __name__, url_prefix="/library")
 
@@ -9,6 +10,12 @@ DB_PATH = "pess.db"   # adjust to your DB file
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads/library")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# ✅ Serve file for viewing in browser
+@library_bp.route("/view/<filename>")
+def serve_file(filename):
+    # This will try to display the file inline if the browser supports it (PDF, images, etc.)
+    return send_from_directory(UPLOAD_FOLDER, filename)
+    
 def query_db(query, args=(), one=False):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
