@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Packages - Virtual Library</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body class="bg-dark text-white">
+  <div class="container mt-4">
+    <h2 class="mb-3">🏠 Home Packages</h2>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+
+    <form method="POST" action="{{ url_for('library.upload_package') }}" enctype="multipart/form-data" class="card p-3 shadow-lg bg-transparent border-info">
+      <input type="file" name="file" class="form-control mb-2" required>
+      <input type="text" name="category" placeholder="Category" class="form-control mb-2">
+      <input type="text" name="stream" placeholder="Stream" class="form-control mb-2">
+      <input type="text" name="class_name" placeholder="Class" class="form-control mb-2">
+      <button type="submit" class="btn btn-info">Upload Package</button>
+    </form>
+
+    <table class="table table-striped mt-3 text-white">
+      <thead>
+        <tr><th>File</th><th>Category</th><th>Stream</th><th>Class</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for package in packages %}
+        <tr>
+          <td>{{ package.filename }}</td>
+          <td>{{ package.category }}</td>
+          <td>{{ package.stream }}</td>
+          <td>{{ package.class_name }}</td>
+          <td>
+            <a href="{{ url_for('library.download_file','packages',package.id,package.filename) }}" class="btn btn-success btn-sm">Download</a>
+            <a href="{{ url_for('library.serve_file', filename=package.filename) }}" target="_blank" class="btn btn-primary btn-sm">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
