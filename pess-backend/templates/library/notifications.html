@@ -1,49 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Notifications - Virtual Library</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <style>
-    body { background-color: #0b0c10; color: #ffffff; }
-    .card { border: 1px solid #00c6ff; }
-    .btn-info { background-color: #00c6ff; border: none; }
-    .btn-secondary { background-color: #1f2833; border: none; }
-    .btn-primary { background-color: #007bff; border: none; }
-    .list-group-item { border: none; }
-  </style>
-</head>
-<body>
-  <div class="container mt-4">
-    <h2 class="mb-3">🔔 Notifications</h2>
-    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+{% extends "library/library_base.html" %}
+{% block title %}Notifications - Virtual Library{% endblock %}
+{% block content %}
+  <h2>🔔 Notifications</h2>
 
-    <!-- Add Notification Form -->
-    <form method="POST" action="{{ url_for('library.add_notification') }}" class="card p-3 shadow-lg bg-transparent">
-      <textarea name="message" placeholder="Message" class="form-control mb-2" required></textarea>
-      <select name="target_role" class="form-select mb-2">
-        <option value="student">Student</option>
-        <option value="parent">Parent</option>
-        <option value="admin">Admin</option>
-      </select>
-      <button type="submit" class="btn btn-info">Add Notification</button>
-    </form>
+  {% if session.get('role') == 'admin' %}
+  <!-- Admin Add -->
+  <form method="POST" action="{{ url_for('library.add_notification') }}" class="card p-3 shadow-lg bg-transparent">
+    <textarea name="message" placeholder="Message" class="form-control mb-2" required></textarea>
+    <select name="target_role" class="form-select mb-2">
+      <option value="student">Student</option>
+      <option value="parent">Parent</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit" class="btn btn-info">Add Notification</button>
+  </form>
+  {% endif %}
 
-    <!-- Notifications List -->
-    <ul class="list-group mt-3">
-      {% for note in notes %}
-      <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ note.target_role|capitalize }}</strong>: {{ note.message }}
-          <small class="text-muted">({{ note.created_at }})</small>
-        </div>
-        <div>
-          <!-- View button -->
-          <a href="{{ url_for('library.notifications') }}#note{{ note.id }}" class="btn btn-primary btn-sm">View</a>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</body>
-</html>
+  <ul class="list-group mt-3">
+    {% for note in notes %}
+    <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ note.target_role|capitalize }}</strong>: {{ note.message }}
+        <small class="text-muted">({{ note.created_at }})</small>
+      </div>
+      <div>
+        <a href="{{ url_for('library.notifications') }}#note{{ note.id }}" class="btn btn-primary btn-sm">View</a>
+        {% if session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin.delete_notification', note_id=note.id) }}" class="btn btn-danger btn-sm">Delete</a>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
