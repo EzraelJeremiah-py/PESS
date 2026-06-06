@@ -1,46 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Learning Links - Virtual Library</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <style>
-    body { background-color: #0b0c10; color: #ffffff; }
-    .card { border: 1px solid #00c6ff; }
-    .btn-info { background-color: #00c6ff; border: none; }
-    .btn-secondary { background-color: #1f2833; border: none; }
-    .btn-primary { background-color: #007bff; border: none; }
-    .list-group-item { border: none; }
-  </style>
-</head>
-<body>
-  <div class="container mt-4">
-    <h2 class="mb-3">🌐 Learning Links</h2>
-    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+{% extends "library/library_base.html" %}
+{% block title %}Links - Virtual Library{% endblock %}
+{% block content %}
+  <h2>🌐 Learning Links</h2>
 
-    <!-- Add Link Form -->
-    <form method="POST" action="{{ url_for('library.add_link') }}" class="card p-3 shadow-lg bg-transparent">
-      <input type="text" name="title" placeholder="Title" class="form-control mb-2" required>
-      <input type="url" name="url" placeholder="URL" class="form-control mb-2" required>
-      <textarea name="description" placeholder="Description" class="form-control mb-2"></textarea>
-      <button type="submit" class="btn btn-info">Add Link</button>
-    </form>
+  {% if session.get('role') == 'admin' %}
+  <!-- Admin Add -->
+  <form method="POST" action="{{ url_for('library.add_link') }}" class="card p-3 shadow-lg bg-transparent">
+    <input type="text" name="title" placeholder="Title" class="form-control mb-2" required>
+    <input type="url" name="url" placeholder="URL" class="form-control mb-2" required>
+    <textarea name="description" placeholder="Description" class="form-control mb-2"></textarea>
+    <button type="submit" class="btn btn-info">Add Link</button>
+  </form>
+  {% endif %}
 
-    <!-- Links List -->
-    <ul class="list-group mt-3">
-      {% for link in links %}
-      <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ link.title }}</strong>  
-          <p>{{ link.description }}</p>
-        </div>
-        <div>
-          <!-- View button -->
-          <a href="{{ link.url }}" target="_blank" class="btn btn-primary btn-sm">View</a>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</body>
-</html>
+  <ul class="list-group mt-3">
+    {% for link in links %}
+    <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ link.title }}</strong>
+        <p>{{ link.description }}</p>
+      </div>
+      <div>
+        <a href="{{ link.url }}" target="_blank" class="btn btn-primary btn-sm">View</a>
+        {% if session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin.delete_link', link_id=link.id) }}" class="btn btn-danger btn-sm">Delete</a>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
