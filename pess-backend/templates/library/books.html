@@ -1,50 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Books - Virtual Library</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <style>
-    body { background-color: #0b0c10; color: #ffffff; }
-    .card { border: 1px solid #00c6ff; }
-    .btn-info { background-color: #00c6ff; border: none; }
-    .btn-secondary { background-color: #1f2833; border: none; }
-    .btn-success { background-color: #28a745; border: none; }
-    .btn-primary { background-color: #007bff; border: none; }
-  </style>
-</head>
-<body>
-  <div class="container mt-4">
-    <h2 class="mb-3">📚 Books</h2>
-    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+{% extends "library/library_base.html" %}
+{% block title %}Books - Virtual Library{% endblock %}
+{% block content %}
+  <h2>📚 Books</h2>
 
-    <form method="POST" action="{{ url_for('library.upload_book') }}" enctype="multipart/form-data" class="card p-3 shadow-lg bg-transparent">
-      <input type="file" name="file" class="form-control mb-2" required>
-      <select name="category" class="form-select mb-2">
-        <option value="Science">Science</option>
-        <option value="Arts">Arts</option>
-        <option value="Business">Business</option>
-      </select>
-      <button type="submit" class="btn btn-info">Upload Book</button>
-    </form>
+  {% if session.get('role') == 'admin' %}
+  <!-- Admin Upload -->
+  <form method="POST" action="{{ url_for('library.upload_book') }}" enctype="multipart/form-data" class="card p-3 shadow-lg bg-transparent">
+    <input type="file" name="file" class="form-control mb-2" required>
+    <select name="category" class="form-select mb-2">
+      <option value="Science">Science</option>
+      <option value="Arts">Arts</option>
+      <option value="Business">Business</option>
+    </select>
+    <button type="submit" class="btn btn-info">Upload Book</button>
+  </form>
+  {% endif %}
 
-    <table class="table table-striped mt-3 text-white">
-      <thead>
-        <tr><th>File</th><th>Category</th><th>Actions</th></tr>
-      </thead>
-      <tbody>
-        {% for book in books %}
-        <tr>
-          <td>{{ book.filename }}</td>
-          <td>{{ book.category }}</td>
-          <td>
-            <a href="{{ url_for('library.download_file','books',book.id,book.filename) }}" class="btn btn-success btn-sm">Download</a>
-            <a href="{{ url_for('library.serve_file', filename=book.filename) }}" target="_blank" class="btn btn-primary btn-sm">View</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</body>
-</html>
+  <!-- Book List -->
+  <table class="table table-striped mt-3 text-white">
+    <thead>
+      <tr><th>File</th><th>Category</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{ book.filename }}</td>
+        <td>{{ book.category }}</td>
+        <td>
+          <a href="{{ url_for('library.serve_file', filename=book.filename) }}" target="_blank" class="btn btn-primary btn-sm">View</a>
+          <a href="{{ url_for('library.download_file','books',book.id,book.filename) }}" class="btn btn-success btn-sm">Download</a>
+          {% if session.get('role') == 'admin' %}
+          <a href="{{ url_for('admin.delete_book', book_id=book.id) }}" class="btn btn-danger btn-sm">Delete</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
