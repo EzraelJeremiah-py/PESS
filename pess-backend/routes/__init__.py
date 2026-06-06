@@ -7,7 +7,7 @@ from routes.late import late_bp
 from routes.suspensions import suspensions_bp
 from routes.parental import parental_bp
 from routes.joining_instructions import joining_bp
-
+from routes.library import library_bp
 
 
 # This makes it easy to import all blueprints at once
@@ -20,5 +20,6 @@ blueprints = [
   late_bp, 
   suspensions_bp,
   parental_bp,
-  joining_bp
+  joining_bp,
+  library_bp
 ]
