@@ -72,3 +72,86 @@ def delete_user(id):
 
     flash("User deleted successfully!", "success")
     return redirect(url_for("admin.list_users"))
+
+
+# ✅ Delete Book
+@admin_bp.route("/delete/book/<int:book_id>")
+def delete_book(book_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM books WHERE id=?", (book_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Book deleted successfully!", "success")
+    return redirect(url_for("library.books"))
+
+# ✅ Delete Package
+@admin_bp.route("/delete/package/<int:package_id>")
+def delete_package(package_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM packages WHERE id=?", (package_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Package deleted successfully!", "success")
+    return redirect(url_for("library.packages"))
+
+# ✅ Delete Link
+@admin_bp.route("/delete/link/<int:link_id>")
+def delete_link(link_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM links WHERE id=?", (link_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Link deleted successfully!", "success")
+    return redirect(url_for("library.links"))
+
+# ✅ Delete Past Paper
+@admin_bp.route("/delete/paper/<int:paper_id>")
+def delete_paper(paper_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM pastpapers WHERE id=?", (paper_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Past paper deleted successfully!", "success")
+    return redirect(url_for("library.pastpapers"))
+
+# ✅ Delete Notification
+@admin_bp.route("/delete/notification/<int:note_id>")
+def delete_notification(note_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM notifications WHERE id=?", (note_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Notification deleted successfully!", "success")
+    return redirect(url_for("library.notifications"))
+
+
