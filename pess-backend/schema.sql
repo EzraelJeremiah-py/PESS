@@ -71,6 +71,58 @@ CREATE TABLE joining_instructions (
     file_type TEXT,
     size INTEGER
 );
+-- Books
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT, -- Science/Arts/Business
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Home Packages
+CREATE TABLE packages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT,
+    stream TEXT,
+    class_name TEXT,
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    url TEXT,
+    description TEXT
+);
+
+CREATE TABLE pastpapers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT,
+    class_name TEXT,
+    year INTEGER,
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE downloads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file_id INTEGER,
+    file_type TEXT,
+    user TEXT,
+    downloaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message TEXT,
+    target_role TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
 
