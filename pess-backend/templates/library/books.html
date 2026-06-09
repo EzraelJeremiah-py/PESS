@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- ✅ Mobile scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Books - Virtual Library</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -12,6 +14,7 @@
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
       padding: 2rem;
+      font-size: 1.1rem; /* ✅ Base font size */
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -24,6 +27,7 @@
       color: #222;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 1rem;
     }
     .card:hover {
       transform: translateY(-5px);
@@ -32,23 +36,42 @@
     .btn {
       border-radius: 50px;
       font-weight: bold;
+      font-size: 1rem;
     }
     h2 {
       color: #fff;
       font-weight: bold;
+      font-size: 1.8rem;
     }
     table {
       background: rgba(255,255,255,0.15);
       border-radius: 15px;
       overflow: hidden;
+      font-size: 1rem;
     }
     thead {
       background: rgba(0,0,0,0.7);
       color: #fff;
+      font-size: 1rem;
     }
     tbody tr td {
       color: #222;
       background: #fff;
+    }
+    /* ✅ Bigger fonts on phones */
+    @media (max-width: 768px) {
+      body, p, li, a, th, td, label {
+        font-size: 18px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      .btn {
+        font-size: 18px;
+      }
+      table, thead {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -96,7 +119,6 @@
               class="btn btn-success btn-sm rounded-pill">
               <i class="fas fa-download"></i> Download
             </a>
-
             {% if session.get('role') == 'admin' %}
             <a href="{{ url_for('admin.delete_book', book_id=book.id) }}" class="btn btn-danger btn-sm rounded-pill">
               <i class="fas fa-trash"></i> Delete
