@@ -54,6 +54,7 @@
       text-decoration: none;
     }
     a:hover { text-decoration: underline; }
+
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, li, a, label, input, button {
@@ -64,6 +65,22 @@
       }
       .btn {
         font-size: 18px;
+      }
+    }
+
+    /* ✅ Larger fonts & card on desktops */
+    @media (min-width: 1200px) {
+      body, p, li, a, label, input, button {
+        font-size: 1.25rem; /* bump up desktop precision */
+      }
+      h3 {
+        font-size: 26px;
+      }
+      .card {
+        max-width: 420px; /* wider card for PC */
+      }
+      .btn {
+        font-size: 1.2rem;
       }
     }
   </style>
