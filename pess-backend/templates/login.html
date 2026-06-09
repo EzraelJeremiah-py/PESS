@@ -62,11 +62,18 @@
     a:hover {
       color: #fff;
     }
-    /* Pill badge top-right */
+    /* ✅ Pill badge top-right */
     .manual-badge {
       position: absolute;
       top: 20px;
       right: 20px;
+      z-index: 1000;
+    }
+    .manual-badge .badge {
+      font-size: 1.2rem;       /* ✅ Bigger text */
+      padding: 0.8rem 1.4rem;  /* ✅ Larger pill */
+      color: #fff !important;  /* ✅ Force white text */
+      cursor: pointer;         /* ✅ Clickable */
     }
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
@@ -79,15 +86,19 @@
       h3 {
         font-size: 20px;
       }
+      .manual-badge .badge {
+        font-size: 18px;
+        padding: 1rem 1.6rem;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Pill Badge -->
-  <div class="badge-top">
-    <span class="badge bg-info rounded-pill px-3 py-2 fw-bold shadow" style="color:#fff !important;">
+  <div class="manual-badge">
+    <a href="/static/manual.html" class="badge bg-info rounded-pill fw-bold shadow">
       <i class="fas fa-book-open"></i> User System Manual
-    </span>
+    </a>
   </div>
 
   <div class="container">
