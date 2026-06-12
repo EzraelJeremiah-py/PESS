@@ -17,12 +17,12 @@ def query_db(query, args=(), one=False):
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        serial_or_username = request.form["serial"]  # field name stays 'serial' in form
+        user_input = request.form["username"]   # matches login.html field
         password = request.form["password"]
 
         # Check admin table (admins use username)
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
-                         (serial_or_username, password), one=True)
+                         (user_input, password), one=True)
         if admin:
             session["role"] = "admin"
             session["username"] = admin["username"]
@@ -30,7 +30,7 @@ def login():
 
         # Check users table (teachers, students, parents use serial)
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
-                        (serial_or_username, password), one=True)
+                        (user_input, password), one=True)
         if user:
             session["role"] = user["role"]
             session["serial"] = user["serial"]
