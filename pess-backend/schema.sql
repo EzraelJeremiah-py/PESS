@@ -134,8 +134,9 @@ CREATE TABLE attendance (
     status TEXT CHECK(status IN ('Present','Absent','Late','Sick','Excuse')) NOT NULL,
     marked_by TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES students(id)
+    FOREIGN KEY (student_id) REFERENCES users(id)
 );
+
 
 -- Chat table
 CREATE TABLE chat_messages (
