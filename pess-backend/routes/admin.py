@@ -19,11 +19,12 @@ def dashboard():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Load latest attendance records
+    # Load latest attendance records (join users instead of missing students table)
     cur.execute("""
-        SELECT a.*, s.name AS student_serial
+        SELECT a.*, u.serial AS student_serial
         FROM attendance a
         JOIN users u ON a.student_id = u.id
+        WHERE u.role = 'student'
         ORDER BY a.timestamp DESC LIMIT 10
     """)
     attendance_records = cur.fetchall()
@@ -37,7 +38,6 @@ def dashboard():
     return render_template("admin_dashboard.html",
                            attendance_records=attendance_records,
                            chat_messages=chat_messages)
-
 
 # ✅ List all users
 @admin_bp.route("/users")
@@ -53,7 +53,6 @@ def list_users():
     conn.close()
 
     return render_template("users.html", users=users)
-
 
 # ✅ Edit user
 @admin_bp.route("/users/edit/<int:id>", methods=["GET", "POST"])
@@ -84,7 +83,6 @@ def edit_user(id):
 
     return render_template("edit_user.html", user=user)
 
-
 # ✅ Delete user
 @admin_bp.route("/users/delete/<int:id>")
 def delete_user(id):
@@ -101,7 +99,6 @@ def delete_user(id):
     flash("User deleted successfully!", "success")
     return redirect(url_for("admin.list_users"))
 
-
 # ✅ Attendance Logs
 @admin_bp.route("/attendance/logs")
 def attendance_logs():
@@ -112,16 +109,16 @@ def attendance_logs():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT a.*, s.name AS student_name
+        SELECT a.*, u.serial AS student_serial
         FROM attendance a
-        JOIN students s ON a.student_id = s.id
+        JOIN users u ON a.student_id = u.id
+        WHERE u.role = 'student'
         ORDER BY a.timestamp DESC
     """)
     records = cur.fetchall()
     conn.close()
 
     return render_template("attendance_logs.html", attendance_records=records)
-
 
 # ✅ Chat Logs
 @admin_bp.route("/chat/logs")
@@ -137,7 +134,6 @@ def chat_logs():
     conn.close()
 
     return render_template("chat_logs.html", chat_messages=messages)
-
 
 # ✅ Delete Book
 @admin_bp.route("/delete/book/<int:book_id>")
@@ -155,7 +151,6 @@ def delete_book(book_id):
     flash("Book deleted successfully!", "success")
     return redirect(url_for("library.books"))
 
-
 # ✅ Delete Package
 @admin_bp.route("/delete/package/<int:package_id>")
 def delete_package(package_id):
@@ -171,7 +166,6 @@ def delete_package(package_id):
 
     flash("Package deleted successfully!", "success")
     return redirect(url_for("library.packages"))
-
 
 # ✅ Delete Link
 @admin_bp.route("/delete/link/<int:link_id>")
@@ -189,7 +183,6 @@ def delete_link(link_id):
     flash("Link deleted successfully!", "success")
     return redirect(url_for("library.links"))
 
-
 # ✅ Delete Past Paper
 @admin_bp.route("/delete/paper/<int:paper_id>")
 def delete_paper(paper_id):
@@ -205,7 +198,6 @@ def delete_paper(paper_id):
 
     flash("Past paper deleted successfully!", "success")
     return redirect(url_for("library.pastpapers"))
-
 
 # ✅ Delete Notification
 @admin_bp.route("/delete/notification/<int:note_id>")
