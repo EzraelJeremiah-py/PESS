@@ -9,11 +9,37 @@
   <div class="container mt-5">
     <h2 class="mb-4">Teacher Dashboard</h2>
 
+    <!-- Stats Summary -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Total Students</h5>
+            <p class="fs-4">{{ total_students }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Classes Marked</h5>
+            <p class="fs-4">{{ total_classes }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>Attendance Today</h5>
+            <p class="fs-4">{{ today_attendance }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Attendance Records -->
     <div class="card mb-4">
-      <div class="card-header bg-primary text-white">
-        Latest Attendance Records
-      </div>
+      <div class="card-header bg-primary text-white">Recent Attendance</div>
       <div class="card-body">
         <table class="table table-striped">
           <thead>
@@ -22,7 +48,6 @@
               <th>Status</th>
               <th>Class Stream</th>
               <th>Date</th>
-              <th>Marked By</th>
               <th>Timestamp</th>
             </tr>
           </thead>
@@ -33,7 +58,6 @@
               <td>{{ record.status }}</td>
               <td>{{ record.class_stream }}</td>
               <td>{{ record.date }}</td>
-              <td>{{ record.marked_by }}</td>
               <td>{{ record.timestamp }}</td>
             </tr>
             {% endfor %}
@@ -44,16 +68,13 @@
 
     <!-- Chat Messages -->
     <div class="card mb-4">
-      <div class="card-header bg-success text-white">
-        Latest Chat Messages
-      </div>
+      <div class="card-header bg-success text-white">Recent Chat Messages</div>
       <div class="card-body">
         <ul class="list-group">
           {% for msg in chat_messages %}
           <li class="list-group-item">
             <strong>{{ msg.sender }}</strong>: {{ msg.message }}
-            <br>
-            <small class="text-muted">{{ msg.timestamp }}</small>
+            <br><small class="text-muted">{{ msg.timestamp }}</small>
           </li>
           {% endfor %}
         </ul>
