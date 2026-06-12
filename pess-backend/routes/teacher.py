@@ -39,24 +39,20 @@ def dashboard():
     """, (teacher_serial,))
     chat_messages = cur.fetchall()
 
-    # Dashboard stats
-    cur.execute("SELECT COUNT(*) AS total_students FROM users WHERE role='student'")
-    total_students = cur.fetchone()["total_students"]
-
-    cur.execute("SELECT COUNT(*) AS total_classes FROM attendance WHERE marked_by=?", (teacher_serial,))
-    total_classes = cur.fetchone()["total_classes"]
-
-    cur.execute("SELECT COUNT(*) AS today_attendance FROM attendance WHERE marked_by=? AND date=DATE('now')", (teacher_serial,))
-    today_attendance = cur.fetchone()["today_attendance"]
+    # Notifications targeted to teachers
+    cur.execute("""
+        SELECT * FROM notifications
+        WHERE target_role = 'teacher'
+        ORDER BY timestamp DESC LIMIT 10
+    """)
+    notifications = cur.fetchall()
 
     conn.close()
 
     return render_template("teacher_dashboard.html",
                            attendance_records=attendance_records,
                            chat_messages=chat_messages,
-                           total_students=total_students,
-                           total_classes=total_classes,
-                           today_attendance=today_attendance)
+                           notifications=notifications)
 
 # ✅ Attendance Panel
 @teacher_bp.route("/attendance", methods=["GET", "POST"])
