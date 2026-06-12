@@ -16,7 +16,47 @@ def dashboard():
     if session.get("role") != "teacher":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
-    return render_template("teacher_dashboard.html")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    teacher_serial = session.get("serial")
+
+    # Attendance records marked by this teacher
+    cur.execute("""
+        SELECT a.*, u.serial AS student_serial
+        FROM attendance a
+        JOIN users u ON a.student_id = u.id
+        WHERE u.role = 'student' AND a.marked_by = ?
+        ORDER BY a.timestamp DESC LIMIT 10
+    """, (teacher_serial,))
+    attendance_records = cur.fetchall()
+
+    # Chat messages sent by this teacher
+    cur.execute("""
+        SELECT * FROM chat_messages
+        WHERE sender = ?
+        ORDER BY timestamp DESC LIMIT 10
+    """, (teacher_serial,))
+    chat_messages = cur.fetchall()
+
+    # Dashboard stats
+    cur.execute("SELECT COUNT(*) AS total_students FROM users WHERE role='student'")
+    total_students = cur.fetchone()["total_students"]
+
+    cur.execute("SELECT COUNT(*) AS total_classes FROM attendance WHERE marked_by=?", (teacher_serial,))
+    total_classes = cur.fetchone()["total_classes"]
+
+    cur.execute("SELECT COUNT(*) AS today_attendance FROM attendance WHERE marked_by=? AND date=DATE('now')", (teacher_serial,))
+    today_attendance = cur.fetchone()["today_attendance"]
+
+    conn.close()
+
+    return render_template("teacher_dashboard.html",
+                           attendance_records=attendance_records,
+                           chat_messages=chat_messages,
+                           total_students=total_students,
+                           total_classes=total_classes,
+                           today_attendance=today_attendance)
 
 # ✅ Attendance Panel
 @teacher_bp.route("/attendance", methods=["GET", "POST"])
@@ -25,12 +65,17 @@ def attendance():
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Load all students for the form
+    cur.execute("SELECT serial FROM users WHERE role='student'")
+    students = cur.fetchall()
+
     if request.method == "POST":
         class_stream = request.form.get("class")
-        teacher_serial = session.get("serial")  # use serial instead of username
+        teacher_serial = session.get("serial")
 
-        conn = get_db_connection()
-        cur = conn.cursor()
         for key, value in request.form.items():
             if key.startswith("student_"):
                 student_serial = key.replace("student_", "")
@@ -44,7 +89,8 @@ def attendance():
         flash("Attendance saved successfully!", "success")
         return redirect(url_for("teacher.dashboard"))
 
-    return render_template("attendance_panel.html")
+    conn.close()
+    return render_template("attendance_panel.html", students=students)
 
 # ✅ Chat Zone
 @teacher_bp.route("/chat", methods=["GET", "POST"])
