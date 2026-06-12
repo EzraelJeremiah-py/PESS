@@ -26,7 +26,7 @@ def dashboard():
         SELECT a.*, u.serial AS student_serial
         FROM attendance a
         JOIN users u ON a.student_id = u.id
-        WHERE u.role = 'student' AND a.marked_by = ?
+        WHERE a.marked_by = ?
         ORDER BY a.timestamp DESC LIMIT 10
     """, (teacher_serial,))
     attendance_records = cur.fetchall()
@@ -40,12 +40,15 @@ def dashboard():
     chat_messages = cur.fetchall()
 
     # Notifications targeted to teachers
-    cur.execute("""
-        SELECT * FROM notifications
-        WHERE target_role = 'teacher'
-        ORDER BY timestamp DESC LIMIT 10
-    """)
-    notifications = cur.fetchall()
+    try:
+        cur.execute("""
+            SELECT * FROM notifications
+            WHERE target_role = 'teacher'
+            ORDER BY timestamp DESC LIMIT 10
+        """)
+        notifications = cur.fetchall()
+    except sqlite3.OperationalError:
+        notifications = []  # if notifications table not yet created
 
     conn.close()
 
@@ -77,7 +80,8 @@ def attendance():
                 student_serial = key.replace("student_", "")
                 cur.execute("""
                     INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
-                    VALUES ((SELECT id FROM users WHERE serial=? AND role='student'), ?, DATE('now'), ?, ?, ?)
+                    VALUES ((SELECT id FROM users WHERE serial=? AND role='student'),
+                            ?, DATE('now'), ?, ?, ?)
                 """, (student_serial, class_stream, value, teacher_serial, datetime.now()))
         conn.commit()
         conn.close()
