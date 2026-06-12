@@ -12,33 +12,37 @@ def query_db(query, args=(), one=False):
     conn.commit()
     conn.close()
     return (rv[0] if rv else None) if one else rv
-
-# ✅ Login
+    # ✅ Login
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
-        # Check admin
+        
+        # Check admin table
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
                          (username, password), one=True)
         if admin:
             session["role"] = "admin"
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
+            
+        # Check users table
+            user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
+                            (username, password), one=True)
+            if user:
+                session["role"] = user["role"]
+                session["username"] = user["serial"]
+                
+                if user["role"] == "teacher":
+                    return redirect(url_for("teacher.dashboard"))
+                elif user["role"] == "student":
+                    return redirect(url_for("user.dashboard"))
+                elif user["role"] == "parent":
+                    return redirect(url_for("parent.dashboard"))
+                    flash("Invalid credentials", "danger")
+                    return render_template("login.html")
 
-        # Check user
-        user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
-                        (username, password), one=True)
-        if user:
-            session["role"] = "user"
-            session["serial"] = user["serial"]
-            return redirect(url_for("user.dashboard"))
-
-        flash("Invalid credentials", "danger")
-
-    return render_template("login.html")
 
 # ✅ Session info
 @auth_bp.route("/session")
