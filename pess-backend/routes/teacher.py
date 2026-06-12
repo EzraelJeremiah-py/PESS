@@ -18,7 +18,6 @@ def dashboard():
         return redirect(url_for("auth.login"))
     return render_template("teacher_dashboard.html")
 
-
 # ✅ Attendance Panel
 @teacher_bp.route("/attendance", methods=["GET", "POST"])
 def attendance():
@@ -28,17 +27,17 @@ def attendance():
 
     if request.method == "POST":
         class_stream = request.form.get("class")
-        teacher_username = session.get("username")
+        teacher_serial = session.get("serial")  # use serial instead of username
 
         conn = get_db_connection()
         cur = conn.cursor()
         for key, value in request.form.items():
             if key.startswith("student_"):
-                student_name = key.replace("student_", "").capitalize()
+                student_serial = key.replace("student_", "")
                 cur.execute("""
                     INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
-                    VALUES ((SELECT id FROM students WHERE name=?), ?, DATE('now'), ?, ?, ?)
-                """, (student_name, class_stream, value, teacher_username, datetime.now()))
+                    VALUES ((SELECT id FROM users WHERE serial=? AND role='student'), ?, DATE('now'), ?, ?, ?)
+                """, (student_serial, class_stream, value, teacher_serial, datetime.now()))
         conn.commit()
         conn.close()
 
@@ -46,7 +45,6 @@ def attendance():
         return redirect(url_for("teacher.dashboard"))
 
     return render_template("attendance_panel.html")
-
 
 # ✅ Chat Zone
 @teacher_bp.route("/chat", methods=["GET", "POST"])
@@ -59,7 +57,7 @@ def chat():
     cur = conn.cursor()
 
     if request.method == "POST":
-        teacher_username = session.get("username")
+        teacher_serial = session.get("serial")
         channel = request.form.get("channel")
         message = request.form.get("message")
         tag = request.form.get("tag")
@@ -68,7 +66,7 @@ def chat():
             cur.execute("""
                 INSERT INTO chat_messages (sender, channel, message, tag, timestamp)
                 VALUES (?, ?, ?, ?, ?)
-            """, (teacher_username, channel, message, tag, datetime.now()))
+            """, (teacher_serial, channel, message, tag, datetime.now()))
             conn.commit()
             flash("Message sent!", "success")
         else:
