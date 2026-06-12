@@ -63,6 +63,9 @@
             {% endfor %}
           </tbody>
         </table>
+        <!-- Links for Attendance Management -->
+        <a href="{{ url_for('teacher.attendance') }}" class="btn btn-link">Mark Attendance</a>
+        <a href="{{ url_for('teacher.attendance_logs') }}" class="btn btn-link">View Attendance Logs</a>
       </div>
     </div>
 
@@ -78,6 +81,9 @@
           </li>
           {% endfor %}
         </ul>
+        <!-- Links for Chat Management -->
+        <a href="{{ url_for('teacher.chat') }}" class="btn btn-link">Go to Chat Zone</a>
+        <a href="{{ url_for('teacher.chat_logs') }}" class="btn btn-link">View All Chat Logs</a>
       </div>
     </div>
   </div>
