@@ -8,6 +8,18 @@
 <body class="bg-light">
   <div class="container py-5">
     <h2 class="mb-4 text-primary">💬 Chat Logs</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     <div class="list-group">
       {% for msg in chat_messages %}
       <div class="list-group-item">
@@ -21,6 +33,7 @@
       </div>
       {% endfor %}
     </div>
+
     <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3">⬅ Back to Dashboard</a>
   </div>
 </body>
