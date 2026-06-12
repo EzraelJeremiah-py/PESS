@@ -6,11 +6,11 @@ CREATE TABLE admins (
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
     serial TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL
 );
+
 
 CREATE TABLE fee_uploads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
