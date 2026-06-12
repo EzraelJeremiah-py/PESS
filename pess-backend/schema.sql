@@ -4,9 +4,6 @@ CREATE TABLE admins (
     password TEXT NOT NULL
 );
 
-ALTER TABLE users ALTER COLUMN username DROP NOT NULL;
-
-
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
@@ -149,8 +146,3 @@ CREATE TABLE chat_messages (
     tag TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
-
-
-
-
