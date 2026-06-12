@@ -4,6 +4,9 @@ CREATE TABLE admins (
     password TEXT NOT NULL
 );
 
+ALTER TABLE users ALTER COLUMN username DROP NOT NULL;
+
+
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
