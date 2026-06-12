@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PESS Attendance Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { border-radius: 12px; }
+    .header-title { font-weight: 700; color: #0d6efd; }
+    .student-row { border-bottom: 1px solid #dee2e6; padding: 10px 0; }
+    .student-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container py-5">
+    <div class="card shadow-lg p-4">
+      <h2 class="header-title mb-4">📋 Attendance Panel</h2>
+      <p class="text-muted">Select a class/stream and mark each student’s attendance status.</p>
+
+      <form method="POST" action="{{ url_for('attendance.mark_attendance') }}">
+        <!-- Class/Stream Selection -->
+        <div class="mb-4">
+          <label class="form-label fw-bold">Class / Stream</label>
+          <select name="class" class="form-select" required>
+            <optgroup label="Form 1">
+              <option>Form1A</option><option>Form1B</option><option>Form1C</option>
+              <option>Form1D</option><option>Form1E</option><option>Form1F</option>
+              <option>Form1G</option><option>Form1H</option>
+            </optgroup>
+            <optgroup label="Form 2">
+              <option>Form2A</option><option>Form2B</option>...<option>Form2H</option>
+            </optgroup>
+            <optgroup label="Form 3">
+              <option>Form3A</option>...<option>Form3H</option>
+            </optgroup>
+            <optgroup label="Form 4">
+              <option>Form4A</option>...<option>Form4H</option>
+            </optgroup>
+            <optgroup label="Form 5 Combinations">
+              <option>PCM</option><option>PCB</option><option>PGM</option>
+              <option>CBG</option><option>EGM</option><option>HGK</option>
+            </optgroup>
+            <optgroup label="Form 6 Combinations">
+              <option>PCM</option><option>PCB</option><option>PGM</option>
+              <option>CBG</option><option>EGM</option><option>HGK</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Student Attendance Section -->
+        <div class="mb-4">
+          <h5 class="fw-bold text-secondary">Students</h5>
+
+          <!-- Example student row -->
+          <div class="row student-row align-items-center">
+            <div class="col-md-6">
+              <span class="fw-semibold">Student A</span>
+            </div>
+            <div class="col-md-6">
+              <select name="student_a" class="form-select">
+                <option>Present</option>
+                <option>Absent</option>
+                <option>Late</option>
+                <option>Sick</option>
+                <option>Excuse</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row student-row align-items-center">
+            <div class="col-md-6">
+              <span class="fw-semibold">Student B</span>
+            </div>
+            <div class="col-md-6">
+              <select name="student_b" class="form-select">
+                <option>Present</option>
+                <option>Absent</option>
+                <option>Late</option>
+                <option>Sick</option>
+                <option>Excuse</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- More student rows can be looped dynamically -->
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success w-100 fw-bold">
+          ✅ Save Attendance
+        </button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
