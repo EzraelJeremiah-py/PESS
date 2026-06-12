@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, flash, redirect, url_for, request
-import sqlite3, os
+from flask import Blueprint, render_template, session, flash, redirect, url_for, request, Response
+import sqlite3, os, csv
 from datetime import datetime
 
 teacher_bp = Blueprint("teacher", __name__, url_prefix="/teacher")
@@ -21,7 +21,7 @@ def dashboard():
     cur = conn.cursor()
     teacher_serial = session.get("serial")
 
-    # Attendance records marked by this teacher
+    # Attendance records marked by this teacher (last 10)
     cur.execute("""
         SELECT a.*, u.serial AS student_serial
         FROM attendance a
@@ -31,7 +31,7 @@ def dashboard():
     """, (teacher_serial,))
     attendance_records = cur.fetchall()
 
-    # Chat messages sent by this teacher
+    # Chat messages sent by this teacher (last 10)
     cur.execute("""
         SELECT * FROM chat_messages
         WHERE sender = ?
@@ -44,20 +44,33 @@ def dashboard():
         cur.execute("""
             SELECT * FROM notifications
             WHERE target_role = 'teacher'
-            ORDER BY timestamp DESC LIMIT 10
+            ORDER BY created_at DESC LIMIT 10
         """)
         notifications = cur.fetchall()
     except sqlite3.OperationalError:
-        notifications = []  # if notifications table not yet created
+        notifications = []
+
+    # Stats
+    cur.execute("SELECT COUNT(*) AS total_students FROM users WHERE role='student'")
+    total_students = cur.fetchone()["total_students"]
+
+    cur.execute("SELECT COUNT(*) AS total_classes FROM attendance WHERE marked_by=?", (teacher_serial,))
+    total_classes = cur.fetchone()["total_classes"]
+
+    cur.execute("SELECT COUNT(*) AS today_attendance FROM attendance WHERE marked_by=? AND date=DATE('now')", (teacher_serial,))
+    today_attendance = cur.fetchone()["today_attendance"]
 
     conn.close()
 
     return render_template("teacher_dashboard.html",
                            attendance_records=attendance_records,
                            chat_messages=chat_messages,
-                           notifications=notifications)
+                           notifications=notifications,
+                           total_students=total_students,
+                           total_classes=total_classes,
+                           today_attendance=today_attendance)
 
-# ✅ Attendance Panel
+# ✅ Attendance Panel (mark attendance)
 @teacher_bp.route("/attendance", methods=["GET", "POST"])
 def attendance():
     if session.get("role") != "teacher":
@@ -67,7 +80,7 @@ def attendance():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Load all students for the form
+    # Load all students
     cur.execute("SELECT serial FROM users WHERE role='student'")
     students = cur.fetchall()
 
@@ -92,7 +105,90 @@ def attendance():
     conn.close()
     return render_template("attendance_panel.html", students=students)
 
-# ✅ Chat Zone
+# ✅ Attendance Logs (with filters)
+@teacher_bp.route("/attendance_logs")
+def attendance_logs():
+    if session.get("role") != "teacher":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    teacher_serial = session.get("serial")
+
+    # Filters
+    class_stream = request.args.get("class_stream")
+    date = request.args.get("date")
+
+    query = """
+        SELECT a.*, u.serial AS student_serial
+        FROM attendance a
+        JOIN users u ON a.student_id = u.id
+        WHERE a.marked_by = ?
+    """
+    params = [teacher_serial]
+
+    if class_stream:
+        query += " AND a.class_stream = ?"
+        params.append(class_stream)
+    if date:
+        query += " AND a.date = ?"
+        params.append(date)
+
+    query += " ORDER BY a.timestamp DESC"
+
+    cur.execute(query, params)
+    attendance_records = cur.fetchall()
+    conn.close()
+
+    return render_template("attendance_logs.html", attendance_records=attendance_records)
+
+# ✅ Export Attendance Logs to CSV
+@teacher_bp.route("/export_attendance_logs")
+def export_attendance_logs():
+    if session.get("role") != "teacher":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    teacher_serial = session.get("serial")
+
+    # Filters
+    class_stream = request.args.get("class_stream")
+    date = request.args.get("date")
+
+    query = """
+        SELECT a.*, u.serial AS student_serial
+        FROM attendance a
+        JOIN users u ON a.student_id = u.id
+        WHERE a.marked_by = ?
+    """
+    params = [teacher_serial]
+
+    if class_stream:
+        query += " AND a.class_stream = ?"
+        params.append(class_stream)
+    if date:
+        query += " AND a.date = ?"
+        params.append(date)
+
+    query += " ORDER BY a.timestamp DESC"
+
+    cur.execute(query, params)
+    attendance_records = cur.fetchall()
+    conn.close()
+
+    # Build CSV response
+    def generate():
+        yield "Student Serial,Status,Class Stream,Date,Marked By,Timestamp\n"
+        for record in attendance_records:
+            yield f"{record['student_serial']},{record['status']},{record['class_stream']},{record['date']},{record['marked_by']},{record['timestamp']}\n"
+
+    return Response(generate(), mimetype="text/csv",
+                    headers={"Content-Disposition": "attachment;filename=attendance_logs.csv"})
+
+# ✅ Chat Zone (send messages)
 @teacher_bp.route("/chat", methods=["GET", "POST"])
 def chat():
     if session.get("role") != "teacher":
@@ -123,3 +219,18 @@ def chat():
     conn.close()
 
     return render_template("chat_zone.html", messages=messages)
+
+# ✅ Chat Logs (view all messages)
+@teacher_bp.route("/chat_logs")
+def chat_logs():
+    if session.get("role") != "teacher":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM chat_messages ORDER BY timestamp DESC LIMIT 100")
+    messages = cur.fetchall()
+    conn.close()
+
+    return render_template("chat_logs.html", messages=messages)
