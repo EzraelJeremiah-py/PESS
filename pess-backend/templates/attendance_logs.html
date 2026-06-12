@@ -9,9 +9,25 @@
   <div class="container mt-5">
     <h2 class="mb-4">Attendance Logs</h2>
 
+    <!-- Filter Form -->
+    <form method="GET" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label class="form-label">Class Stream</label>
+        <input type="text" name="class_stream" class="form-control" placeholder="e.g. Form 2A" value="{{ request.args.get('class_stream','') }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control" value="{{ request.args.get('date','') }}">
+      </div>
+      <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+
+    <!-- Attendance Table -->
     <div class="card">
       <div class="card-header bg-primary text-white">
-        Full Attendance History
+        Filtered Attendance Records
       </div>
       <div class="card-body">
         <table class="table table-striped">
