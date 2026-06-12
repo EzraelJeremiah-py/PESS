@@ -122,6 +122,27 @@ CREATE TABLE notifications (
     target_role TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+-- Attendance table
+CREATE TABLE attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    class_stream TEXT NOT NULL,
+    date DATE NOT NULL,
+    status TEXT CHECK(status IN ('Present','Absent','Late','Sick','Excuse')) NOT NULL,
+    marked_by TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- Chat table
+CREATE TABLE chat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender TEXT NOT NULL,
+    channel TEXT NOT NULL,
+    message TEXT NOT NULL,
+    tag TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
 
 
