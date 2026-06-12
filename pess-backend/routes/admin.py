@@ -21,9 +21,9 @@ def dashboard():
 
     # Load latest attendance records
     cur.execute("""
-        SELECT a.*, s.name AS student_name
+        SELECT a.*, s.name AS student_serial
         FROM attendance a
-        JOIN students s ON a.student_id = s.id
+        JOIN users u ON a.student_id = u.id
         ORDER BY a.timestamp DESC LIMIT 10
     """)
     attendance_records = cur.fetchall()
