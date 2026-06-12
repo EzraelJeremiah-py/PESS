@@ -29,12 +29,12 @@ def login():
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
 
-        # Check users table
+        # Check users table (teachers, students, parents)
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
                         (username, password), one=True)
         if user:
             session["role"] = user["role"]
-            session["username"] = user["serial"]
+            session["username"] = user["username"]
 
             if user["role"] == "teacher":
                 return redirect(url_for("teacher.dashboard"))
@@ -73,6 +73,31 @@ def register_teacher():
     return render_template("register_teacher.html")
 
 
+# ✅ Register Student/Parent (default role = student)
+@auth_bp.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        serial = request.form["serial"]
+        password = request.form["password"]
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cur = conn.cursor()
+            cur.execute(
+                "INSERT INTO users (username, serial, password, role) VALUES (?, ?, ?, 'student')",
+                (username, serial, password)
+            )
+            conn.commit()
+            conn.close()
+            flash("User registered successfully!", "success")
+            return redirect(url_for("auth.login"))
+        except sqlite3.IntegrityError:
+            flash("Username or serial already exists!", "danger")
+
+    return render_template("register.html")
+
+
 # ✅ Session info
 @auth_bp.route("/session")
 def session_info():
@@ -86,26 +111,3 @@ def logout():
     session.clear()
     flash("Logged out successfully", "info")
     return redirect(url_for("auth.login"))
-
-
-# ✅ Register User (default student/parent)
-@auth_bp.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        serial = request.form["serial"]
-        password = request.form["password"]
-
-        try:
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            # Default role = student unless specified
-            cur.execute("INSERT INTO users (serial, password, role) VALUES (?, ?, 'student')", 
-                        (serial, password))
-            conn.commit()
-            conn.close()
-            flash("User registered successfully!", "success")
-            return redirect(url_for("auth.login"))
-        except sqlite3.IntegrityError:
-            flash("Serial already exists!", "danger")
-
-    return render_template("register.html")
