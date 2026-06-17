@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, flash, redirect, url_for, request, Response
-import sqlite3, os, csv
+import sqlite3, os
 from datetime import datetime
 
 teacher_bp = Blueprint("teacher", __name__, url_prefix="/teacher")
@@ -20,15 +20,16 @@ def dashboard():
     conn = get_db_connection()
     cur = conn.cursor()
     teacher_serial = session.get("serial")
+    teacher_stream = session.get("class_stream")
 
     # Attendance records marked by this teacher (last 10)
     cur.execute("""
         SELECT a.*, u.serial AS student_serial
         FROM attendance a
         JOIN users u ON a.student_id = u.id
-        WHERE a.marked_by = ?
+        WHERE a.marked_by = ? AND a.class_stream = ?
         ORDER BY a.timestamp DESC LIMIT 10
-    """, (teacher_serial,))
+    """, (teacher_serial, teacher_stream))
     attendance_records = cur.fetchall()
 
     # Chat messages sent by this teacher (last 10)
@@ -50,14 +51,14 @@ def dashboard():
     except sqlite3.OperationalError:
         notifications = []
 
-    # Stats
-    cur.execute("SELECT COUNT(*) AS total_students FROM users WHERE role='student'")
+    # Stats (scoped to teacher's stream)
+    cur.execute("SELECT COUNT(*) AS total_students FROM users WHERE role='student' AND class_stream=?", (teacher_stream,))
     total_students = cur.fetchone()["total_students"]
 
-    cur.execute("SELECT COUNT(*) AS total_classes FROM attendance WHERE marked_by=?", (teacher_serial,))
+    cur.execute("SELECT COUNT(*) AS total_classes FROM attendance WHERE marked_by=? AND class_stream=?", (teacher_serial, teacher_stream))
     total_classes = cur.fetchone()["total_classes"]
 
-    cur.execute("SELECT COUNT(*) AS today_attendance FROM attendance WHERE marked_by=? AND date=DATE('now')", (teacher_serial,))
+    cur.execute("SELECT COUNT(*) AS today_attendance FROM attendance WHERE marked_by=? AND class_stream=? AND date=DATE('now')", (teacher_serial, teacher_stream))
     today_attendance = cur.fetchone()["today_attendance"]
 
     conn.close()
@@ -79,15 +80,14 @@ def attendance():
 
     conn = get_db_connection()
     cur = conn.cursor()
+    teacher_stream = session.get("class_stream")
+    teacher_serial = session.get("serial")
 
-    # Load all students
-    cur.execute("SELECT serial FROM users WHERE role='student'")
+    # Load only students from teacher's stream
+    cur.execute("SELECT serial FROM users WHERE role='student' AND class_stream=?", (teacher_stream,))
     students = cur.fetchall()
 
     if request.method == "POST":
-        class_stream = request.form.get("class")
-        teacher_serial = session.get("serial")
-
         for key, value in request.form.items():
             if key.startswith("student_"):
                 student_serial = key.replace("student_", "")
@@ -95,7 +95,7 @@ def attendance():
                     INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
                     VALUES ((SELECT id FROM users WHERE serial=? AND role='student'),
                             ?, DATE('now'), ?, ?, ?)
-                """, (student_serial, class_stream, value, teacher_serial, datetime.now()))
+                """, (student_serial, teacher_stream, value, teacher_serial, datetime.now()))
         conn.commit()
         conn.close()
 
@@ -115,22 +115,20 @@ def attendance_logs():
     conn = get_db_connection()
     cur = conn.cursor()
     teacher_serial = session.get("serial")
+    teacher_stream = session.get("class_stream")
 
     # Filters
-    class_stream = request.args.get("class_stream")
+    class_stream = request.args.get("class_stream") or teacher_stream
     date = request.args.get("date")
 
     query = """
         SELECT a.*, u.serial AS student_serial
         FROM attendance a
         JOIN users u ON a.student_id = u.id
-        WHERE a.marked_by = ?
+        WHERE a.marked_by = ? AND a.class_stream = ?
     """
-    params = [teacher_serial]
+    params = [teacher_serial, class_stream]
 
-    if class_stream:
-        query += " AND a.class_stream = ?"
-        params.append(class_stream)
     if date:
         query += " AND a.date = ?"
         params.append(date)
@@ -153,22 +151,20 @@ def export_attendance_logs():
     conn = get_db_connection()
     cur = conn.cursor()
     teacher_serial = session.get("serial")
+    teacher_stream = session.get("class_stream")
 
     # Filters
-    class_stream = request.args.get("class_stream")
+    class_stream = request.args.get("class_stream") or teacher_stream
     date = request.args.get("date")
 
     query = """
         SELECT a.*, u.serial AS student_serial
         FROM attendance a
         JOIN users u ON a.student_id = u.id
-        WHERE a.marked_by = ?
+        WHERE a.marked_by = ? AND a.class_stream = ?
     """
-    params = [teacher_serial]
+    params = [teacher_serial, class_stream]
 
-    if class_stream:
-        query += " AND a.class_stream = ?"
-        params.append(class_stream)
     if date:
         query += " AND a.date = ?"
         params.append(date)
