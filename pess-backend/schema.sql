@@ -8,8 +8,10 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     serial TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL
+    role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL,
+    class_stream TEXT NOT NULL   -- e.g. Form1A, Form4B
 );
+
 
 
 CREATE TABLE fee_uploads (
