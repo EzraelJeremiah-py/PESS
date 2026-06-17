@@ -6,7 +6,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
 @user_bp.route("/dashboard")
 def dashboard():
-    if session.get("role") != "user":
+    if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
