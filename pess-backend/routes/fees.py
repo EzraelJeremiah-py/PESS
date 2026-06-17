@@ -87,7 +87,7 @@ def serve_fee_file(filename):
 # ------------------ User View (Students) ------------------
 @fees_bp.route("/user")
 def user_fee_files():
-    if session.get("role") != "user":
+    if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
