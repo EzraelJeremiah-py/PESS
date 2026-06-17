@@ -64,7 +64,7 @@ def delete_latecomer(id):
 # ------------------ User: View Own Latecomer Record ------------------
 @late_bp.route("/user")
 def user_latecomer():
-    if session.get("role") != "user":
+    if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
