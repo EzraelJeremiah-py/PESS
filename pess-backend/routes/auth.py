@@ -40,6 +40,9 @@ def login():
                 return redirect(url_for("teacher.dashboard"))
             elif user["role"] == "student":
                 return redirect(url_for("user.dashboard"))
+            elif user["role"] == "parent":
+                # Only works if you have parent_bp registered
+                return redirect(url_for("parent.dashboard"))
 
         flash("Invalid credentials", "danger")
 
@@ -69,7 +72,7 @@ def register_teacher():
 
     return render_template("register_teacher.html")
 
-# ✅ Register Student/Parent (default role = student)
+# ✅ Register Student
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -86,7 +89,7 @@ def register():
             )
             conn.commit()
             conn.close()
-            flash("User registered successfully!", "success")
+            flash("Student registered successfully!", "success")
             return redirect(url_for("auth.login"))
         except sqlite3.IntegrityError:
             flash("Serial already exists!", "danger")
@@ -96,9 +99,7 @@ def register():
 # ✅ Session info
 @auth_bp.route("/session")
 def session_info():
-    role = session.get("role")
-    class_stream = session.get("class_stream")
-    return {"role": role, "class_stream": class_stream} if role else {"role": None}
+    return dict(session)
 
 # ✅ Logout
 @auth_bp.route("/logout")
