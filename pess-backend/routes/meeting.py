@@ -92,7 +92,7 @@ def delete_meeting(id):
 # ------------------ User: View & Join Meetings ------------------
 @meeting_bp.route("/user")
 def user_meetings():
-    if session.get("role") != "user":
+    if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
