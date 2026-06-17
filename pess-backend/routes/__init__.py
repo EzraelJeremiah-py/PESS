@@ -1,29 +1,30 @@
-from routes.auth import auth_bp
-from routes.admin import admin_bp
-from routes.user import user_bp
-from routes.fees import fees_bp
-from routes.meeting import meeting_bp
-from routes.late import late_bp
-from routes.suspensions import suspensions_bp
-from routes.parental import parental_bp
-from routes.joining_instructions import joining_bp
-from routes.library import library_bp
-from routes.chat import chat_bp
-from routes.teacher import teacher_bp
+# routes/__init__.py
 
+from .auth import auth_bp
+from .admin import admin_bp
+from .user import user_bp
+from .fees import fees_bp
+from .meeting import meeting_bp
+from .late import late_bp
+from .suspensions import suspensions_bp
+from .parental import parental_bp
+from .joining_instructions import joining_bp
+from .library import library_bp
+from .chat import chat_bp
+from .teacher import teacher_bp
 
-# This makes it easy to import all blueprints at once
+# Collect all blueprints in one list
 blueprints = [
-  auth_bp, 
-  admin_bp,
-  user_bp, 
-  fees_bp, 
-  meeting_bp, 
-  late_bp, 
-  suspensions_bp,
-  parental_bp,
-  joining_bp,
-  library_bp,
-  chat_bp,
-  teacher_bp
+    auth_bp,
+    admin_bp,
+    user_bp,
+    fees_bp,
+    meeting_bp,
+    late_bp,
+    suspensions_bp,
+    parental_bp,
+    joining_bp,
+    library_bp,
+    chat_bp,
+    teacher_bp,
 ]
