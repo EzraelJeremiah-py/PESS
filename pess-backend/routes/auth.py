@@ -24,6 +24,7 @@ def login():
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
                          (user_input, password), one=True)
         if admin:
+            session.clear()
             session["role"] = "admin"
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
@@ -32,6 +33,7 @@ def login():
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
                         (user_input, password), one=True)
         if user:
+            session.clear()
             session["role"] = user["role"]
             session["serial"] = user["serial"]
             session["class_stream"] = user["class_stream"]
@@ -104,5 +106,5 @@ def session_info():
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    flash("Logged out successfully", "info")
+    flash("Logged in successfully", "info")
     return redirect(url_for("auth.login"))
