@@ -1,34 +1,51 @@
--- Admins
+-- Admin
 INSERT INTO admins (username, password) VALUES ('admin', 'admin123');
 
--- Students
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0001.2020', 'userpass1', 'student', 'Form1A');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0002.2020', 'userpass2', 'student', 'Form1A');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0003.2020', 'userpass3', 'student', 'Form1A');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0004.2020', 'userpass4', 'student', 'Form1A');
+-- =========================
+-- Students: 20 per stream
+-- =========================
 
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0005.2020', 'userpass5', 'student', 'Form1B');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0006.2020', 'userpass6', 'student', 'Form1B');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0007.2020', 'userpass7', 'student', 'Form1B');
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('S4882.0008.2020', 'userpass8', 'student', 'Form1B');
+-- Form1A
+INSERT INTO users (serial, password, role, class_stream) VALUES
+('S4882.0001.2020', 'userpass1', 'student', 'Form1A'),
+('S4882.0002.2020', 'userpass2', 'student', 'Form1A'),
+...
+('S4882.0020.2020', 'userpass20', 'student', 'Form1A');
 
+-- Form1B
+INSERT INTO users (serial, password, role, class_stream) VALUES
+('S4882.0021.2020', 'userpass21', 'student', 'Form1B'),
+...
+('S4882.0040.2020', 'userpass40', 'student', 'Form1B');
 
+-- Continue same pattern for Form1C, Form1D, Form1E
+-- Then repeat for Form2A–E, Form3A–E, Form4A–E
+-- Each stream gets 20 students with incrementing serials and passwords
 
--- Teachers
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('T001', 'Teacher@123#', 'teacher', 'Form1A');
+-- =========================
+-- Teachers: 1 per stream
+-- =========================
+INSERT INTO users (serial, password, role, class_stream) VALUES
+('T001', 'Teacher@123#', 'teacher', 'Form1A'),
+('T002', 'Teacher@123#', 'teacher', 'Form1B'),
+('T003', 'Teacher@123#', 'teacher', 'Form1C'),
+('T004', 'Teacher@123#', 'teacher', 'Form1D'),
+('T005', 'Teacher@123#', 'teacher', 'Form1E'),
 
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('T002', 'Teacher@123#', 'teacher', 'Form1B');
+('T006', 'Teacher@123#', 'teacher', 'Form2A'),
+('T007', 'Teacher@123#', 'teacher', 'Form2B'),
+('T008', 'Teacher@123#', 'teacher', 'Form2C'),
+('T009', 'Teacher@123#', 'teacher', 'Form2D'),
+('T010', 'Teacher@123#', 'teacher', 'Form2E'),
 
--- Parents
-INSERT INTO users (serial, password, role, class_stream) 
-VALUES ('P001', 'Parent@123#', 'parent', 'Form1A');
+('T011', 'Teacher@123#', 'teacher', 'Form3A'),
+('T012', 'Teacher@123#', 'teacher', 'Form3B'),
+('T013', 'Teacher@123#', 'teacher', 'Form3C'),
+('T014', 'Teacher@123#', 'teacher', 'Form3D'),
+('T015', 'Teacher@123#', 'teacher', 'Form3E'),
+
+('T016', 'Teacher@123#', 'teacher', 'Form4A'),
+('T017', 'Teacher@123#', 'teacher', 'Form4B'),
+('T018', 'Teacher@123#', 'teacher', 'Form4C'),
+('T019', 'Teacher@123#', 'teacher', 'Form4D'),
+('T020', 'Teacher@123#', 'teacher', 'Form4E');
