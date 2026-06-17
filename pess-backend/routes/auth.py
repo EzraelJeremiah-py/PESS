@@ -40,8 +40,6 @@ def login():
                 return redirect(url_for("teacher.dashboard"))
             elif user["role"] == "student":
                 return redirect(url_for("user.dashboard"))
-            elif user["role"] == "parent":
-                return redirect(url_for("parent.dashboard"))
 
         flash("Invalid credentials", "danger")
 
