@@ -34,6 +34,7 @@ def login():
         if user:
             session["role"] = user["role"]
             session["serial"] = user["serial"]
+            session["class_stream"] = user["class_stream"]  # ✅ store stream
 
             if user["role"] == "teacher":
                 return redirect(url_for("teacher.dashboard"))
@@ -52,13 +53,14 @@ def register_teacher():
     if request.method == "POST":
         serial = request.form["serial"]
         password = request.form["password"]
+        class_stream = request.form["class_stream"]
 
         try:
             conn = sqlite3.connect(DB_PATH)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO users (serial, password, role) VALUES (?, ?, 'teacher')",
-                (serial, password)
+                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'teacher', ?)",
+                (serial, password, class_stream)
             )
             conn.commit()
             conn.close()
@@ -75,13 +77,14 @@ def register():
     if request.method == "POST":
         serial = request.form["serial"]
         password = request.form["password"]
+        class_stream = request.form["class_stream"]
 
         try:
             conn = sqlite3.connect(DB_PATH)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO users (serial, password, role) VALUES (?, ?, 'student')",
-                (serial, password)
+                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'student', ?)",
+                (serial, password, class_stream)
             )
             conn.commit()
             conn.close()
@@ -96,7 +99,8 @@ def register():
 @auth_bp.route("/session")
 def session_info():
     role = session.get("role")
-    return {"role": role} if role else {"role": None}
+    class_stream = session.get("class_stream")
+    return {"role": role, "class_stream": class_stream} if role else {"role": None}
 
 # ✅ Logout
 @auth_bp.route("/logout")
