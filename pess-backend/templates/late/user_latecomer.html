@@ -12,8 +12,8 @@
       background-size: 200% 200%;
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
-      color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
+      color: #fff; /* ✅ all body text white */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -39,20 +39,23 @@
       color: #fff;
       font-size: 1rem;
     }
+    .text-muted {
+      color: #fff !important; /* ✅ override muted to white */
+    }
     .btn {
       border-radius: 8px;
       font-weight: 600;
       font-size: 1rem;
     }
-    .btn-secondary {
-      background-color: #003366;
+    .btn-success {
+      background-color: #90ee90; /* ✅ light green */
       border: none;
-      color: #fff;
+      color: #000; /* black text for contrast */
     }
-    .btn-secondary:hover {
-      background-color: #001f3f;
+    .btn-success:hover {
+      background-color: #76c776;
+      color: #000;
     }
-    /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, li, a, th, td {
         font-size: 18px;
@@ -83,7 +86,7 @@
     {% else %}
       <p class="text-muted">No latecomer record found for you.</p>
     {% endif %}
-    <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    <a href="{{ url_for('user.dashboard') }}" class="btn btn-success mt-3">Back to Dashboard</a>
   </div>
 </body>
 </html>
