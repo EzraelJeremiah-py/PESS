@@ -14,15 +14,15 @@
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
       color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    h3, th, td, p {
-      color: #fff !important;
+    h3, p {
+      color: #fff !important; /* ✅ headings + messages white */
     }
     .card {
       border-radius: 16px;
@@ -37,8 +37,10 @@
       box-shadow: 0 12px 24px rgba(0,255,255,0.4);
     }
     .table {
-      color: #fff;
       font-size: 1rem;
+    }
+    .table th, .table td {
+      color: #000 !important; /* ✅ table headers + rows black */
     }
     .table thead {
       background: rgba(0,0,0,0.7);
@@ -52,11 +54,11 @@
     .btn-success {
       background-color: #00c6ff;
       border: none;
-      color: #000;
+      color: #000; /* ✅ black text on blue */
     }
     .btn-success:hover {
       background-color: #00a3cc;
-      color: #fff;
+      color: #fff; /* ✅ flips to white on hover */
     }
     .btn-secondary {
       background-color: #2a5298;
@@ -66,7 +68,6 @@
     .btn-secondary:hover {
       background-color: #1e3c72;
     }
-    /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, li, a, th, td {
         font-size: 18px;
@@ -119,7 +120,7 @@
       </div>
     </div>
     {% else %}
-      <p class="text-center text-white">No meetings scheduled.</p>
+      <p class="text-center">No meetings scheduled.</p>
     {% endif %}
 
     <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3">
