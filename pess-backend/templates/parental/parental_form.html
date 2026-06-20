@@ -12,8 +12,7 @@
       background-size: 200% 200%;
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
-      color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -21,43 +20,44 @@
       100% { background-position: 0% 50%; }
     }
     h2 {
-      color: #00c6ff;
+      color: #003366;
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(0,198,255,0.6);
       font-size: 1.6rem;
     }
+    /* ✅ Form card always white */
     .card {
       border-radius: 14px;
-      backdrop-filter: blur(12px);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(0,198,255,0.3);
-      color: #fff;
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #000;
       font-size: 1rem;
     }
     label {
       font-size: 1.1rem;
+      color: #000;
     }
     .btn {
       border-radius: 8px;
       font-weight: 600;
       font-size: 1rem;
     }
+    /* ✅ Submit button light green */
     .btn-primary {
-      background-color: #0074d9;
+      background-color: #90ee90; /* light green */
       border: none;
+      color: #000;
     }
     .btn-primary:hover {
-      background-color: #005fa3;
+      background-color: #76c776;
     }
     .btn-secondary {
-      background-color: #003366;
+      background-color: #f0f0f0;
       border: none;
-      color: #fff;
+      color: #000;
     }
     .btn-secondary:hover {
-      background-color: #001f3f;
+      background-color: #dcdcdc;
     }
-    /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, li, a, label, input, textarea {
         font-size: 18px;
