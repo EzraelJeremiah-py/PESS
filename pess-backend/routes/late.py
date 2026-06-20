@@ -27,6 +27,7 @@ def register_latecomer():
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
+        student_serial = request.form["student_serial"]
         student_name = request.form["student_name"]
         expected_opening = request.form["expected_opening"]
         arrival_date = request.form["arrival_date"]
@@ -36,9 +37,9 @@ def register_latecomer():
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
         cur.execute("""
-            INSERT INTO latecomers (student_name, expected_opening, arrival_date, punishment, reason)
-            VALUES (?, ?, ?, ?, ?)
-        """, (student_name, expected_opening, arrival_date, punishment, reason))
+            INSERT INTO latecomers (student_serial, student_name, expected_opening, arrival_date, punishment, reason)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (student_serial, student_name, expected_opening, arrival_date, punishment, reason))
         conn.commit()
         conn.close()
         flash("Latecomer registered successfully!", "success")
@@ -71,8 +72,8 @@ def user_latecomer():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    # Assuming student_name matches session['serial']
-    cur.execute("SELECT * FROM latecomers WHERE student_name=?", (session.get("serial"),))
+    # ✅ Now query by student_serial
+    cur.execute("SELECT * FROM latecomers WHERE student_serial=?", (session.get("serial"),))
     late_record = cur.fetchone()
     conn.close()
 
