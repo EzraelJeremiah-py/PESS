@@ -12,8 +12,8 @@
       background-size: 200% 200%;
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
-      color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
+      color: #fff; /* ✅ all body text white */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -21,35 +21,37 @@
       100% { background-position: 0% 50%; }
     }
     h2 {
-      color: #00c6ff;
+      color: #fff; /* ✅ heading white */
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(0,198,255,0.6);
+      text-shadow: 0 0 8px rgba(255,255,255,0.6);
       font-size: 1.6rem;
     }
     .list-group-item {
       font-size: 1rem;
       background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(0,198,255,0.3);
-      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; /* ✅ list item text white */
     }
     .text-primary {
-      color: #00c6ff !important;
+      color: #fff !important; /* ✅ parent_name white */
       font-weight: 600;
+    }
+    .text-muted {
+      color: #fff !important; /* ✅ created_at + "No approved suggestions yet" white */
     }
     .btn {
       border-radius: 8px;
       font-weight: 600;
       font-size: 1rem;
+      color: #fff; /* ✅ button text white */
     }
     .btn-secondary {
       background-color: #003366;
       border: none;
-      color: #fff;
     }
     .btn-secondary:hover {
       background-color: #001f3f;
     }
-    /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, li, a, span {
         font-size: 18px;
