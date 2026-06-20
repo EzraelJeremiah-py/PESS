@@ -69,11 +69,21 @@ def user_latecomer():
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM latecomers WHERE student_serial=?", (session.get("serial"),))
-    latecomers = cur.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        serial = session.get("serial")
+        if not serial:
+            flash("No student serial found in session.", "danger")
+            return redirect(url_for("auth.login"))
+
+        cur.execute("SELECT * FROM latecomers WHERE student_serial=?", (serial,))
+        latecomers = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        print("Error fetching student latecomers:", e)
+        flash("Something went wrong fetching your records.", "danger")
+        latecomers = []
 
     return render_template("late/user_latecomers.html", latecomers=latecomers)
