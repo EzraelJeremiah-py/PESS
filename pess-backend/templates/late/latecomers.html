@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Mobile scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>School Opening Latecomers - Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,75 +12,19 @@
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
       color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    h2 {
-      color: #00c6ff;
-      font-weight: 700;
-      text-shadow: 0 0 8px rgba(0,198,255,0.6);
-      font-size: 1.6rem;
-    }
-    .table {
-      border-radius: 14px;
-      backdrop-filter: blur(12px);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(0,198,255,0.3);
-      color: #fff;
-      font-size: 1rem;
-    }
-    .table thead {
-      background: rgba(0,198,255,0.2);
-      color: #fff;
-      font-size: 1rem;
-    }
-    .btn {
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .btn-primary {
-      background-color: #0074d9;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #005fa3;
-    }
-    .btn-danger {
-      background-color: #ff4136;
-      border: none;
-      color: #fff;
-    }
-    .btn-danger:hover {
-      background-color: #cc3229;
-    }
-    .btn-secondary {
-      background-color: #003366;
-      border: none;
-      color: #fff;
-    }
-    .btn-secondary:hover {
-      background-color: #001f3f;
-    }
-    /* ✅ Bigger fonts on phones */
-    @media (max-width: 768px) {
-      body, p, li, a, th, td {
-        font-size: 18px;
-      }
-      h2 {
-        font-size: 22px;
-      }
-      .btn {
-        font-size: 18px;
-      }
-      .table thead {
-        font-size: 18px;
-      }
-    }
+    h2 { color: #00c6ff; font-weight: 700; text-shadow: 0 0 8px rgba(0,198,255,0.6); }
+    .btn-primary { background-color: #0074d9; border: none; }
+    .btn-primary:hover { background-color: #005fa3; }
+    .btn-danger { background-color: #ff4136; border: none; }
+    .btn-danger:hover { background-color: #cc3229; }
+    .btn-secondary { background-color: #003366; border: none; }
+    .btn-secondary:hover { background-color: #001f3f; }
   </style>
 </head>
 <body>
@@ -92,6 +35,7 @@
     <table class="table table-striped table-hover shadow-sm">
       <thead class="table-dark text-center">
         <tr>
+          <th>Student Serial</th>
           <th>Student Name</th>
           <th>Expected Opening</th>
           <th>Arrival Date</th>
@@ -103,19 +47,19 @@
       <tbody>
         {% for l in latecomers %}
         <tr>
+          <td>{{ l.student_serial }}</td>
           <td>{{ l.student_name }}</td>
           <td>{{ l.expected_opening }}</td>
           <td>{{ l.arrival_date }}</td>
           <td>{{ l.punishment }}</td>
           <td>{{ l.reason }}</td>
           <td>
-            <a href="{{ url_for('late.delete_latecomer', id=l.id) }}" 
-               class="btn btn-danger btn-sm">Delete</a>
+            <a href="{{ url_for('late.delete_latecomer', id=l.id) }}" class="btn btn-danger btn-sm">Delete</a>
           </td>
         </tr>
         {% else %}
         <tr>
-          <td colspan="6" class="text-muted text-center">No latecomers recorded yet.</td>
+          <td colspan="7" class="text-muted text-center">No latecomers recorded yet.</td>
         </tr>
         {% endfor %}
       </tbody>
