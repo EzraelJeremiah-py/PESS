@@ -62,7 +62,7 @@ def delete_latecomer(id):
     flash("Latecomer record deleted successfully!", "success")
     return redirect(url_for("late.list_latecomers"))
 
-# ------------------ User: View Own Latecomer Record ------------------
+# ------------------ Student: View Own Latecomer Records ------------------
 @late_bp.route("/user")
 def user_latecomer():
     if session.get("role") != "student":
@@ -72,9 +72,8 @@ def user_latecomer():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    # ✅ Now query by student_serial
     cur.execute("SELECT * FROM latecomers WHERE student_serial=?", (session.get("serial"),))
-    late_record = cur.fetchone()
+    latecomers = cur.fetchall()
     conn.close()
 
-    return render_template("late/user_latecomer.html", late_record=late_record)
+    return render_template("late/user_latecomers.html", latecomers=latecomers)
