@@ -10,7 +10,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Attendance Panel (form)
+# ✅ Attendance Panel (form) – Teacher only
 @attendance_bp.route("/panel")
 def attendance_panel():
     if session.get("role") != "teacher":
@@ -18,7 +18,7 @@ def attendance_panel():
         return redirect(url_for("auth.login"))
     return render_template("attendance_panel.html")
 
-# ✅ Mark Attendance (POST handler)
+# ✅ Mark Attendance (POST handler) – Teacher only
 @attendance_bp.route("/mark", methods=["POST"])
 def mark_attendance():
     if session.get("role") != "teacher":
@@ -30,7 +30,7 @@ def mark_attendance():
 
     attendance_records = []
     for key, value in request.form.items():
-        if key.startswith("student_"):  # e.g. student_101, student_102
+        if key.startswith("student_"):  # e.g. student_101
             student_serial = key.replace("student_", "")
             status = value
             attendance_records.append((student_serial, class_stream, status))
@@ -51,9 +51,9 @@ def mark_attendance():
     flash("Attendance saved successfully!", "success")
     return redirect(url_for("teacher.dashboard"))
 
-# ✅ Student Dashboard Attendance
-@attendance_bp.route("/my")
-def my_attendance():
+# ✅ Student Attendance View – Dedicated page
+@attendance_bp.route("/view")
+def view_attendance():
     if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
@@ -68,10 +68,8 @@ def my_attendance():
         JOIN students s ON a.student_id = s.id
         WHERE s.serial = ?
         ORDER BY a.date DESC
-        LIMIT 10
     """, (student_serial,))
     attendance_history = cur.fetchall()
     conn.close()
 
-    # Render the user dashboard with attendance history
-    return render_template("user_dashboard.html", attendance_history=attendance_history)
+    return render_template("my_attendance.html", attendance_history=attendance_history)
