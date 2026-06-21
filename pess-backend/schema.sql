@@ -1,53 +1,154 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-import sqlite3, os
-from datetime import datetime
+CREATE TABLE admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
 
-attendance_bp = Blueprint("attendance", __name__, url_prefix="/attendance")
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
-
-def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-# ✅ Attendance Panel (form)
-@attendance_bp.route("/panel")
-def attendance_panel():
-    if session.get("role") != "teacher":
-        flash("Unauthorized access!", "danger")
-        return redirect(url_for("auth.login"))
-    return render_template("attendance_panel.html")
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    serial TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL,
+    class_stream TEXT NOT NULL   -- e.g. Form1A, Form4B
+);
 
 
-# ✅ Mark Attendance (POST handler)
-@attendance_bp.route("/mark", methods=["POST"])
-def mark_attendance():
-    if session.get("role") != "teacher":
-        flash("Unauthorized access!", "danger")
-        return redirect(url_for("auth.login"))
 
-    teacher_username = session.get("username")
-    class_stream = request.form.get("class")
+CREATE TABLE fee_uploads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    class TEXT NOT NULL,         -- Form1–Form6
+    stream TEXT NOT NULL,        -- e.g. A, B, Science, Arts
+    filename TEXT NOT NULL,
+    filepath TEXT NOT NULL,
+    extension TEXT,
+    uploaded_by TEXT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fee_date DATE NOT NULL       -- date entered by admin
+);
 
-    attendance_records = []
-    for key, value in request.form.items():
-        if key.startswith("student_"):  # e.g. student_a, student_b
-            student_name = key.replace("student_", "").capitalize()
-            status = value
-            attendance_records.append((student_name, class_stream, status))
+CREATE TABLE meetings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,          -- Meeting title
+    platform TEXT NOT NULL,       -- 'google' or 'zoom'
+    link TEXT NOT NULL,           -- Meeting URL
+    date TEXT NOT NULL,           -- YYYY-MM-DD
+    time TEXT NOT NULL,           -- HH:MM
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-    conn = get_db_connection()
-    cur = conn.cursor()
-    for student_name, class_stream, status in attendance_records:
-        cur.execute("""
-            INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
-            VALUES (
-                (SELECT id FROM students WHERE name=?),
-                ?, ?, ?, ?, ?
-            )
-        """, (student_name, class_stream, datetime.now().date(), status, teacher_username, datetime.now()))
-    conn.commit()
-    conn.close()
+CREATE TABLE IF NOT EXISTS latecomers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_name TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    expected_opening DATE NOT NULL,
+    arrival_date DATE NOT NULL,
+    punishment TEXT,
+    status TEXT DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-    flash("Attendance saved successfully!", "success")
-    return redirect(url_for("teacher.dashboard"))    i think you must loose some important codes something i dont broh
+
+
+CREATE TABLE IF NOT EXISTS suspensions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_name TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    status TEXT DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS parental_suggestions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    parent_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    contact_number TEXT,
+    suggestion TEXT NOT NULL,
+    approved BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE joining_instructions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_name TEXT NOT NULL,
+    uploader TEXT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    file_type TEXT,
+    size INTEGER
+);
+-- Books
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT, -- Science/Arts/Business
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Home Packages
+CREATE TABLE packages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT,
+    stream TEXT,
+    class_name TEXT,
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    url TEXT,
+    description TEXT
+);
+
+CREATE TABLE pastpapers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    category TEXT,
+    class_name TEXT,
+    year INTEGER,
+    uploaded_by TEXT,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE downloads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file_id INTEGER,
+    file_type TEXT,
+    user TEXT,
+    downloaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message TEXT,
+    target_role TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+-- Attendance table
+CREATE TABLE attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    class_stream TEXT NOT NULL,
+    date DATE NOT NULL,
+    status TEXT CHECK(status IN ('Present','Absent','Late','Sick','Excuse')) NOT NULL,
+    marked_by TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id)
+);
+
+
+-- Chat table
+CREATE TABLE chat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender TEXT NOT NULL,
+    channel TEXT NOT NULL,
+    message TEXT NOT NULL,
+    tag TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
