@@ -43,7 +43,7 @@ def login():
             elif user["role"] == "student":
                 return redirect(url_for("user.dashboard"))
             elif user["role"] == "parent":
-                return redirect(url_for("parental.dashboard"))
+                return redirect(url_for("parent.dashboard"))  # ✅ fixed
 
         flash("Invalid credentials", "danger")
 
@@ -106,5 +106,5 @@ def session_info():
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    flash("Logged in successfully", "info")
+    flash("Logged out successfully", "info")  # ✅ fixed
     return redirect(url_for("auth.login"))
