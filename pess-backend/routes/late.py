@@ -27,19 +27,19 @@ def add_latecomer():
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
-        student_serial = request.form["student_serial"]
         student_name = request.form["student_name"]
+        reason = request.form["reason"]
         expected_opening = request.form["expected_opening"]
         arrival_date = request.form["arrival_date"]
-        punishment = request.form["punishment"]
-        reason = request.form["reason"]
+        punishment = request.form.get("punishment", "")
+        status = request.form.get("status", "active")
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
         cur.execute("""
-            INSERT INTO latecomers (student_serial, student_name, expected_opening, arrival_date, punishment, reason)
+            INSERT INTO latecomers (student_name, reason, expected_opening, arrival_date, punishment, status)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (student_serial, student_name, expected_opening, arrival_date, punishment, reason))
+        """, (student_name, reason, expected_opening, arrival_date, punishment, status))
         conn.commit()
         conn.close()
         flash("Latecomer added successfully!", "success")
@@ -62,7 +62,7 @@ def delete_latecomer(id):
     flash("Latecomer deleted successfully!", "success")
     return redirect(url_for("late.list_latecomers"))
 
-# Student: View own latecomers
+# Student: Public view of their own latecomers
 @late_bp.route("/user")
 def user_latecomer():
     if session.get("role") != "student":
@@ -73,7 +73,7 @@ def user_latecomer():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT * FROM latecomers WHERE student_serial=?", (serial,))
+    cur.execute("SELECT * FROM latecomers WHERE student_name=?", (serial,))
     latecomers = cur.fetchall()
     conn.close()
     return render_template("late/user_latecomers.html", latecomers=latecomers)
