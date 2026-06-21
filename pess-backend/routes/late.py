@@ -62,18 +62,18 @@ def delete_latecomer(id):
     flash("Latecomer deleted successfully!", "success")
     return redirect(url_for("late.list_latecomers"))
 
-# Student: Public view of their own latecomers
+# Student: View their own latecomers by name
 @late_bp.route("/user")
 def user_latecomer():
     if session.get("role") != "student":
         flash("Unauthorized access!", "danger")
         return redirect(url_for("auth.login"))
 
-    serial = session.get("serial")
+    name = session.get("username")  # ✅ now using name, not serial
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT * FROM latecomers WHERE student_name=?", (serial,))
+    cur.execute("SELECT * FROM latecomers WHERE student_name=?", (name,))
     latecomers = cur.fetchall()
     conn.close()
     return render_template("late/user_latecomers.html", latecomers=latecomers)
