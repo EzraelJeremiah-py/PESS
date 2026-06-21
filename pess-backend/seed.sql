@@ -79,3 +79,11 @@ INSERT INTO users (serial, password, role, class_stream) VALUES
 ('TeacherF1C#', 'Teacher@123#', 'teacher', 'Form1C'),
 ('TeacherF1D#', 'Teacher@123#', 'teacher', 'Form1D'),
 ('TeacherF1E#', 'Teacher@123#', 'teacher', 'Form1E');
+
+-- Insert a latecomer record for the student STU001
+INSERT INTO latecomers (student_serial, student_name, expected_opening, arrival_date, punishment, reason)
+VALUES ('STU001', 'John Doe', '2026-06-01', '2026-06-05', 'Extra homework', 'Overslept');
+
+-- Insert another latecomer record for the same student
+INSERT INTO latecomers (student_serial, student_name, expected_opening, arrival_date, punishment, reason)
+VALUES ('STU001', 'John Doe', '2026-06-10', '2026-06-12', 'Detention', 'Missed bus');
