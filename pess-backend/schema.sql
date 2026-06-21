@@ -36,16 +36,17 @@ CREATE TABLE meetings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE latecomers (
+CREATE TABLE IF NOT EXISTS latecomers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_serial TEXT NOT NULL,   -- unique login serial
     student_name TEXT NOT NULL,
+    reason TEXT NOT NULL,
     expected_opening DATE NOT NULL,
     arrival_date DATE NOT NULL,
     punishment TEXT,
-    reason TEXT,
+    status TEXT DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 
 CREATE TABLE IF NOT EXISTS suspensions (
