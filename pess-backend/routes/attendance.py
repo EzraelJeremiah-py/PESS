@@ -50,4 +50,4 @@ def mark_attendance():
     conn.close()
 
     flash("Attendance saved successfully!", "success")
-    return redirect(url_for("teacher.dashboard"))    i think you must loose some important codes something i dont broh
+    return redirect(url_for("teacher.dashboard"))
