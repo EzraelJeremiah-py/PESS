@@ -4,6 +4,13 @@ import sqlite3, os
 late_bp = Blueprint("late", __name__, url_prefix="/late")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
+
+# ------------------ Debug: Show Session Values ------------------
+@late_bp.route("/debug-session")
+def debug_session():
+    return f"Role: {session.get('role')} | Serial: {session.get('serial')}"
+
+
 # ------------------ Admin: List Latecomers ------------------
 @late_bp.route("/")
 def list_latecomers():
