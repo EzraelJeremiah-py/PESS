@@ -10,7 +10,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Attendance Panel (form) – Teacher only
+# Teacher: Attendance Panel
 @attendance_bp.route("/panel")
 def attendance_panel():
     if session.get("role") != "teacher":
@@ -18,7 +18,7 @@ def attendance_panel():
         return redirect(url_for("auth.login"))
     return render_template("attendance_panel.html")
 
-# ✅ Mark Attendance (POST handler) – Teacher only
+# Teacher: Mark Attendance
 @attendance_bp.route("/mark", methods=["POST"])
 def mark_attendance():
     if session.get("role") != "teacher":
@@ -30,7 +30,7 @@ def mark_attendance():
 
     attendance_records = []
     for key, value in request.form.items():
-        if key.startswith("student_"):  # e.g. student_101
+        if key.startswith("student_"):
             student_serial = key.replace("student_", "")
             status = value
             attendance_records.append((student_serial, class_stream, status))
@@ -51,7 +51,7 @@ def mark_attendance():
     flash("Attendance saved successfully!", "success")
     return redirect(url_for("teacher.dashboard"))
 
-# ✅ Student Attendance View – Dedicated page
+# Student: Dedicated Attendance View
 @attendance_bp.route("/view")
 def view_attendance():
     if session.get("role") != "student":
