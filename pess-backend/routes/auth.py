@@ -1,4 +1,4 @@
-corrcet this . full code scripts from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 import sqlite3, os
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
