@@ -37,13 +37,14 @@ def login():
             session["role"] = user["role"]
             session["serial"] = user["serial"]
             session["class_stream"] = user["class_stream"]
+            session["username"] = user["name"]  # ✅ store student name for Latecomers
 
             if user["role"] == "teacher":
                 return redirect(url_for("teacher.dashboard"))
             elif user["role"] == "student":
                 return redirect(url_for("user.dashboard"))
             elif user["role"] == "parent":
-                return redirect(url_for("parent.dashboard"))  # ✅ fixed
+                return redirect(url_for("parent.dashboard"))
 
         flash("Invalid credentials", "danger")
 
@@ -56,13 +57,14 @@ def register_teacher():
         serial = request.form["serial"]
         password = request.form["password"]
         class_stream = request.form["class_stream"]
+        name = request.form["name"]
 
         try:
             conn = sqlite3.connect(DB_PATH)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'teacher', ?)",
-                (serial, password, class_stream)
+                "INSERT INTO users (serial, name, password, role, class_stream) VALUES (?, ?, ?, 'teacher', ?)",
+                (serial, name, password, class_stream)
             )
             conn.commit()
             conn.close()
@@ -78,6 +80,7 @@ def register_teacher():
 def register():
     if request.method == "POST":
         serial = request.form["serial"]
+        name = request.form["name"]
         password = request.form["password"]
         class_stream = request.form["class_stream"]
 
@@ -85,8 +88,8 @@ def register():
             conn = sqlite3.connect(DB_PATH)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'student', ?)",
-                (serial, password, class_stream)
+                "INSERT INTO users (serial, name, password, role, class_stream) VALUES (?, ?, ?, 'student', ?)",
+                (serial, name, password, class_stream)
             )
             conn.commit()
             conn.close()
@@ -106,5 +109,5 @@ def session_info():
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    flash("Logged out successfully", "info")  # ✅ fixed
+    flash("Logged out successfully", "info")
     return redirect(url_for("auth.login"))
