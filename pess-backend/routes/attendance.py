@@ -30,7 +30,7 @@ def mark_attendance():
 
     attendance_records = []
     for key, value in request.form.items():
-        if key.startswith("student_"):
+        if key.startswith("student_"):  # e.g. student_101
             student_serial = key.replace("student_", "")
             status = value
             attendance_records.append((student_serial, class_stream, status))
@@ -41,7 +41,7 @@ def mark_attendance():
         cur.execute("""
             INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
             VALUES (
-                (SELECT id FROM students WHERE serial=?),
+                (SELECT id FROM users WHERE serial=? AND role='student'),
                 ?, ?, ?, ?, ?
             )
         """, (student_serial, class_stream, datetime.now().date(), status, teacher_username, datetime.now()))
@@ -65,8 +65,8 @@ def view_attendance():
     cur.execute("""
         SELECT a.date, a.status, a.class_stream, a.marked_by
         FROM attendance a
-        JOIN students s ON a.student_id = s.id
-        WHERE s.serial = ?
+        JOIN users u ON a.student_id = u.id
+        WHERE u.serial = ? AND u.role='student'
         ORDER BY a.date DESC
     """, (student_serial,))
     attendance_history = cur.fetchall()
