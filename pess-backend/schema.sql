@@ -13,7 +13,6 @@ CREATE TABLE users (
 );
 
 
-
 CREATE TABLE fee_uploads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     class TEXT NOT NULL,         -- Form1–Form6
