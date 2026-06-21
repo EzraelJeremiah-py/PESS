@@ -18,7 +18,6 @@ def attendance_panel():
         return redirect(url_for("auth.login"))
     return render_template("attendance_panel.html")
 
-
 # ✅ Mark Attendance (POST handler)
 @attendance_bp.route("/mark", methods=["POST"])
 def mark_attendance():
@@ -31,23 +30,48 @@ def mark_attendance():
 
     attendance_records = []
     for key, value in request.form.items():
-        if key.startswith("student_"):  # e.g. student_a, student_b
-            student_name = key.replace("student_", "").capitalize()
+        if key.startswith("student_"):  # e.g. student_101, student_102
+            student_serial = key.replace("student_", "")
             status = value
-            attendance_records.append((student_name, class_stream, status))
+            attendance_records.append((student_serial, class_stream, status))
 
     conn = get_db_connection()
     cur = conn.cursor()
-    for student_name, class_stream, status in attendance_records:
+    for student_serial, class_stream, status in attendance_records:
         cur.execute("""
             INSERT INTO attendance (student_id, class_stream, date, status, marked_by, timestamp)
             VALUES (
-                (SELECT id FROM students WHERE name=?),
+                (SELECT id FROM students WHERE serial=?),
                 ?, ?, ?, ?, ?
             )
-        """, (student_name, class_stream, datetime.now().date(), status, teacher_username, datetime.now()))
+        """, (student_serial, class_stream, datetime.now().date(), status, teacher_username, datetime.now()))
     conn.commit()
     conn.close()
 
     flash("Attendance saved successfully!", "success")
     return redirect(url_for("teacher.dashboard"))
+
+# ✅ Student Dashboard Attendance
+@attendance_bp.route("/my")
+def my_attendance():
+    if session.get("role") != "student":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+
+    student_serial = session.get("serial")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT a.date, a.status, a.class_stream, a.marked_by
+        FROM attendance a
+        JOIN students s ON a.student_id = s.id
+        WHERE s.serial = ?
+        ORDER BY a.date DESC
+        LIMIT 10
+    """, (student_serial,))
+    attendance_history = cur.fetchall()
+    conn.close()
+
+    # Render the user dashboard with attendance history
+    return render_template("user_dashboard.html", attendance_history=attendance_history)
