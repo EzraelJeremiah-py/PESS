@@ -35,16 +35,18 @@ CREATE TABLE meetings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS latecomers (
+CREATE TABLE latecomers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_name TEXT NOT NULL,
-    reason TEXT NOT NULL,
-    expected_opening DATE NOT NULL,
-    arrival_date DATE NOT NULL,
-    punishment TEXT,
-    status TEXT DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    student_id INTEGER NOT NULL,          -- FK to users.id
+    expected_opening DATE NOT NULL,       -- when school expected them
+    arrival_date DATE NOT NULL,           -- when they actually arrived
+    reason TEXT,                          -- reason for late arrival
+    punishment TEXT,                      -- optional punishment
+    status TEXT DEFAULT 'active',         -- record status
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id)
 );
+
 
 
 
