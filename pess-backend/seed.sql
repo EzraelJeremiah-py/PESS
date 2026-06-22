@@ -87,10 +87,16 @@ VALUES
 (2, 'S4882F1E002', 'Mary Ann', 'student', 'Form1B');
 
 -- Example latecomers tied to users.id
-INSERT INTO latecomers (student_id, expected_opening, arrival_date, reason, punishment)
-VALUES
-(1, '2026-06-01', '2026-06-22', 'Travel delay', 'Warning issued'),
-(2, '2026-06-01', '2026-06-20', 'Family emergency', 'No punishment');
+-- Admin account
+INSERT INTO users (serial, username, role, class_stream, password)
+VALUES ('ADMIN001', 'System Admin', 'admin', NULL, 'Admin@123');
+
+-- Student accounts
+INSERT INTO users (serial, username, role, class_stream, password)
+VALUES ('S4882F1E001', 'John Wurtz', 'student', 'Form1A', 'Student@123');
+
+
+
 
 
 
