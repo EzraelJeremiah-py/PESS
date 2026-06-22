@@ -4,13 +4,16 @@ CREATE TABLE admins (
     password TEXT NOT NULL
 );
 
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    serial TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL,
-    class_stream TEXT NOT NULL   -- e.g. Form1A, Form4B
+    serial TEXT UNIQUE NOT NULL,       -- student serial number
+    username TEXT NOT NULL,            -- ✅ student name
+    role TEXT NOT NULL,                -- 'student' or 'admin'
+    class_stream TEXT,                 -- e.g. Form1A
+    password TEXT NOT NULL             -- hashed password
 );
+
 
 
 CREATE TABLE fee_uploads (
@@ -35,17 +38,19 @@ CREATE TABLE meetings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS latecomers;
 CREATE TABLE latecomers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_id INTEGER NOT NULL,          -- FK to users.id
-    expected_opening DATE NOT NULL,       -- when school expected them
-    arrival_date DATE NOT NULL,           -- when they actually arrived
-    reason TEXT,                          -- reason for late arrival
-    punishment TEXT,                      -- optional punishment
-    status TEXT DEFAULT 'active',         -- record status
+    student_id INTEGER NOT NULL,       -- FK to users.id
+    expected_opening DATE NOT NULL,
+    arrival_date DATE NOT NULL,
+    reason TEXT,
+    punishment TEXT,
+    status TEXT DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(id)
 );
+
 
 
 
