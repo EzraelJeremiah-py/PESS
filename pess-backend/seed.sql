@@ -81,6 +81,10 @@ INSERT INTO users (serial, password, role, class_stream) VALUES
 ('TeacherF1D#', 'Teacher@123#', 'teacher', 'Form1D'),
 ('TeacherF1E#', 'Teacher@123#', 'teacher', 'Form1E');
 
+-- Chat message
+INSERT INTO chat_messages (sender, channel, message)
+VALUES ('System Admin', 'general', 'Welcome to PESS!');
+
 
 
 
