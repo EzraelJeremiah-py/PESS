@@ -80,11 +80,6 @@ INSERT INTO users (serial, password, role, class_stream) VALUES
 ('TeacherF1D#', 'Teacher@123#', 'teacher', 'Form1D'),
 ('TeacherF1E#', 'Teacher@123#', 'teacher', 'Form1E');
 
--- Insert a latecomer record
-INSERT INTO latecomers (student_name, reason, expected_opening, arrival_date, punishment, status)
-VALUES ('John Wurtz', 'Overslept', '2026-06-01', '2026-06-05', 'Extra homework', 'active');
 
--- Insert another latecomer record for the same student
-INSERT INTO latecomers (student_name, reason, expected_opening, arrival_date, punishment, status)
-VALUES ('John Wurtz', 'Missed bus', '2026-06-10', '2026-06-12', 'Detention', 'active');
+
 
