@@ -156,8 +156,10 @@
         <span class="badge">2</span>
       </div>
     </div>
+    
+    <h5>{{ session.get('role', 'Admin') }}</h5>
+    <h2 class="mb-3">Welcome, {{ session.get('role', 'Admin') }}</h2>
 
-    <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
     <p class="lead">Manage users, fees, meetings, latecomers, suspensions, and parental suggestions.</p>
 
     <!-- Dashboard Grid -->
