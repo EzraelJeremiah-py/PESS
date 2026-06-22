@@ -105,8 +105,9 @@
   <div class="sidebar collapsed" id="sidebar">
     <div class="profile">
       <img src="https://via.placeholder.com/80" alt="Admin Avatar">
-      <h5>{{ session.get('username') or session.get('serial') or 'Admin' }}</h5>
-      <p>{{ session.get('role', 'Administrator')|capitalize }}</p>
+      <h5>{{ session.get('username', 'Admin') }}</h5>
+      <p>Administrator</p>
+
 
     </div>
     <a href="{{ url_for('admin.list_users') }}"><i class="fas fa-users"></i> Manage Users</a>
