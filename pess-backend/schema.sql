@@ -8,10 +8,12 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     serial TEXT UNIQUE NOT NULL,
+    username TEXT NOT NULL,             -- ✅ add this
     password TEXT NOT NULL,
     role TEXT CHECK(role IN ('admin','teacher','student','parent')) NOT NULL,
     class_stream TEXT NOT NULL
 );
+
 
 
 
