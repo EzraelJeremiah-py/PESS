@@ -28,23 +28,23 @@ def login():
             session["role"] = "admin"
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
-            
-            # Check users table
-            user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
-                            (user_input, password), one=True)
-            if user:
-                session.clear()
-                session["user_id"] = user["id"]        # ✅ store primary key
-                session["role"] = user["role"]
-                session["serial"] = user["serial"]
-                session["class_stream"] = user["class_stream"]
-                
-                if user["role"] == "teacher":
-                    return redirect(url_for("teacher.dashboard"))
-                elif user["role"] == "student":
-                    return redirect(url_for("user.dashboard"))
-                elif user["role"] == "parent":
-                    return redirect(url_for("parent.dashboard"))
+
+        # ✅ Check users table
+        user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
+                        (user_input, password), one=True)
+        if user:
+            session.clear()
+            session["user_id"] = user["id"]        # ✅ store primary key for attendance
+            session["role"] = user["role"]
+            session["serial"] = user["serial"]
+            session["class_stream"] = user["class_stream"]
+
+            if user["role"] == "teacher":
+                return redirect(url_for("teacher.dashboard"))
+            elif user["role"] == "student":
+                return redirect(url_for("user.dashboard"))
+            elif user["role"] == "parent":
+                return redirect(url_for("parent.dashboard"))
 
         flash("Invalid credentials", "danger")
 
@@ -107,5 +107,5 @@ def session_info():
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    flash("Logged out successfully", "info")  # ✅ fixed
+    flash("Logged out successfully", "info")
     return redirect(url_for("auth.login"))
