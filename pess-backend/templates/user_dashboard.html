@@ -144,6 +144,7 @@
       <h5>{{ session.get('serial', 'User') }}</h5>
       <p>Student Portal</p>
     </div>
+    <a href="{{ url_for('attendance.user_attendance') }}"><i class="fas fa-clipboard-list"></i> My Attendance</a>
     <a href="{{ url_for('fees.user_fee_files') }}"><i class="fas fa-file-invoice-dollar"></i> Fee Records</a>
     <a href="{{ url_for('late.user_latecomer') }}"><i class="fas fa-user-clock"></i> Latecomers</a>
     <a href="{{ url_for('meeting.user_meetings') }}"><i class="fas fa-video"></i> Meetings</a>
