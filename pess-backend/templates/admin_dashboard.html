@@ -159,8 +159,9 @@
       </div>
     </div>
     
-    <h5>{{ session.get('username', session.get('serial', 'Admin')) }}</h5>
-    <h2 class="mb-3">Welcome, {{ session.get('username', session.get('serial', 'Admin')) }}</h2>
+    <h5>{{ session.get('username', 'Admin') }}</h5>
+    <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
+
     <p class="lead">Manage users, fees, meetings, latecomers, suspensions, and parental suggestions.</p>
     <!-- Dashboard Grid -->
     <div class="row g-4">
