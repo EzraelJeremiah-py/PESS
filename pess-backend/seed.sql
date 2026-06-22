@@ -80,16 +80,8 @@ INSERT INTO users (serial, password, role, class_stream) VALUES
 ('TeacherF1D#', 'Teacher@123#', 'teacher', 'Form1D'),
 ('TeacherF1E#', 'Teacher@123#', 'teacher', 'Form1E');
 
--- Example students in users table
-INSERT INTO users (id, serial, username, role, class_stream)
-VALUES 
-(1, 'S4882F1E001', 'John Wurtz', 'student', 'Form1A'),
-(2, 'S4882F1E002', 'Mary Ann', 'student', 'Form1B');
 
--- Example latecomers tied to users.id
--- Admin account
-INSERT INTO users (serial, username, role, class_stream, password)
-VALUES ('ADMIN001', 'System Admin', 'admin', NULL, 'Admin@123');
+
 
 
 
