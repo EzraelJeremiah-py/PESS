@@ -80,6 +80,19 @@ INSERT INTO users (serial, password, role, class_stream) VALUES
 ('TeacherF1D#', 'Teacher@123#', 'teacher', 'Form1D'),
 ('TeacherF1E#', 'Teacher@123#', 'teacher', 'Form1E');
 
+-- Example students in users table
+INSERT INTO users (id, serial, username, role, class_stream)
+VALUES 
+(1, 'S4882F1E001', 'John Wurtz', 'student', 'Form1A'),
+(2, 'S4882F1E002', 'Mary Ann', 'student', 'Form1B');
+
+-- Example latecomers tied to users.id
+INSERT INTO latecomers (student_id, expected_opening, arrival_date, reason, punishment)
+VALUES
+(1, '2026-06-01', '2026-06-22', 'Travel delay', 'Warning issued'),
+(2, '2026-06-01', '2026-06-20', 'Family emergency', 'No punishment');
+
+
 
 
 
