@@ -1,6 +1,7 @@
 -- Admin
 INSERT INTO admins (username, password) VALUES ('admin', 'admin123');
 
+
 -- =========================
 -- Students: 10 per stream
 -- =========================
