@@ -91,10 +91,6 @@ VALUES
 INSERT INTO users (serial, username, role, class_stream, password)
 VALUES ('ADMIN001', 'System Admin', 'admin', NULL, 'Admin@123');
 
--- Student accounts
-INSERT INTO users (serial, username, role, class_stream, password)
-VALUES ('S4882F1E001', 'John Wurtz', 'student', 'Form1A', 'Student@123');
-
 
 
 
