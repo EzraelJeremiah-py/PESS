@@ -24,8 +24,7 @@
     /* Sidebar fixed */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       height: 100%;
       width: 250px;
       background: rgba(0,0,0,0.85);
@@ -36,6 +35,7 @@
       padding: 1.5rem;
       transition: transform 0.4s ease-in-out;
       z-index: 999;
+      overflow-y: auto;
     }
     .sidebar.collapsed { transform: translateX(-100%); }
     .sidebar a {
@@ -50,7 +50,29 @@
       transition: background 0.2s ease;
     }
     .sidebar a:hover { background: rgba(255,255,255,0.2); }
-    .sidebar .logout { margin-top: auto; }
+
+    /* Notifications button */
+    .sidebar .notifications-btn {
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .sidebar .notifications-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Logout button pinned at bottom */
+    .sidebar .logout {
+      margin-top: auto;
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .sidebar .logout:hover {
+      background: rgba(255,255,255,0.3);
+    }
 
     /* Profile */
     .profile { text-align: center; margin-bottom: 2rem; }
@@ -83,7 +105,7 @@
 
     /* Main content */
     .main-content {
-      margin-left: 250px; /* push content aside for sidebar */
+      margin-left: 250px;
       flex-grow: 1;
       padding: 2rem;
       color: #fff;
@@ -121,6 +143,7 @@
       <h5>{{ session.get('serial', 'User') }}</h5>
       <p>Student Portal</p>
     </div>
+
     <a href="{{ url_for('attendance.user_attendance') }}"><i class="fas fa-clipboard-list"></i> My Attendance</a>
     <a href="{{ url_for('fees.user_fee_files') }}"><i class="fas fa-file-invoice-dollar"></i> Fee Records</a>
     <a href="{{ url_for('meeting.user_meetings') }}"><i class="fas fa-video"></i> Meetings</a>
@@ -132,8 +155,16 @@
     <a href="{{ url_for('library.packages') }}"><i class="fas fa-box"></i> Packages</a>
     <a href="{{ url_for('library.links') }}"><i class="fas fa-link"></i> Links</a>
     <a href="{{ url_for('library.pastpapers') }}"><i class="fas fa-file-alt"></i> Past Papers</a>
-    <a href="{{ url_for('library.notifications') }}"><i class="fas fa-bell"></i> Notifications</a>
-    <a href="{{ url_for('auth.logout') }}" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+    <!-- Notifications button -->
+    <a href="{{ url_for('library.notifications') }}" class="notifications-btn">
+      <i class="fas fa-bell"></i> Notifications
+    </a>
+
+    <!-- Logout button -->
+    <a href="{{ url_for('auth.logout') }}" class="logout">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
   </div>
 
   <!-- Main Content -->
@@ -155,14 +186,7 @@
           <a href="{{ url_for('attendance.user_attendance') }}" class="btn btn-info w-100">View Attendance</a>
         </div>
       </div>
-      <div class="col-sm-12 col-md-6">
-        <div class="card text-center p-3 h-100">
-          <i class="fas fa-file-invoice-dollar icon"></i>
-          <h5 class="card-title">Fee Payment Records</h5>
-          <p class="card-text">View uploaded fee payment files.</p>
-          <a href="{{ url_for('fees.user_fee_files') }}" class="btn btn-primary w-100">View Records</a>
-        </div>
-      </div>
+      
       <div class="col-sm-12 col-md-6">
         <div class="card text-center p-3 h-100">
           <i class="fas fa-video icon"></i>
@@ -171,7 +195,7 @@
           <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">View Meetings</a>
         </div>
       </div>
-
+      
       <!-- Suspensions Zone -->
       <div class="col-sm-12 col-md-6">
         <div class="card text-center p-3 h-100">
@@ -193,3 +217,6 @@
   </script>
 </body>
 </html>
+
+      
+      
