@@ -21,30 +21,57 @@
       100% { background-position: 0% 50%; }
     }
     .dashboard-container { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
     .sidebar {
-      width: 250px; background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px); color: #fff;
-      flex-shrink: 0; display: flex; flex-direction: column;
-      padding: 1rem; transition: transform 0.3s ease;
+      width: 250px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      transition: transform 0.4s ease-in-out; /* smooth slide */
+      font-size: 1rem;
+      transform: translateX(0);
     }
+    .sidebar.collapsed { transform: translateX(-100%); }
     .sidebar a {
-      color: #fff; text-decoration: none; padding: 0.75rem;
-      border-radius: 8px; display: flex; align-items: center; gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.05rem;
       transition: background 0.2s ease;
     }
     .sidebar a:hover { background: rgba(255,255,255,0.2); }
-    .sidebar.collapsed { transform: translateX(-100%); }
     .sidebar .logout { margin-top: auto; }
+
+    /* Profile */
     .profile { text-align: center; margin-bottom: 2rem; }
-    .profile img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 0.5rem; }
-    .profile h5 { margin: 0; font-weight: bold; }
-    .profile p { font-size: 0.9rem; color: #ccc; }
+    .profile img {
+      width: 100px; height: 100px;
+      border-radius: 50%; border: 2px solid #fff;
+      margin-bottom: 0.75rem;
+    }
+    .profile h5 { font-size: 1.2rem; }
+    .profile p { font-size: 1rem; color: #ccc; }
+
+    /* Toggle button */
     .toggle-btn {
       position: absolute; top: 1rem; left: 1rem;
-      background: rgba(0,0,0,0.7); border: none; color: #fff;
-      padding: 0.5rem 0.75rem; border-radius: 8px;
+      background: rgba(0,0,0,0.7);
+      border: none; color: #fff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
       cursor: pointer; z-index: 1000;
     }
+
+    /* Topbar */
     .topbar { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     .topbar .icon-btn { position: relative; color: #fff; font-size: 1.5rem; cursor: pointer; }
     .topbar .badge {
@@ -52,7 +79,9 @@
       background: red; color: #fff; border-radius: 50%;
       padding: 2px 6px; font-size: 0.7rem;
     }
-    .main-content { flex-grow: 1; padding: 2rem; color: #fff; transition: margin-left 0.3s ease; width: 100%; }
+
+    /* Main content */
+    .main-content { flex-grow: 1; padding: 2rem; color: #fff; width: 100%; }
     .card {
       border-radius: 16px; backdrop-filter: blur(12px);
       background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
@@ -60,8 +89,16 @@
     }
     .card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.4); }
     .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    /* Mobile adjustments */
     @media (max-width: 768px) {
-      .sidebar { position: absolute; height: 100%; z-index: 999; }
+      .sidebar {
+        position: absolute;
+        height: 100%;
+        width: 80%;           /* take most of screen */
+        max-width: 320px;
+        z-index: 999;
+      }
       .main-content { padding: 1rem; }
       .col-sm-12 { margin-bottom: 1rem; }
     }
@@ -72,7 +109,7 @@
     <!-- Sidebar -->
     <div class="sidebar collapsed" id="sidebar">
       <div class="profile">
-        <img src="https://via.placeholder.com/80" alt="User Avatar">
+        <img src="https://via.placeholder.com/100" alt="User Avatar">
         <h5>{{ session.get('serial', 'User') }}</h5>
         <p>Student Portal</p>
       </div>
@@ -126,6 +163,8 @@
             <a href="{{ url_for('meeting.user_meetings') }}" class="btn btn-success w-100">View Meetings</a>
           </div>
         </div>
+        
+        <!-- Suspensions Zone -->
         <div class="col-sm-12 col-md-6">
           <div class="card text-center p-3 h-100">
             <i class="fas fa-user-slash icon"></i>
@@ -139,6 +178,7 @@
       </div> <!-- end row -->
     </div> <!-- end main-content -->
   </div> <!-- end dashboard-container -->
+  
   <script>
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('collapsed');
