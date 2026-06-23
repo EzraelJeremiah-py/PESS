@@ -14,7 +14,7 @@
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
       padding: 2rem;
-      font-size: 1.1rem; /* ✅ Base font size */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -43,26 +43,14 @@
       font-weight: bold;
       font-size: 1.8rem;
     }
-    h5 {
-      font-size: 1.2rem;
-    }
-    p {
-      font-size: 1rem;
-    }
+    h5 { font-size: 1.2rem; }
+    p { font-size: 1rem; }
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
-      body, p, li, a, label {
-        font-size: 18px;
-      }
-      h2 {
-        font-size: 24px;
-      }
-      h5 {
-        font-size: 20px;
-      }
-      .btn {
-        font-size: 18px;
-      }
+      body, p, li, a, label { font-size: 18px; }
+      h2 { font-size: 24px; }
+      h5 { font-size: 20px; }
+      .btn { font-size: 18px; }
     }
   </style>
 </head>
@@ -112,9 +100,12 @@
           </div>
         </div>
       </div>
+      {% else %}
+      <p class="text-center text-muted">No links available.</p>
       {% endfor %}
     </div>
-    <!-- ✅ Conditional Back to Dashboard -->
+
+    <!-- ✅ Back to Dashboard -->
     {% if session.get('role') == 'admin' %}
     <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary mt-3 rounded-pill fw-bold">
       <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
@@ -122,6 +113,10 @@
     {% elif session.get('role') == 'user' %}
     <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3 rounded-pill fw-bold">
       <i class="fas fa-arrow-left"></i> Back to User Dashboard
+    </a>
+    {% else %}
+    <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3 rounded-pill fw-bold">
+      <i class="fas fa-arrow-left"></i> Back to Dashboard
     </a>
     {% endif %}
   </div>
