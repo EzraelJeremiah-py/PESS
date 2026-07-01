@@ -10,7 +10,7 @@
       background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
       min-height: 100vh;
       padding: 2rem;
-      color: #fff;
+      color: #fff; /* ✅ default text white */
       font-size: 1.1rem;
       display: flex;
       flex-direction: column;
@@ -22,20 +22,26 @@
       padding: 2rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      color: #fff; /* ✅ card text white */
     }
     h2 {
       font-weight: bold;
       margin-bottom: 1.5rem;
       text-align: center;
       font-size: 2rem;
+      color: #fff; /* ✅ heading white */
     }
     h5 {
       margin-top: 1rem;
       font-weight: 600;
-      color: #00c6ff;
+      color: #00c6ff; /* ✅ section titles blue */
+    }
+    ul li {
+      color: #fff; /* ✅ list items white */
     }
     a { color: #00c6ff; text-decoration: none; }
     a:hover { color: #fff; text-decoration: underline; }
+    span { color: #fff; } /* ✅ force spans to white */
 
     /* ✅ Mobile scaling */
     @media (max-width: 768px) {
