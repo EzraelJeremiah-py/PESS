@@ -62,7 +62,7 @@
     a:hover {
       color: #fff;
     }
-    /* ✅ Pill badge top-right */
+    /* ✅ Transparent floating pill badge */
     .manual-badge {
       position: fixed;   /* floats above everything */
       top: 20px;
@@ -70,17 +70,18 @@
       z-index: 1200;     /* stays above sidebar/topbar */
     }
     .manual-badge .badge {
-      background: rgba(255, 255, 255, 0.15); /* transparent glass look */
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(8px);            /* frosted glass effect */
-      font-size: 1.1rem;                     /* bigger text */
-      padding: 0.6rem 1.2rem;                /* larger pill */
+      background: rgba(255, 255, 255, 0.08); /* very transparent */
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);           /* frosted glass effect */
+      font-size: 1.1rem;
+      padding: 0.6rem 1.2rem;
       color: #fff !important;                /* force white text */
-      cursor: pointer;                       /* clickable */
-      transition: background 0.2s ease;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
     .manual-badge .badge:hover {
-      background: rgba(255, 255, 255, 0.3);  /* highlight on hover */
+      background: rgba(255, 255, 255, 0.25); /* slightly less transparent on hover */
+      transform: translateY(-2px);           /* subtle lift */
     }
 
     /* ✅ Bigger fonts on phones */
