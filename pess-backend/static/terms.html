@@ -1,19 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Terms of Service - PESS</title></head>
-<body style="background:linear-gradient(135deg,#1e3c72,#2a5298,#00c6ff);color:#fff;padding:2rem;">
+<head>
+  <meta charset="UTF-8">
+  <title>Terms of Service - PESS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- ✅ Mobile scaling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
+      min-height: 100vh;
+      padding: 2rem;
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    h2 {
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    h5 {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #00c6ff;
+    }
+    a { color: #00c6ff; text-decoration: none; }
+    a:hover { color: #fff; text-decoration: underline; }
+
+    /* ✅ Mobile scaling */
+    @media (max-width: 768px) {
+      body { font-size: 1.2rem; padding: 1rem; }
+      h2 { font-size: 1.6rem; }
+      h5 { font-size: 1.2rem; }
+      .card { padding: 1.5rem; }
+      .btn { font-size: 1rem; padding: 0.8rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
   <div class="container">
     <h2>📜 Terms of Service</h2>
-    <div class="card" style="background:rgba(255,255,255,0.1);border-radius:16px;padding:2rem;">
-      <p>By using PESS, you agree to:</p>
+
+    <!-- Usage Agreement -->
+    <div class="card">
+      <h5>1. Acceptance of Terms</h5>
+      <p>By accessing and using the PESS system, you agree to comply with these Terms of Service. If you do not agree, please discontinue use immediately.</p>
+    </div>
+
+    <!-- Registration -->
+    <div class="card">
+      <h5>2. Registration & Accounts</h5>
+      <p>Students must register with accurate details. Parents register using their child’s <strong>serial number</strong> or by contacting the admin. Admins verify all accounts before activation.</p>
+    </div>
+
+    <!-- Password Recovery -->
+    <div class="card">
+      <h5>3. Forgotten Passwords</h5>
+      <p>If you forget your password, you must <strong>contact the system admin</strong>. For security reasons, passwords are not reset automatically. The admin will apply <strong>multi‑factor verification questions</strong> (such as student serial number, date of birth, or parent contact details) to confirm your identity before issuing a new password.</p>
+    </div>
+
+    <!-- User Responsibilities -->
+    <div class="card">
+      <h5>4. User Responsibilities</h5>
       <ul>
-        <li>Provide accurate information during registration.</li>
+        <li>Keep login credentials secure.</li>
+        <li>Do not share accounts with unauthorized persons.</li>
         <li>Respect confidentiality of student and parent data.</li>
-        <li>Use the system only for educational and administrative purposes.</li>
-        <li>Not misuse or attempt unauthorized access.</li>
+        <li>Report suspicious activity to the admin immediately.</li>
       </ul>
     </div>
-    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3">Back to Login</a>
+
+    <!-- Admin Rights -->
+    <div class="card">
+      <h5>5. Admin Rights</h5>
+      <p>Admins may suspend accounts, update system content, and enforce rules. They also assist with registration and password recovery using multi‑factor verification.</p>
+    </div>
+
+    <!-- Content & Resources -->
+    <div class="card">
+      <h5>6. Content & Resources</h5>
+      <p>All resources (library books, packages, announcements) are provided for educational purposes only. Unauthorized distribution or misuse is prohibited.</p>
+    </div>
+
+    <!-- Communication -->
+    <div class="card">
+      <h5>7. Communication & Notifications</h5>
+      <p>PESS may send system notifications (fees, suspensions, announcements). Users must keep their contact details updated to receive these alerts.</p>
+    </div>
+
+    <!-- Security -->
+    <div class="card">
+      <h5>8. Security & Privacy</h5>
+      <p>PESS uses secure authentication and encrypted storage. Users must log out after use and avoid sharing credentials.</p>
+    </div>
+
+    <!-- System Availability -->
+    <div class="card">
+      <h5>9. System Availability</h5>
+      <p>PESS strives for 24/7 uptime, but occasional maintenance may cause downtime. Admins will notify users in advance when possible.</p>
+    </div>
+
+    <!-- Misuse -->
+    <div class="card">
+      <h5>10. Misuse & Disciplinary Action</h5>
+      <p>Any misuse (fake accounts, abusive language, unauthorized access attempts) may result in suspension. Serious violations can lead to permanent removal.</p>
+    </div>
+
+    <!-- Limitation of Liability -->
+    <div class="card">
+      <h5>11. Limitation of Liability</h5>
+      <p>PESS provides resources “as is.” The institution is not liable for academic outcomes solely based on system usage.</p>
+    </div>
+
+    <!-- Updates -->
+    <div class="card">
+      <h5>12. Updates to Terms</h5>
+      <p>PESS reserves the right to update these terms. Users will be notified of significant changes.</p>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3 rounded-pill">
+        <i class="fas fa-arrow-left"></i> Back to Login
+      </a>
+    </div>
   </div>
 </body>
 </html>
