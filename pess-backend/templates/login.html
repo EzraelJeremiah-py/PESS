@@ -64,17 +64,25 @@
     }
     /* ✅ Pill badge top-right */
     .manual-badge {
-      position: absolute;
+      position: fixed;   /* floats above everything */
       top: 20px;
       right: 20px;
-      z-index: 1000;
+      z-index: 1200;     /* stays above sidebar/topbar */
     }
     .manual-badge .badge {
-      font-size: 1.1rem;       /* ✅ Bigger text */
-      padding: 0.6rem 1.2rem;  /* ✅ Larger pill */
-      color: #fff !important;  /* ✅ Force white text */
-      cursor: pointer;         /* ✅ Clickable */
+      background: rgba(255, 255, 255, 0.15); /* transparent glass look */
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);            /* frosted glass effect */
+      font-size: 1.1rem;                     /* bigger text */
+      padding: 0.6rem 1.2rem;                /* larger pill */
+      color: #fff !important;                /* force white text */
+      cursor: pointer;                       /* clickable */
+      transition: background 0.2s ease;
     }
+    .manual-badge .badge:hover {
+      background: rgba(255, 255, 255, 0.3);  /* highlight on hover */
+    }
+
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, label, a {
