@@ -10,7 +10,7 @@
       background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
       min-height: 100vh;
       padding: 2rem;
-      color: #fff;
+      color: #fff; /* ✅ default text white */
       font-size: 1.1rem;
       display: flex;
       flex-direction: column;
@@ -22,20 +22,26 @@
       padding: 2rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      color: #fff; /* ✅ card text white */
     }
     h2 {
       font-weight: bold;
       margin-bottom: 1.5rem;
       text-align: center;
       font-size: 2rem;
+      color: #fff; /* ✅ heading white */
     }
     h5 {
       margin-top: 1rem;
       font-weight: 600;
-      color: #00c6ff;
+      color: #00c6ff; /* ✅ section titles blue */
+    }
+    ul li {
+      color: #fff; /* ✅ list items white */
     }
     a { color: #00c6ff; text-decoration: none; }
     a:hover { color: #fff; text-decoration: underline; }
+    span { color: #fff; } /* ✅ force spans (like phone numbers) to white */
 
     /* ✅ Mobile scaling */
     @media (max-width: 768px) {
@@ -56,8 +62,8 @@
       <h5>System Administrator</h5>
       <p>For account issues, forgotten passwords, or registration assistance, contact the system administrator directly:</p>
       <ul>
-        <li>Email: <a href="mailto:ezraeljeremiah@outlook.com" class="text-info">ezraeljeremiah@outlook.com</a></li>
-        <li>Phone: +255 620 150 832</li>
+        <li>Email: <a href="mailto:ezraeljeremiah@outlook.com">ezraeljeremiah@outlook.com</a></li>
+        <li>Phone: <span>+255 620 150 832</span></li>
       </ul>
       <p>The admin will verify your identity using <strong>multi‑factor security questions</strong> before assisting with password recovery or account activation.</p>
     </div>
@@ -67,18 +73,18 @@
       <h5>Information to Provide</h5>
       <p>When contacting support, please include:</p>
       <ul>
-        <li>Your full name and role (student, parent, or visitor).</li>
+        <li>Your full name and role (student or parent).</li>
         <li>Your student serial number (if applicable).</li>
         <li>A clear description of the issue you are facing.</li>
       </ul>
       <p>This helps the administrator resolve your issue faster and ensures accurate linkage to your account.</p>
     </div>
+
     <div class="text-center">
       <a href="/auth/login" class="btn btn-secondary rounded-pill">
-      <i class="fas fa-arrow-left"></i> Back to Login
-    </a>
+        <i class="fas fa-arrow-left"></i> Back to Login
+      </a>
     </div>
-
   </div>
 </body>
 </html>
