@@ -13,7 +13,7 @@
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
       padding: 2rem;
-      color: #fff;
+      color: #fff; /* ✅ default text white */
       font-size: 1.1rem;
     }
     @keyframes gradientMove {
@@ -26,14 +26,20 @@
       border-radius: 20px;
       padding: 2rem;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      color: #fff;
+      color: #fff; /* ✅ card text white */
     }
     h2, h3 {
       font-weight: bold;
+      color: #fff; /* ✅ headings white */
     }
     ul li {
       margin-bottom: 0.5rem;
+      color: #fff; /* ✅ list items white */
     }
+    a { color: #00c6ff; text-decoration: none; }
+    a:hover { color: #fff; text-decoration: underline; }
+    span { color: #fff; } /* ✅ force spans to white */
+
     /* ✅ Mobile scaling */
     @media (max-width: 768px) {
       body, p, li { font-size: 18px; }
