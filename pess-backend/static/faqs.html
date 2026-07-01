@@ -1,18 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>FAQs - PESS</title></head>
-<body style="background:linear-gradient(135deg,#1e3c72,#2a5298,#00c6ff);color:#fff;padding:2rem;">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQs - PESS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- ✅ Mobile scaling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
+      min-height: 100vh;
+      padding: 2rem;
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    h2 {
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    h5 {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #00c6ff;
+    }
+    a { color: #00c6ff; text-decoration: none; }
+    a:hover { color: #fff; text-decoration: underline; }
+
+    /* ✅ Mobile scaling */
+    @media (max-width: 768px) {
+      body { font-size: 1.2rem; padding: 1rem; }
+      h2 { font-size: 1.6rem; }
+      h5 { font-size: 1.2rem; }
+      .card { padding: 1.5rem; }
+      .btn { font-size: 1rem; padding: 0.8rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
   <div class="container">
     <h2>❓ Frequently Asked Questions</h2>
-    <div class="card" style="background:rgba(255,255,255,0.1);border-radius:16px;padding:2rem;">
+
+    <!-- Registration -->
+    <div class="card">
       <h5>How do I register?</h5>
-      <p>Click the Register link on the login page.</p>
-      <h5>Forgot password?</h5>
-      <p>Use the Reset Password option.</p>
-      <h5>Can parents access the system?</h5>
-      <p>Yes, parents can log in to view suggestions, fees, and student progress.</p>
+      <p>Click the <strong>Register</strong> link on the login page and fill in your details. Students must provide accurate information. Parents can register using their child’s <strong>serial number</strong> or request the admin to create their account.</p>
     </div>
-    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3">Back to Login</a>
+
+    <!-- Password Help -->
+    <div class="card">
+      <h5>What if I forget my password?</h5>
+      <p>If you forget your password, <strong>contact the system admin</strong>. For security reasons, passwords are not reset automatically — the admin will verify your identity and assist you in setting a new one.</p>
+    </div>
+
+    <!-- Parent Access -->
+    <div class="card">
+      <h5>Can parents access the system?</h5>
+      <p>Yes. Parents log in using their child’s <strong>student serial number</strong>. If they don’t have it, they should ask the student directly or contact the admin to register them. This ensures parents are tied to the correct student record.</p>
+    </div>
+
+    <!-- Student Benefits -->
+    <div class="card">
+      <h5>Are students beneficiaries of the system?</h5>
+      <p>Yes. Students benefit directly by accessing the <strong>Virtual Library</strong> with books, home packages, past papers, and learning resources. They also receive notifications, track attendance, and monitor performance.</p>
+    </div>
+
+    <!-- Admin Role -->
+    <div class="card">
+      <h5>What can admins do?</h5>
+      <p>Admins manage user accounts, upload resources, handle suspensions, post announcements, and oversee system content. They also assist parents and students with registration or password recovery.</p>
+    </div>
+
+    <!-- Visitor Access -->
+    <div class="card">
+      <h5>Can visitors use PESS?</h5>
+      <p>Visitors can explore public resources and learn how to register. Full features require an account.</p>
+    </div>
+
+    <!-- Security -->
+    <div class="card">
+      <h5>Is my data secure?</h5>
+      <p>Yes. PESS uses secure authentication and encrypted storage. Always log out after use for safety.</p>
+    </div>
+
+    <!-- Support -->
+    <div class="card">
+      <h5>How do I contact support?</h5>
+      <p>You can reach support via email at <a href="mailto:support@pess.com">support@pess.com</a> or phone at <span class="text-info">+255 700 123 456</span>. Live chat is available weekdays 9 AM – 5 PM.</p>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3 rounded-pill">
+        <i class="fas fa-arrow-left"></i> Back to Login
+      </a>
+    </div>
   </div>
 </body>
 </html>
