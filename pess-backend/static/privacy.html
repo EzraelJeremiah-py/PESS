@@ -1,18 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Privacy Policy - PESS</title></head>
-<body style="background:linear-gradient(135deg,#1e3c72,#2a5298,#00c6ff);color:#fff;padding:2rem;">
+<head>
+  <meta charset="UTF-8">
+  <title>Privacy Policy - PESS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- ✅ Mobile scaling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
+      min-height: 100vh;
+      padding: 2rem;
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    h2 {
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    h5 {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #00c6ff;
+    }
+    a { color: #00c6ff; text-decoration: none; }
+    a:hover { color: #fff; text-decoration: underline; }
+
+    /* ✅ Mobile scaling */
+    @media (max-width: 768px) {
+      body { font-size: 1.2rem; padding: 1rem; }
+      h2 { font-size: 1.6rem; }
+      h5 { font-size: 1.2rem; }
+      .card { padding: 1.5rem; }
+      .btn { font-size: 1rem; padding: 0.8rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
   <div class="container">
     <h2>🔒 Privacy Policy</h2>
-    <div class="card" style="background:rgba(255,255,255,0.1);border-radius:16px;padding:2rem;">
-      <p>PESS respects your privacy. We collect only necessary data for system operation:</p>
+
+    <!-- Data Collection -->
+    <div class="card">
+      <h5>1. Data Collection</h5>
+      <p>PESS collects only the information necessary to operate the system effectively:</p>
       <ul>
-        <li>Login credentials are securely stored.</li>
-        <li>Student and parent records are protected.</li>
-        <li>No third‑party sharing without consent.</li>
+        <li>Login credentials (username/serial number and password).</li>
+        <li>Student academic records, attendance, and performance data.</li>
+        <li>Parent contact details for account linkage and communication.</li>
       </ul>
     </div>
-    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3">Back to Login</a>
+
+    <!-- Data Storage -->
+    <div class="card">
+      <h5>2. Data Storage</h5>
+      <p>All data is stored securely in encrypted databases. Access is restricted to authorized admins only.</p>
+    </div>
+
+    <!-- Data Usage -->
+    <div class="card">
+      <h5>3. Data Usage</h5>
+      <p>Collected data is used strictly for educational and administrative purposes:</p>
+      <ul>
+        <li>Tracking student progress and attendance.</li>
+        <li>Managing fees, suspensions, and announcements.</li>
+        <li>Providing parents with accurate updates linked to their child’s record.</li>
+      </ul>
+    </div>
+
+    <!-- Security -->
+    <div class="card">
+      <h5>4. Security Measures</h5>
+      <p>PESS uses secure authentication and encrypted storage. Forgotten passwords require admin intervention with <strong>multi‑factor verification questions</strong> to confirm identity before reset.</p>
+    </div>
+
+    <!-- Rights of Parents & Students -->
+    <div class="card">
+      <h5>5. Rights of Parents & Students</h5>
+      <p>Parents and students have the right to:</p>
+      <ul>
+        <li>Access their own records through secure login.</li>
+        <li>Request corrections to inaccurate information.</li>
+        <li>Contact the admin for account support or password recovery.</li>
+      </ul>
+    </div>
+
+    <!-- Admin Responsibilities -->
+    <div class="card">
+      <h5>6. Admin Responsibilities</h5>
+      <p>Admins are responsible for:</p>
+      <ul>
+        <li>Verifying accounts during registration.</li>
+        <li>Assisting with password recovery using multi‑factor verification.</li>
+        <li>Ensuring data is not shared with third parties without consent.</li>
+      </ul>
+    </div>
+
+    <!-- Third-Party Sharing -->
+    <div class="card">
+      <h5>7. Third‑Party Sharing</h5>
+      <p>PESS does not share student or parent data with external parties unless required by law or with explicit consent.</p>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-3 rounded-pill">
+        <i class="fas fa-arrow-left"></i> Back to Login
+      </a>
+    </div>
   </div>
 </body>
 </html>
