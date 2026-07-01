@@ -18,6 +18,7 @@
       align-items: center;
       position: relative;
       font-size: 1.1rem;
+      flex-direction: column; /* ✅ allows footer at bottom */
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -61,9 +62,9 @@
       z-index: 1200;
     }
     .manual-badge .badge {
-      background: rgba(255, 255, 255, 0.08); /* very transparent */
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(10px);           /* frosted glass effect */
+      backdrop-filter: blur(10px);
       font-size: 1.1rem;
       padding: 0.6rem 1.2rem;
       color: #fff !important;
@@ -75,6 +76,19 @@
       transform: translateY(-2px);
     }
 
+    /* ✅ Footer */
+    footer {
+      margin-top: auto; /* pushes footer to bottom */
+      width: 100%;
+      text-align: center;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
       body, p, label, a { font-size: 18px; }
@@ -84,6 +98,7 @@
         font-size: 18px;
         padding: 1rem 1.6rem;
       }
+      footer { font-size: 1rem; }
     }
   </style>
 </head>
@@ -118,5 +133,10 @@
       </div>
     </div>
   </div>
+
+  <!-- ✅ Footer -->
+  <footer>
+    © 2026 PESS System | All Rights Rerseved
+  </footer>
 </body>
 </html>
