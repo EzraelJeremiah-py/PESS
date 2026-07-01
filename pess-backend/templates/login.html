@@ -17,7 +17,7 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      font-size: 1.1rem; /* ✅ Base font size */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -46,28 +46,19 @@
       text-align: center;
       margin-bottom: 1rem;
       font-weight: bold;
-      font-size: 2rem; /* ✅ Larger heading */
+      font-size: 2rem;
     }
-    h3 {
-      font-size: 1.5rem;
-    }
-    label {
-      color: #fff;
-      font-size: 1.1rem;
-    }
-    a {
-      color: #00c6ff;
-      font-size: 1rem;
-    }
-    a:hover {
-      color: #fff;
-    }
+    h3 { font-size: 1.5rem; }
+    label { color: #fff; font-size: 1.1rem; }
+    a { color: #00c6ff; font-size: 1rem; }
+    a:hover { color: #fff; }
+
     /* ✅ Transparent floating pill badge */
     .manual-badge {
-      position: fixed;   /* floats above everything */
+      position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 1200;     /* stays above sidebar/topbar */
+      z-index: 1200;
     }
     .manual-badge .badge {
       background: rgba(255, 255, 255, 0.08); /* very transparent */
@@ -75,26 +66,20 @@
       backdrop-filter: blur(10px);           /* frosted glass effect */
       font-size: 1.1rem;
       padding: 0.6rem 1.2rem;
-      color: #fff !important;                /* force white text */
+      color: #fff !important;
       cursor: pointer;
       transition: background 0.2s ease, transform 0.2s ease;
     }
     .manual-badge .badge:hover {
-      background: rgba(255, 255, 255, 0.25); /* slightly less transparent on hover */
-      transform: translateY(-2px);           /* subtle lift */
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
     }
 
     /* ✅ Bigger fonts on phones */
     @media (max-width: 768px) {
-      body, p, label, a {
-        font-size: 18px;
-      }
-      h1 {
-        font-size: 24px;
-      }
-      h3 {
-        font-size: 20px;
-      }
+      body, p, label, a { font-size: 18px; }
+      h1 { font-size: 24px; }
+      h3 { font-size: 20px; }
       .manual-badge .badge {
         font-size: 18px;
         padding: 1rem 1.6rem;
@@ -105,7 +90,7 @@
 <body>
   <!-- Pill Badge -->
   <div class="manual-badge">
-    <a href="/static/manual.html" class="badge bg-info rounded-pill fw-bold shadow">
+    <a href="/static/manual.html" class="badge rounded-pill fw-bold shadow">
       <i class="fas fa-book-open"></i> User System Manual
     </a>
   </div>
