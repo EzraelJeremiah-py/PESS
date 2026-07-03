@@ -74,7 +74,7 @@
       backdrop-filter: blur(10px);
       color: #fff;
       width: 100%;
-      position: fixed;
+      position: fixed; /* ✅ floating on desktop */
       bottom: 0;
       left: 0;
       z-index: 1000;
@@ -105,8 +105,37 @@
       text-align: center;
     }
 
-    /* ✅ Mobile fix: stack neatly */
+    /* ✅ Scroll-to-top button */
+    #scrollTopBtn {
+      display: none; /* hidden by default */
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 1100;
+      background: rgba(0,198,255,0.8);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      padding: 12px 16px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: background 0.3s ease;
+    }
+    #scrollTopBtn:hover {
+      background: rgba(30,60,114,0.9);
+    }
+
+    /* ✅ Mobile fix: footer scrolls instead of fixed */
     @media (max-width: 768px) {
+      .footer {
+        position: relative; /* ✅ no overlap on phones */
+        box-shadow: none;
+        padding: 1.5rem 1rem;
+      }
+      body {
+        padding-bottom: 0; /* ✅ no extra space needed */
+      }
       .footer .row > div {
         text-align: center;
       }
@@ -146,6 +175,9 @@
     </p>
   </div>
 
+  <!-- ✅ Scroll-to-top button -->
+  <button id="scrollTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
   <!-- ✅ Professional Glass Footer with Sections -->
   <footer class="footer">
     <div class="container">
@@ -168,15 +200,31 @@
           <a href="mailto:support@pess.com"><i class="fas fa-envelope"></i> Email</a>
           <a href="tel:+255700123456"><i class="fas fa-phone"></i> +255 700 123 456</a>
         </div>
-        <!-- Resources Section -->
+              <!-- Resources Section -->
         <div class="col-6 col-md-3">
           <h6>Resources</h6>
           <a href="/static/manual.html"><i class="fas fa-book-open"></i> User Manual</a>
           <a href="#"><i class="fas fa-blog"></i> Updates</a>
         </div>
-      </div>
+      </div> <!-- end row -->
       <p class="brand-text">© 2026 PESS System</p>
-    </div>
-  </footer>
+    </div> <!-- end container -->
+  </footer> <!-- end footer -->
+  
+  <!-- ✅ Scroll-to-top button script -->
+  <script>
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        scrollBtn.style.display = "block";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    };
+    scrollBtn.onclick = function() {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+  </script>
 </body>
 </html>
+
