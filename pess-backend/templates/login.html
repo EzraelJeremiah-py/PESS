@@ -19,6 +19,7 @@
       position: relative;
       font-size: 1.1rem;
       flex-direction: column; /* ✅ allows footer at bottom */
+      padding-bottom: 100px; /* ✅ space for floating footer */
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -47,12 +48,23 @@
       text-align: center;
       margin-bottom: 1rem;
       font-weight: bold;
-      font-size: 2rem;
+      font-size: 2.4rem;
+      text-shadow: 0 0 12px rgba(0,198,255,0.7); /* ✅ glowing hero heading */
     }
     h3 { font-size: 1.5rem; }
     label { color: #fff; font-size: 1.1rem; }
     a { color: #00c6ff; font-size: 1rem; }
     a:hover { color: #fff; }
+
+    /* ✅ Hero tagline */
+    .hero-tagline {
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 8px rgba(0,198,255,0.6);
+    }
 
     /* ✅ Transparent floating pill badge */
     .manual-badge {
@@ -76,17 +88,30 @@
       transform: translateY(-2px);
     }
 
-    /* ✅ Footer */
-    footer {
-      margin-top: auto; /* pushes footer to bottom */
-      width: 100%;
-      text-align: center;
-      padding: 0.8rem;
-      background: rgba(255, 255, 255, 0.08);
+    /* ✅ Glass Footer */
+    .footer {
+      background: rgba(255, 255, 255, 0.04); /* ✅ glass-like transparency */
       border-top: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(10px); /* ✅ frosted glass effect */
       color: #fff;
-      font-size: 0.9rem;
+      width: 100%;
+      position: fixed; /* ✅ floating at bottom */
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+    }
+    .footer a {
+      text-decoration: none;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+    .footer a:hover {
+      color: #00c6ff !important;
+      text-shadow: 0 0 10px #00c6ff;
+    }
+    .brand-text {
+      font-size: 1.4rem; /* ✅ medium-large size */
+      font-weight: bold;
+      letter-spacing: 0.5px;
     }
 
     /* ✅ Bigger fonts on phones */
@@ -98,7 +123,7 @@
         font-size: 18px;
         padding: 1rem 1.6rem;
       }
-      footer { font-size: 1rem; }
+      .brand-text { font-size: 1.2rem; }
     }
   </style>
 </head>
@@ -112,7 +137,9 @@
 
   <div class="container">
     <h1>Welcome to PESS</h1>
-    <p>📚 Empowering Students, Parents & School Administrators with seamless engagement and support.</p>
+    <p class="hero-tagline text-center">
+      📚 Empowering Students, Parents & School Administrators with seamless engagement and support.
+    </p>
     <div class="d-flex justify-content-center">
       <div class="card shadow p-5">
         <h3 class="text-center mb-4">Login</h3>
@@ -136,46 +163,25 @@
   </div>
   
   <!-- ✅ Professional Glass Footer -->
-  <footer class="footer mt-auto">
+  <footer class="footer">
     <div class="container py-3">
       <div class="d-flex justify-content-center gap-5 flex-wrap">
-        <a href="/static/privacy.html" class="text-decoration-none text-light">
+        <a href="/static/privacy.html" class="text-light">
           <i class="fas fa-shield-alt fa-lg"></i><br>Privacy Policy
         </a>
-        <a href="/static/faqs.html" class="text-decoration-none text-light">
+        <a href="/static/faqs.html" class="text-light">
           <i class="fas fa-question-circle fa-lg"></i><br>FAQs
         </a>
-        <a href="/static/terms.html" class="text-decoration-none text-light">
+        <a href="/static/terms.html" class="text-light">
           <i class="fas fa-file-contract fa-lg"></i><br>Terms of Service
         </a>
-        <a href="/static/support.html" class="text-decoration-none text-light">
+        <a href="/static/support.html" class="text-light">
           <i class="fas fa-headset fa-lg"></i><br>Contact Support
         </a>
       </div>
       <!-- Bold system name -->
-      <p class="mt-3 fw-bold" style="font-size:1.2rem;">© 2026 PESS System</p>
+      <p class="mt-3 brand-text">© 2026 PESS System</p>
     </div>
   </footer>
-  <style>
-    .footer {
-      background: rgba(255, 255, 255, 0.04); /* ✅ glass-like transparency */
-      border-top: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(8px); /* ✅ frosted glass effect */
-      color: #fff;
-      width: 100%;
-      position: fixed; /* ✅ floating at bottom */
-      bottom: 0;
-      left: 0;
-      z-index: 1000;
-    }
-    .footer a {
-      text-decoration: none;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-    .footer a:hover {
-      color: #00c6ff !important;
-      text-shadow: 0 0 10px #00c6ff;
-    }
-  </style>
-
-
+</body>
+</html>
