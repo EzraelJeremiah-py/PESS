@@ -7,6 +7,14 @@ from flask import send_from_directory
 library_bp = Blueprint("library", __name__, url_prefix="/library")
 
 DB_PATH = "pess.db"   # adjust to your DB file
+
+# Prevent cached pages after logout
+@admin_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads/library")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
