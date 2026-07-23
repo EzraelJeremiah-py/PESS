@@ -4,6 +4,14 @@ import sqlite3, os
 suspensions_bp = Blueprint("suspensions", __name__, url_prefix="/suspensions")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
+# Prevent cached pages after logout
+@admin_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 # ------------------ Admin: List Suspensions ------------------
 @suspensions_bp.route("/")
 def list_suspensions():
