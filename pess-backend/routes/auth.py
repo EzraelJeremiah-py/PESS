@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 import sqlite3, os
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
+
 # Prevent cached pages after logout
 @auth_bp.after_request
 def add_header(response):
@@ -7,10 +10,6 @@ def add_header(response):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
-
-
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
 def query_db(query, args=(), one=False):
     conn = sqlite3.connect(DB_PATH)
