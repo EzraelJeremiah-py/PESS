@@ -54,12 +54,14 @@ def upload_book():
                  (filename, category, session.get("username")))
         flash("Book uploaded successfully!", "success")
     return redirect(url_for("library.books"))
+    
+    @library_bp.route("/packages")
+    def packages():
+        if "role" not in session:
+            return redirect(url_for("auth.login"))
+            packages = query_db("SELECT * FROM packages")
+            return render_template("library/packages.html", packages=packages)
 
-# 🏠 Packages
-@library_bp.route("/packages")
-def packages():
-    packages = query_db("SELECT * FROM packages")
-    return render_template("library/packages.html", packages=packages)
 
 @library_bp.route("/packages/upload", methods=["POST"])
 def upload_package():
@@ -75,12 +77,14 @@ def upload_package():
                  (filename, category, stream, class_name, session.get("username")))
         flash("Package uploaded successfully!", "success")
     return redirect(url_for("library.packages"))
+    
+    @library_bp.route("/links")
+    def links():
+        if "role" not in session:
+            return redirect(url_for("auth.login"))
+            links = query_db("SELECT * FROM links")
+            return render_template("library/links.html", links=links)
 
-# 🌐 Links
-@library_bp.route("/links")
-def links():
-    links = query_db("SELECT * FROM links")
-    return render_template("library/links.html", links=links)
 
 @library_bp.route("/links/add", methods=["POST"])
 def add_link():
@@ -91,12 +95,14 @@ def add_link():
              (title, url, description))
     flash("Link added successfully!", "success")
     return redirect(url_for("library.links"))
+    
+    @library_bp.route("/pastpapers")
+    def pastpapers():
+        if "role" not in session:
+            return redirect(url_for("auth.login"))
+            papers = query_db("SELECT * FROM pastpapers")
+            return render_template("library/pastpapers.html", papers=papers)
 
-# 📄 Past Papers
-@library_bp.route("/pastpapers")
-def pastpapers():
-    papers = query_db("SELECT * FROM pastpapers")
-    return render_template("library/pastpapers.html", papers=papers)
 
 @library_bp.route("/pastpapers/upload", methods=["POST"])
 def upload_paper():
