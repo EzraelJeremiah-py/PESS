@@ -33,12 +33,14 @@ def query_db(query, args=(), one=False):
     conn.commit()
     conn.close()
     return (rv[0] if rv else None) if one else rv
+    
+    @library_bp.route("/books")
+    def books():
+        if "role" not in session:
+            return redirect(url_for("auth.login"))
+            books = query_db("SELECT * FROM books")
+            return render_template("library/books.html", books=books)
 
-# 📚 Books
-@library_bp.route("/books")
-def books():
-    books = query_db("SELECT * FROM books")
-    return render_template("library/books.html", books=books)
 
 @library_bp.route("/books/upload", methods=["POST"])
 def upload_book():
