@@ -6,7 +6,7 @@ attendance_bp = Blueprint("attendance", __name__, url_prefix="/attendance")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
 # Prevent cached pages after logout
-@admin_bp.after_request
+@attendance_bp.after_request
 def add_header(response):
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
     response.headers["Pragma"] = "no-cache"
