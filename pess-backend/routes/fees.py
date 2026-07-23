@@ -5,6 +5,14 @@ from werkzeug.utils import secure_filename
 fees_bp = Blueprint("fees", __name__, url_prefix="/fees")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads", "fees")
+
+# Prevent cached pages after logout
+@fees_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ------------------ Upload Fee File (Admin) ------------------
