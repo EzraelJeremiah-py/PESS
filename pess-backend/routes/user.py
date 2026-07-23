@@ -4,6 +4,14 @@ import sqlite3, os
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
+# Prevent cached pages after logout
+@admin_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 @user_bp.route("/dashboard")
 def dashboard():
     if session.get("role") != "student":
