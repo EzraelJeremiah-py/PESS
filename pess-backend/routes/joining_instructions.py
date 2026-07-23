@@ -9,6 +9,14 @@ ALLOWED_EXTENSIONS = {
     "csv","jpg","jpeg","png","gif","zip","tar","7z","mp4","mp3"
 }
 
+@joining_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
