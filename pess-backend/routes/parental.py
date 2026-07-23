@@ -4,6 +4,14 @@ import sqlite3, os
 parental_bp = Blueprint("parental", __name__, url_prefix="/parental")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
+@parental_bp.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 # ------------------ Parent: Submit Suggestion ------------------
 @parental_bp.route("/", methods=["GET", "POST"])
 def parental_form():
