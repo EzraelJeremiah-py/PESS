@@ -22,7 +22,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Sidebar fixed */
+    /* Sidebar */
     .sidebar {
       position: fixed;
       top: 0; left: 0;
@@ -124,10 +124,7 @@
       <p>Administrator</p>
     </div>
     <a href="{{ url_for('admin.list_users') }}"><i class="fas fa-users"></i> Manage Users</a>
-    <!-- Results Section -->
-    
-
-    <<a href="{{ url_for('results.view_result_files') }}"><i class="fas fa-tasks"></i> Manage Results</a>
+    <a href="{{ url_for('results.view_result_files') }}"><i class="fas fa-tasks"></i> Manage Results</a>
     <a href="{{ url_for('fees.upload_fee_file') }}"><i class="fas fa-file-upload"></i> Upload Fees</a>
     <a href="{{ url_for('fees.view_fee_files') }}"><i class="fas fa-file-invoice-dollar"></i> Manage Fees</a>
     <a href="{{ url_for('meeting.list_meetings') }}"><i class="fas fa-video"></i> Meetings</a>
@@ -152,8 +149,7 @@
       <div class="icon-btn"><i class="fas fa-envelope"></i><span class="badge">2</span></div>
     </div>
     <h2 class="mb-3">Welcome, {{ session.get('username', 'Admin') }}</h2>
-    <p class="lead">Manage users, fees, meetings, suspensions, parental suggestions, and library resources.</p>
-    
+    <p class="lead">Manage users, results, fees, meetings, suspensions, parental suggestions, and library resources.</p>
     
     <!-- Dashboard Grid -->
     <div class="row g-4">
@@ -166,27 +162,17 @@
           <a href="{{ url_for('admin.list_users') }}" class="btn btn-primary w-100">Go</a>
         </div>
       </div>
-
-      <!-- Manage Fees -->
+      
+      <!-- Manage Results -->
       <div class="col-md-4">
         <div class="card text-center p-3 h-100">
-          <i class="fas fa-file-invoice-dollar icon"></i>
-          <h5 class="card-title">Manage Fees</h5>
-          <p class="card-text">Upload, view, and manage fee records.</p>
-          <a href="{{ url_for('fees.view_fee_files') }}" class="btn btn-info w-100">Go</a>
+          <i class="fas fa-tasks icon"></i>
+          <h5 class="card-title">Manage Results</h5>
+          <p class="card-text">Upload, view, and manage student exam results.</p>
+          <a href="{{ url_for('results.view_result_files') }}" class="btn btn-info w-100">Go</a>
         </div>
       </div>
-
-      <!-- Meetings -->
-      <div class="col-md-4">
-        <div class="card text-center p-3 h-100">
-          <i class="fas fa-video icon"></i>
-          <h5 class="card-title">Meetings</h5>
-          <p class="card-text">Create, manage, or join virtual meetings.</p>
-          <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-success w-100">Go</a>
-        </div>
-      </div>
-
+      
       <!-- Suspensions -->
       <div class="col-md-4">
         <div class="card text-center p-3 h-100">
@@ -196,7 +182,7 @@
           <a href="{{ url_for('suspensions.list_suspensions') }}" class="btn btn-danger w-100">Go</a>
         </div>
       </div>
-
+      
       <!-- Suggestions -->
       <div class="col-md-4">
         <div class="card text-center p-3 h-100">
@@ -206,7 +192,26 @@
           <a href="{{ url_for('parental.manage_suggestions') }}" class="btn btn-warning w-100">Go</a>
         </div>
       </div>
-
+      
+      <!-- Manage Fees -->
+      <div class="col-md-4">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-file-invoice-dollar icon"></i>
+          <h5 class="card-title">Manage Fees</h5>
+          <p class="card-text">Upload, view, and manage fee records.</p>
+          <a href="{{ url_for('fees.view_fee_files') }}" class="btn btn-info w-100">Go</a>
+        </div>
+      </div>
+      
+      <!-- Meetings -->
+      <div class="col-md-4">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-video icon"></i>
+          <h5 class="card-title">Meetings</h5>
+          <p class="card-text">Create, manage, or join virtual meetings.</p>
+          <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-success w-100">Go</a>
+        </div>
+      </div>
       <!-- Library -->
       <div class="col-md-4">
         <div class="card text-center p-3 h-100">
@@ -218,11 +223,10 @@
       </div>
     </div> <!-- end row -->
   </div> <!-- end main-content -->
-
   <script>
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('collapsed');
-    }
-  </script>
+      </script>
 </body>
 </html>
+      
