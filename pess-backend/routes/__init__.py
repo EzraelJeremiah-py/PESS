@@ -12,6 +12,7 @@ from .library import library_bp
 from .chat import chat_bp
 from .teacher import teacher_bp
 from .attendance import attendance_bp
+from .results import results_bp
 
 # Collect all blueprints in one list
 blueprints = [
@@ -27,4 +28,5 @@ blueprints = [
     chat_bp,
     teacher_bp,
     attendance_bp,
+    results_bp,
 ]
