@@ -14,17 +14,19 @@ CREATE TABLE users (
 );
 
 
+
 CREATE TABLE result_uploads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     class TEXT NOT NULL,         -- Form1–Form6
     stream TEXT NOT NULL,        -- e.g. A, B, Science, Arts
-    filename TEXT NOT NULL,
-    filepath TEXT NOT NULL,
-    extension TEXT,
-    uploaded_by TEXT,
+    filename TEXT NOT NULL,      -- original file name
+    filepath TEXT NOT NULL,      -- server storage path
+    extension TEXT,              -- file extension (.pdf, .xlsx, etc.)
+    uploaded_by TEXT,            -- admin username
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     exam_date DATE NOT NULL      -- date entered by admin
 );
+
 
 
 CREATE TABLE fee_uploads (
