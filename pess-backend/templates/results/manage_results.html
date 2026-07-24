@@ -24,16 +24,24 @@
       border: 1px solid rgba(0,198,255,0.3);
       color: #fff;
     }
-    table {
-      color: #fff;
-    }
-    th {
-      color: #00e6e6;
-      font-weight: 600;
-    }
+    table { color: #fff; }
+    th { color: #00e6e6; font-weight: 600; }
     .btn-info { background-color: #00c6ff; border: none; }
     .btn-info:hover { background-color: #0099cc; }
     .btn-danger { font-weight: 600; }
+    .btn-dashboard {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    /* ✅ Mobile adjustments */
+    @media (max-width: 768px) {
+      body { font-size: 1rem; padding: 20px 0; }
+      h2 { font-size: 1.4rem; }
+      table { font-size: 0.9rem; }
+      .btn { font-size: 0.9rem; padding: 0.4rem 0.6rem; }
+      .btn-dashboard { width: 100%; margin-bottom: 1rem; }
+      .card { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -51,6 +59,13 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+    <!-- ✅ Back to Dashboard button -->
+    <div class="text-start mb-3">
+      <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary btn-dashboard">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
 
     <div class="card p-4">
       <table class="table table-hover align-middle">
