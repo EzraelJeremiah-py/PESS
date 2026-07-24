@@ -223,7 +223,6 @@ def delete_notification(note_id):
     flash("Notification deleted successfully!", "success")
     return redirect(url_for("library.notifications"))
     
-# ✅ Manage Results
 @admin_bp.route("/manage_results")
 def manage_results():
     if session.get("role") != "admin":
@@ -235,6 +234,7 @@ def manage_results():
         files = cur.fetchall()
         conn.close()
         return render_template("results/manage_results.html", files=files)
+
 
 
 # ✅ Delete Result
