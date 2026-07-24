@@ -206,7 +206,7 @@ def delete_paper(paper_id):
 
     flash("Past paper deleted successfully!", "success")
     return redirect(url_for("library.pastpapers"))
-
+    
 # ✅ Delete Notification
 @admin_bp.route("/delete/notification/<int:note_id>")
 def delete_notification(note_id):
@@ -222,3 +222,19 @@ def delete_notification(note_id):
 
     flash("Notification deleted successfully!", "success")
     return redirect(url_for("library.notifications"))
+    
+
+# ✅ Delete Result
+@admin_bp.route("/delete/result/<int:result_id>")
+def delete_result(result_id):
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("DELETE FROM results WHERE id=?", (result_id,))
+        conn.commit()
+        conn.close()
+        flash("Result deleted successfully!", "success")
+        return redirect(url_for("admin.manage_results"))
+
