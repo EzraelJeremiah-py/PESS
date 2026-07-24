@@ -223,6 +223,20 @@ def delete_notification(note_id):
     flash("Notification deleted successfully!", "success")
     return redirect(url_for("library.notifications"))
     
+# ✅ Manage Results
+@admin_bp.route("/manage_results")
+def manage_results():
+    if session.get("role") != "admin":
+        flash("Unauthorized access!", "danger")
+        return redirect(url_for("auth.login"))
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM results ORDER BY upload_date DESC")
+        files = cur.fetchall()
+        conn.close()
+        
+        return render_template("manage_results.html", files=files)
+
 
 # ✅ Delete Result
 @admin_bp.route("/delete/result/<int:result_id>")
