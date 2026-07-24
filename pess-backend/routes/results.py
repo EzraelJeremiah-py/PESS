@@ -49,7 +49,7 @@ def upload_result_file():
             flash("Result file uploaded successfully!", "success")
             return redirect(url_for("results.upload_result_file"))
 
-    return render_template("results/upload_result.html")
+    return render_template("results/upload_results.html")
 
 # ------------------ Manage Results Files (Admin View) ------------------
 @results_bp.route("/view")
