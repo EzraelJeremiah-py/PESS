@@ -234,7 +234,7 @@ def manage_results():
         cur.execute("SELECT * FROM results ORDER BY upload_date DESC")
         files = cur.fetchall()
         conn.close()
-        return render_template("manage_results.html", files=files)
+        return render_template("results/manage_results.html", files=files)
 
 
 # ✅ Delete Result
