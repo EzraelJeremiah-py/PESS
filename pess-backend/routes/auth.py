@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 import sqlite3, os
+
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
 
@@ -65,19 +66,27 @@ def register_teacher():
         password = request.form["password"]
         class_stream = request.form["class_stream"]
 
-        try:
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            cur.execute(
-                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'teacher', ?)",
-                (serial, password, class_stream)
-            )
-            conn.commit()
-            conn.close()
-            flash("Teacher registered successfully!", "success")
-            return redirect(url_for("auth.login"))
-        except sqlite3.IntegrityError:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+
+        # 🔍 Check if serial already exists
+        cur.execute("SELECT id FROM users WHERE serial=?", (serial,))
+        existing = cur.fetchone()
+
+        if existing:
             flash("Serial already exists!", "danger")
+            conn.close()
+            return redirect(url_for("auth.register_teacher"))
+
+        # ✅ Insert new teacher
+        cur.execute(
+            "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'teacher', ?)",
+            (serial, password, class_stream)
+        )
+        conn.commit()
+        conn.close()
+        flash("Teacher registered successfully!", "success")
+        return redirect(url_for("auth.login"))
 
     return render_template("register_teacher.html")
 
@@ -89,19 +98,27 @@ def register():
         password = request.form["password"]
         class_stream = request.form["class_stream"]
 
-        try:
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            cur.execute(
-                "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'student', ?)",
-                (serial, password, class_stream)
-            )
-            conn.commit()
-            conn.close()
-            flash("Student registered successfully!", "success")
-            return redirect(url_for("auth.login"))
-        except sqlite3.IntegrityError:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+
+        # 🔍 Check if serial already exists
+        cur.execute("SELECT id FROM users WHERE serial=?", (serial,))
+        existing = cur.fetchone()
+
+        if existing:
             flash("Serial already exists!", "danger")
+            conn.close()
+            return redirect(url_for("auth.register"))
+
+        # ✅ Insert new student
+        cur.execute(
+            "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'student', ?)",
+            (serial, password, class_stream)
+        )
+        conn.commit()
+        conn.close()
+        flash("Student registered successfully!", "success")
+        return redirect(url_for("auth.login"))
 
     return render_template("register.html")
 
