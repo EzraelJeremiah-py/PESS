@@ -37,11 +37,17 @@
       font-weight: 600;
     }
     .btn-info:hover { background-color: #0099cc; }
+    .btn-dashboard {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
     /* ✅ Mobile adjustments */
     @media (max-width: 576px) {
       body { font-size: 1rem; padding: 0.5rem; }
       .card { padding: 1rem; }
       h2 { font-size: 1.4rem; }
+      .btn { font-size: 0.9rem; padding: 0.5rem; }
+      .btn-dashboard { width: 100%; }
     }
   </style>
 </head>
@@ -60,6 +66,13 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+    <!-- ✅ Back to Dashboard button -->
+    <div class="text-start mb-3">
+      <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary btn-dashboard">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
 
     <!-- ✅ Correct endpoint -->
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('results.upload_result_file') }}">
