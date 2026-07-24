@@ -88,6 +88,16 @@
           <a href="{{ url_for('admin.list_users') }}" class="btn btn-primary w-100">Go</a>
         </div>
       </div>
+      
+      <!-- Suggestions -->
+      <div class="col-md-4">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-comments icon"></i>
+          <h5 class="card-title">Suggestions</h5>
+          <p class="card-text">Review parental suggestions.</p>
+          <a href="{{ url_for('parental.manage_suggestions') }}" class="btn btn-warning w-100">Go</a>
+        </div>
+      </div>
 
       <!-- Manage Results -->
       <div class="col-md-4">
@@ -96,6 +106,26 @@
           <h5 class="card-title">Manage Results</h5>
           <p class="card-text">Upload, view, and manage student exam results.</p>
           <a href="{{ url_for('results.view_result_files') }}" class="btn btn-info w-100">Go</a>
+        </div>
+      </div>
+      
+      <!-- Suspensions -->
+      <div class="col-md-4">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-user-slash icon"></i>
+          <h5 class="card-title">Suspensions</h5>
+          <p class="card-text">Manage suspended students.</p>
+          <a href="{{ url_for('suspensions.list_suspensions') }}" class="btn btn-danger w-100">Go</a>
+        </div>
+      </div>
+      
+      <!-- Meetings -->
+      <div class="col-md-4">
+        <div class="card text-center p-3 h-100">
+          <i class="fas fa-video icon"></i>
+          <h5 class="card-title">Meetings</h5>
+          <p class="card-text">Create, manage, or join virtual meetings.</p>
+          <a href="{{ url_for('meeting.list_meetings') }}" class="btn btn-success w-100">Go</a>
         </div>
       </div>
 
