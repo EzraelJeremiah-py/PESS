@@ -41,7 +41,6 @@
       margin-bottom: 1rem;
       font-weight: 600;
     }
-    /* ✅ Mobile adjustments */
     @media (max-width: 576px) {
       body { font-size: 1rem; padding: 0.5rem; }
       .card { padding: 1rem; }
@@ -78,11 +77,32 @@
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('results.upload_result_file') }}">
       <div class="mb-3">
         <label class="form-label">Class</label>
-        <input type="text" name="class" class="form-control" placeholder="Form1–Form6" required>
+        <select name="class" class="form-select" required>
+          <option value="">-- Select Class --</option>
+          <option value="Form1">Form 1</option>
+          <option value="Form2">Form 2</option>
+          <option value="Form3">Form 3</option>
+          <option value="Form4">Form 4</option>
+          <option value="Form5">Form 5</option>
+          <option value="Form6">Form 6</option>
+        </select>
       </div>
       <div class="mb-3">
         <label class="form-label">Stream</label>
-        <input type="text" name="stream" class="form-control" placeholder="e.g. A, B, Science, Arts" required>
+        <select name="stream" class="form-select" required>
+          <option value="">-- Select Stream --</option>
+          <option value="A">Stream A</option>
+          <option value="B">Stream B</option>
+          <option value="C">Stream C</option>
+          <option value="D">Stream D</option>
+          <option value="E">Stream E</option>
+          <option value="F">Stream F</option>
+          <option value="G">Stream G</option>
+          <option value="H">Stream H</option>
+          <option value="Science">Science</option>
+          <option value="Arts">Arts</option>
+          <option value="Business">Business</option>
+        </select>
       </div>
       <div class="mb-3">
         <label class="form-label">Exam Date</label>
