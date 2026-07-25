@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-import sqlite3, os, re
+import sqlite3, os
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
@@ -90,19 +90,13 @@ def register_teacher():
 
     return render_template("register_teacher.html")
 
-# ✅ Register Student (with serial format validation)
+# ✅ Register Student
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        serial = request.form.get("serial").strip()
+        serial = request.form.get("serial")
         password = request.form.get("password")
         class_stream = request.form.get("class_stream")
-
-        # 🔍 Validate serial format (e.g. S4882F1A001)
-        serial_pattern = r"^S\d{4}[A-Z]\d{3}$"
-        if not re.match(serial_pattern, serial):
-            flash("Invalid serial format! Use e.g. S4882F1A001", "danger")
-            return redirect(url_for("auth.register"))
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
