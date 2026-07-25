@@ -14,7 +14,7 @@
       animation: gradientMove 14s ease infinite;
       min-height: 100vh;
       color: #fff;
-      font-size: 1.1rem; /* ✅ Base font size */
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -40,43 +40,17 @@
       color: #fff;
       font-size: 1rem;
     }
-    label {
-      font-size: 1.1rem;
-    }
-    .btn {
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .btn-primary {
-      background-color: #0074d9;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #005fa3;
-    }
-    .btn-secondary {
-      background-color: #003366;
-      border: none;
-      color: #fff;
-    }
-    .btn-secondary:hover {
-      background-color: #001f3f;
-    }
-    /* ✅ Bigger fonts on phones */
+    label { font-size: 1.1rem; }
+    .btn { border-radius: 8px; font-weight: 600; font-size: 1rem; }
+    .btn-primary { background-color: #0074d9; border: none; }
+    .btn-primary:hover { background-color: #005fa3; }
+    .btn-secondary { background-color: #003366; border: none; color: #fff; }
+    .btn-secondary:hover { background-color: #001f3f; }
     @media (max-width: 768px) {
-      body, p, li, a, label, input, select {
-        font-size: 18px;
-      }
-      h3 {
-        font-size: 22px;
-      }
-      .btn {
-        font-size: 18px;
-      }
-      .navbar {
-        font-size: 18px;
-      }
+      body, p, li, a, label, input, select { font-size: 18px; }
+      h3 { font-size: 22px; }
+      .btn { font-size: 18px; }
+      .navbar { font-size: 18px; }
     }
   </style>
 </head>
@@ -98,6 +72,7 @@
       <div class="mb-3">
         <label class="form-label fw-bold">Class</label>
         <select name="class" class="form-select" required>
+          <option value="">-- Select Class --</option>
           <option value="Form1">Form 1</option>
           <option value="Form2">Form 2</option>
           <option value="Form3">Form 3</option>
@@ -109,7 +84,20 @@
 
       <div class="mb-3">
         <label class="form-label fw-bold">Stream</label>
-        <input type="text" name="stream" class="form-control" placeholder="e.g. A, B, Science, Arts" required>
+        <select name="stream" class="form-select" required>
+          <option value="">-- Select Stream --</option>
+          <option value="A">Stream A</option>
+          <option value="B">Stream B</option>
+          <option value="C">Stream C</option>
+          <option value="D">Stream D</option>
+          <option value="E">Stream E</option>
+          <option value="F">Stream F</option>
+          <option value="G">Stream G</option>
+          <option value="H">Stream H</option>
+          <option value="Science">Science</option>
+          <option value="Arts">Arts</option>
+          <option value="Business">Business</option>
+        </select>
       </div>
 
       <div class="mb-3">
