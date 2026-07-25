@@ -21,25 +21,25 @@ def query_db(query, args=(), one=False):
     conn.close()
     return (rv[0] if rv else None) if one else rv
 
-# ✅ Login
+# ✅ Login (serial + password only for users, username for admins)
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user_input = request.form["serial"]   # ✅ matches login.html field
-        password = request.form["password"]
+        serial = request.form.get("serial")  # matches login.html
+        password = request.form.get("password")
 
-        # Check admin table
+        # Check admin table (admins still use username)
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
-                         (user_input, password), one=True)
+                         (serial, password), one=True)
         if admin:
             session.clear()
             session["role"] = "admin"
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
 
-        # ✅ Check users table
+        # ✅ Check users table (students/teachers/parents use serial)
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
-                        (user_input, password), one=True)
+                        (serial, password), one=True)
         if user:
             session.clear()
             session["user_id"] = user["id"]        # ✅ store primary key for attendance
@@ -62,9 +62,9 @@ def login():
 @auth_bp.route("/register/teacher", methods=["GET", "POST"])
 def register_teacher():
     if request.method == "POST":
-        serial = request.form["serial"]
-        password = request.form["password"]
-        class_stream = request.form["class_stream"]
+        serial = request.form.get("serial")
+        password = request.form.get("password")
+        class_stream = request.form.get("class_stream")
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
@@ -94,9 +94,9 @@ def register_teacher():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        serial = request.form["serial"]
-        password = request.form["password"]
-        class_stream = request.form["class_stream"]
+        serial = request.form.get("serial")
+        password = request.form.get("password")
+        class_stream = request.form.get("class_stream")
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
