@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-import sqlite3, os, re
+import sqlite3, os
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "pess.db")
@@ -21,25 +21,25 @@ def query_db(query, args=(), one=False):
     conn.close()
     return (rv[0] if rv else None) if one else rv
 
-# ✅ Login
+# ✅ Login (serial + password only for users, username for admins)
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user_input = request.form["username"]
-        password = request.form["password"]
+        serial = request.form.get("serial")  # matches login.html
+        password = request.form.get("password")
 
-        # Check admin table
+        # Check admin table (admins still use username)
         admin = query_db("SELECT * FROM admins WHERE username=? AND password=?", 
-                         (user_input, password), one=True)
+                         (serial, password), one=True)
         if admin:
             session.clear()
             session["role"] = "admin"
             session["username"] = admin["username"]
             return redirect(url_for("admin.dashboard"))
 
-        # ✅ Check users table
+        # ✅ Check users table (students/teachers/parents use serial)
         user = query_db("SELECT * FROM users WHERE serial=? AND password=?", 
-                        (user_input, password), one=True)
+                        (serial, password), one=True)
         if user:
             session.clear()
             session["user_id"] = user["id"]        # ✅ store primary key for attendance
@@ -58,13 +58,13 @@ def login():
 
     return render_template("login.html")
 
-# ✅ Register Teacher (no regex check)
+# ✅ Register Teacher
 @auth_bp.route("/register/teacher", methods=["GET", "POST"])
 def register_teacher():
     if request.method == "POST":
-        serial = request.form["serial"]
-        password = request.form["password"]
-        class_stream = request.form["class_stream"]
+        serial = request.form.get("serial")
+        password = request.form.get("password")
+        class_stream = request.form.get("class_stream")
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
@@ -90,19 +90,13 @@ def register_teacher():
 
     return render_template("register_teacher.html")
 
-# ✅ Register Student (with regex validation)
+# ✅ Register Student
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        serial = request.form["serial"].strip()
-        password = request.form["password"]
-        class_stream = request.form["class_stream"]
-
-        # ✅ Validate student serial format (e.g. S4882F1A001)
-        serial_pattern = r"^S\d{4}[A-Z]\d{3}$"
-        if not re.match(serial_pattern, serial):
-            flash("Invalid serial format! Use e.g. S4882F1A001", "danger")
-            return redirect(url_for("auth.register"))
+        serial = request.form.get("serial")
+        password = request.form.get("password")
+        class_stream = request.form.get("class_stream")
 
         conn = sqlite3.connect(DB_PATH)
         cur = conn.cursor()
@@ -110,12 +104,12 @@ def register():
         # 🔍 Check if serial already exists
         cur.execute("SELECT id FROM users WHERE serial=?", (serial,))
         existing = cur.fetchone()
-
+        
         if existing:
             flash("Serial already exists!", "danger")
             conn.close()
             return redirect(url_for("auth.register"))
-
+            
         # ✅ Insert new student
         cur.execute(
             "INSERT INTO users (serial, password, role, class_stream) VALUES (?, ?, 'student', ?)",
