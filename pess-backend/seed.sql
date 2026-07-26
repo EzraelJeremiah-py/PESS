@@ -1,5 +1,5 @@
 -- Admin
-INSERT INTO admins (username, password) VALUES ('admin', 'admin123');
+INSERT INTO admins (username, password) VALUES ('admin', 'adminMHB');
 
 
 -- =========================
