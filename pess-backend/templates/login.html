@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- ✅ Mobile scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PESS - Modern Login</title>
+  <title>Login - PESS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -13,58 +13,57 @@
       background-size: 200% 200%;
       animation: gradientMove 12s ease infinite;
       min-height: 100vh;
-      font-size: 1.1rem;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
+      flex-direction: column;
+      font-size: 1.1rem;
     }
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    .main-panel {
-      border-radius: 20px;
-      backdrop-filter: blur(14px);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #fff;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 900px;
-      padding: 2rem;
-    }
     h1 {
+      color: #fff;
       text-align: center;
+      margin-top: 3rem;
       font-weight: bold;
-      font-size: 2.2rem;
+      font-size: 2.6rem;
       text-shadow: 0 0 12px rgba(0,198,255,0.7);
-      margin-bottom: 1rem;
     }
     .hero-tagline {
-      text-align: center;
-      font-size: 1.2rem;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 600;
       margin-bottom: 2rem;
+      text-align: center;
       text-shadow: 0 0 8px rgba(0,198,255,0.6);
     }
-    .login-panel {
-      margin-bottom: 2rem;
+    .card.login-card {
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 100%;
+      max-width: 600px;
+      color: #fff;
+      margin: 0 auto 4rem auto;
+      padding: 2rem;
     }
-    .btn-primary {
-      background-color: #2a5298;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #1e3c72;
-    }
-    label { color: #fff; }
+    .btn-primary { background-color: #2a5298; border: none; }
+    .btn-primary:hover { background-color: #1e3c72; }
+    label { color: #fff; font-size: 1.1rem; }
     a { color: #00c6ff; }
     a:hover { color: #fff; }
     .footer {
-      border-top: 1px solid rgba(255,255,255,0.25);
-      margin-top: 2rem;
-      padding-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      width: 100%;
+      padding: 2rem 1rem;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+      margin-top: auto; /* pushes footer to bottom */
     }
     .footer h6 { font-weight: bold; color: #00c6ff; margin-bottom: 0.8rem; }
     .footer a { display: block; color: #fff; text-decoration: none; margin-bottom: 0.5rem; }
@@ -73,42 +72,43 @@
   </style>
 </head>
 <body>
-  <div class="main-panel">
-    <h1>Welcome to PESS</h1>
-    <p class="hero-tagline">📚 Empowering Students, Parents & School Administrators</p>
+  <!-- Hero -->
+  <h1>Welcome to PESS</h1>
+  <p class="hero-tagline">📚 Empowering Students, Parents & School Administrators</p>
 
-    <!-- Login -->
-    <div class="login-panel">
-      <h3 class="text-center mb-4">Login</h3>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+  <!-- Login Card -->
+  <div class="card login-card">
+    <h3 class="text-center mb-4">Login</h3>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-      <form method="POST" action="{{ url_for('auth.login') }}">
-        <div class="mb-3">
-          <label class="form-label">UserSerial/Name</label>
-          <input type="text" name="serial" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-      </form>
-      <p class="text-center mt-3">
-        Don’t have an account? <a href="{{ url_for('auth.register') }}">Register</a>
-      </p>
-    </div>
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="mb-3">
+        <label class="form-label">UserSerial/Name</label>
+        <input type="text" name="serial" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="text-center mt-3">
+      Don’t have an account? <a href="{{ url_for('auth.register') }}">Register</a>
+    </p>
+  </div>
 
-    <!-- Footer links integrated -->
-    <footer class="footer">
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
       <div class="row text-center text-md-start gy-3">
         <div class="col-6 col-md-3">
           <h6>About</h6>
@@ -132,8 +132,8 @@
         </div>
       </div>
       <p class="brand-text">© 2026 PESS System</p>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
   <!-- ✅ Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
