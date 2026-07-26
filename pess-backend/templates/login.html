@@ -9,46 +9,47 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(135deg, #1e3c72, #2a5298, #00c6ff);
-      background-size: 200% 200%;
-      animation: gradientMove 12s ease infinite;
+      background: #f0f8ff; /* ✅ Milky light blue background */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       font-size: 1.1rem;
     }
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Optional subtle gradient overlay for dynamics */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(173,216,230,0.3), rgba(240,248,255,0.5));
+      z-index: -1;
     }
     h1 {
-      color: #fff;
+      color: #2a5298;
       text-align: center;
       margin-top: 2rem;
       font-weight: bold;
       font-size: 2.4rem;
-      text-shadow: 0 0 12px rgba(0,198,255,0.7);
+      text-shadow: 0 0 12px rgba(0,198,255,0.4);
     }
     .hero-tagline {
-      color: #fff;
+      color: #2a5298;
       font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 2rem;
       text-align: center;
-      text-shadow: 0 0 8px rgba(0,198,255,0.6);
+      text-shadow: 0 0 8px rgba(0,198,255,0.3);
     }
     .card.login-card {
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       backdrop-filter: blur(12px);
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.7); /* ✅ frosted glass look */
       border: 1px solid rgba(255, 255, 255, 0.3);
-      max-width: 500px; /* ✅ larger on desktop */
-      width: 95%;       /* ✅ responsive on mobile */
+      max-width: 500px;
+      width: 95%;
       margin: 2rem auto;
       padding: 2rem;
-      color: #fff;
+      color: #2a5298;
     }
     .btn-primary {
       background-color: #2a5298;
@@ -65,22 +66,22 @@
     .btn-register:hover {
       background-color: rgba(0,0,0,0.9);
     }
-    label { color: #fff; font-size: 1.1rem; }
-    a { color: #00c6ff; }
-    a:hover { color: #fff; }
+    label { color: #2a5298; font-size: 1.1rem; }
+    a { color: #2a5298; }
+    a:hover { color: #00c6ff; }
     .footer {
-      background: rgba(255,255,255,0.02); /* ✅ mirror glass effect */
+      background: rgba(255,255,255,0.3); /* ✅ mirror glass effect */
       border-top: 1px solid rgba(255,255,255,0.25);
       backdrop-filter: blur(12px);
-      color: #fff;
+      color: #2a5298;
       width: 100%;
       padding: 2rem 1rem;
       margin-top: auto;
     }
-    .footer h6 { font-weight: bold; color: #00c6ff; margin-bottom: 0.8rem; }
-    .footer a { display: block; color: #fff; text-decoration: none; margin-bottom: 0.5rem; }
+    .footer h6 { font-weight: bold; color: #add8e6; margin-bottom: 0.8rem; } /* ✅ very light blue headers */
+    .footer a { display: block; color: #2a5298; text-decoration: none; margin-bottom: 0.5rem; }
     .footer a:hover { color: #00c6ff !important; text-shadow: 0 0 10px #00c6ff; }
-    .brand-text { font-size: 1.2rem; font-weight: bold; text-align: center; margin-top: 1rem; }
+    .brand-text { font-size: 1.2rem; font-weight: bold; text-align: center; margin-top: 1rem; color: #add8e6; }
     /* ✅ Media query for big desktops */
     @media (min-width: 992px) {
       .card.login-card {
