@@ -45,13 +45,21 @@
       background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.3);
       width: 100%;
-      max-width: 600px;
+      max-width: 400px;
       color: #fff;
       margin: 0 auto 4rem auto;
       padding: 2rem;
     }
     .btn-primary { background-color: #2a5298; border: none; }
     .btn-primary:hover { background-color: #1e3c72; }
+    .btn-success {
+      background-color: #42b72a;
+      border: none;
+      font-weight: 600;
+    }
+    .btn-success:hover {
+      background-color: #36a420;
+    }
     label { color: #fff; font-size: 1.1rem; }
     a { color: #00c6ff; }
     a:hover { color: #fff; }
@@ -63,7 +71,7 @@
       width: 100%;
       padding: 2rem 1rem;
       box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
-      margin-top: auto; /* pushes footer to bottom */
+      margin-top: auto;
     }
     .footer h6 { font-weight: bold; color: #00c6ff; margin-bottom: 0.8rem; }
     .footer a { display: block; color: #fff; text-decoration: none; margin-bottom: 0.5rem; }
@@ -99,11 +107,15 @@
         <label class="form-label">Password</label>
         <input type="password" name="password" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
     </form>
-    <p class="text-center mt-3">
-      Don’t have an account? <a href="{{ url_for('auth.register') }}">Register</a>
-    </p>
+
+    <!-- ✅ Pill Register button -->
+    <div class="text-center">
+      <a href="{{ url_for('auth.register') }}" class="btn btn-success rounded-pill px-4 py-2">
+        Register
+      </a>
+    </div>
   </div>
 
   <!-- Footer -->
