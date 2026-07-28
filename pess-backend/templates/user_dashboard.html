@@ -176,6 +176,16 @@
     </div>
     <h2 class="mb-3">Welcome, {{ session.get('serial', 'User') }}</h2>
     <p class="lead">Access your records — attendance, fees, meetings, suspensions, and more. Use the sidebar for navigation.</p>
+    
+    <!-- Notifications -->
+    <div class="col-sm-12 col-md-4">
+      <div class="card text-center p-3 h-100">
+        <i class="fas fa-bell icon"></i>
+        <h5 class="card-title">Notifications</h5>
+        <p class="card-text">View your latest school updates and alerts.</p>
+        <a href="{{ url_for('library.notifications') }}" class="btn btn-warning w-100">View Notifications</a>
+      </div>
+    </div>
 
     <div class="row g-4">
       <div class="col-sm-12 col-md-4">
@@ -186,16 +196,6 @@
           <a href="{{ url_for('attendance.user_attendance') }}" class="btn btn-info w-100">View Attendance</a>
         </div>
       </div>
-      <!-- Notifications -->
-      <div class="col-sm-12 col-md-4">
-        <div class="card text-center p-3 h-100">
-          <i class="fas fa-bell icon"></i>
-          <h5 class="card-title">Notifications</h5>
-          <p class="card-text">View your latest school updates and alerts.</p>
-          <a href="{{ url_for('library.notifications') }}" class="btn btn-warning w-100">View Notifications</a>
-        </div>
-      </div>
-
       
       <!-- Exam Results -->
       <div class="col-sm-12 col-md-4">
