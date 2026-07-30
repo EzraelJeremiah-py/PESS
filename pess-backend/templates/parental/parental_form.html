@@ -20,25 +20,21 @@
       100% { background-position: 0% 50%; }
     }
     h2 {
-      color: #fff; /* ✅ White header text */
+      color: #003366;
       font-weight: 700;
       font-size: 1.6rem;
-      text-align: center;
-      margin-bottom: 1.5rem;
     }
-    /* ✅ Transparent floating blue card */
+    /* ✅ Form card always white */
     .card {
       border-radius: 14px;
-      background: rgba(0, 102, 204, 0.25); /* transparent blue */
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #000;
       font-size: 1rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
     label {
       font-size: 1.1rem;
-      color: #fff;
+      color: #000;
     }
     .btn {
       border-radius: 8px;
@@ -77,24 +73,30 @@
 </head>
 <body>
   <div class="container mt-4">
-    <h2>Parental Suggestion Box</h2>
-
-    <!-- ✅ Flash messages -->
+    <h2 class="mb-4">Parental Suggestion Box</h2>
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
-
+    
     <form method="POST" class="card p-4 shadow-sm">
       <div class="mb-3">
-        <label class="form-label fw-bold">Sender</label>
-        <input type="text" name="sender" class="form-control" required>
+        <label class="form-label fw-bold">Parent Name</label>
+        <input type="text" name="parent_name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Contact Number</label>
+        <input type="text" name="contact_number" class="form-control">
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Suggestion</label>
