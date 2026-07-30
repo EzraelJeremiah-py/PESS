@@ -20,83 +20,64 @@
       100% { background-position: 0% 50%; }
     }
     h2 {
-      color: #003366;
+      color: #fff; /* ✅ White header text */
       font-weight: 700;
       font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
-    /* ✅ Form card always white */
+    /* ✅ Transparent floating blue card */
     .card {
       border-radius: 14px;
-      background: #fff;
-      border: 1px solid #ddd;
-      color: #000;
+      background: rgba(0, 102, 204, 0.25); /* translucent blue */
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
       font-size: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
     label {
       font-size: 1.1rem;
-      color: #000;
+      color: #fff;
     }
     .btn {
       border-radius: 8px;
       font-weight: 600;
       font-size: 1rem;
     }
-    /* ✅ Submit button light green */
     .btn-primary {
       background-color: #90ee90; /* light green */
       border: none;
       color: #000;
     }
-    .btn-primary:hover {
-      background-color: #76c776;
-    }
+    .btn-primary:hover { background-color: #76c776; }
     .btn-secondary {
       background-color: #f0f0f0;
       border: none;
       color: #000;
     }
-    .btn-secondary:hover {
-      background-color: #dcdcdc;
-    }
-    @media (max-width: 768px) {
-      body, p, li, a, label, input, textarea {
-        font-size: 18px;
-      }
-      h2 {
-        font-size: 22px;
-      }
-      .btn {
-        font-size: 18px;
-      }
-    }
+    .btn-secondary:hover { background-color: #dcdcdc; }
   </style>
 </head>
 <body>
   <div class="container mt-4">
-    <h2 class="mb-4">Parental Suggestion Box</h2>
+    <h2>Parental Suggestion Box</h2>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
     {% endwith %}
-    
+
     <form method="POST" class="card p-4 shadow-sm">
       <div class="mb-3">
-        <label class="form-label fw-bold">Parent Name</label>
-        <input type="text" name="parent_name" class="form-control" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label fw-bold">Email</label>
-        <input type="email" name="email" class="form-control" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label fw-bold">Contact Number</label>
-        <input type="text" name="contact_number" class="form-control">
+        <label class="form-label fw-bold">Sender</label>
+        <input type="text" name="sender" class="form-control" required>
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Suggestion</label>
@@ -106,5 +87,15 @@
     </form>
     <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
   </div>
+
+  <!-- ✅ Auto-dismiss flash messages after 5 seconds -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+        new bootstrap.Alert(alert).close();
+      });
+    }, 5000);
+  </script>
 </body>
 </html>
